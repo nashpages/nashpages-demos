@@ -65,12 +65,13 @@ export function DemoContato({ contato }: Props) {
         </RevealFadeUp>
 
         <RevealFadeUp delay={0.6} className="mt-5 md:mt-7">
-          <p
+          <a
+            href="tel:+5548991995583"
             className="text-[11px] md:text-[13px] tracking-[0.14em]"
             style={{ color: "var(--demo-muted)", fontFamily: "var(--font-mono)" }}
           >
             {contato.phoneText}
-          </p>
+          </a>
         </RevealFadeUp>
 
         {/* Links sociais */}

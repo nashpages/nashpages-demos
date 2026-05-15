@@ -1,100 +1,107 @@
-import { Reveal } from "@/components/Reveal";
-import { HapticLink } from "@/components/HapticLink";
+"use client";
+
+import { motion } from "framer-motion";
 import type { DemoConfig } from "@/lib/types";
+import { RevealFadeUp } from "@/components/motion/RevealFadeUp";
+import { LetterReveal } from "@/components/motion/LetterReveal";
+import { EASE, DURATION } from "@/lib/motion";
 
-export function DemoContato({ config }: { config: DemoConfig }) {
+type Props = {
+  contato: DemoConfig["contato"];
+};
+
+export function DemoContato({ contato }: Props) {
   return (
-    <section id="contato">
-      <div className="mx-auto max-w-[1280px] px-6 py-20 md:px-12 md:py-32">
-        <Reveal>
+    <section
+      id="contato"
+      className="relative w-full py-24 md:py-[160px]"
+      style={{ background: "var(--demo-bg)" }}
+    >
+      <div className="mx-auto w-full max-w-[1440px] px-6 md:px-[120px]">
+        <RevealFadeUp>
           <p
-            className="font-mono text-[10px] uppercase tracking-[0.08em] md:text-[11px]"
-            style={{ color: "var(--demo-accent-soft)" }}
+            className="text-[11px] tracking-[0.16em]"
+            style={{ color: "var(--demo-muted)", fontFamily: "var(--font-mono)" }}
           >
-            § 05 / CONTATO
+            § 06  /  CONTATO
           </p>
-        </Reveal>
+        </RevealFadeUp>
 
-        <Reveal delay={0.08}>
-          <h2
-            className="mt-6 font-[family-name:var(--font-display)] text-[56px] font-medium tracking-[-0.01em] leading-[1.02] md:mt-10 md:text-[120px]"
-            style={{ color: "var(--demo-fg)" }}
+        <div className="mt-8 md:mt-12">
+          <LetterReveal
+            lines={contato.headlineLines}
+            className="text-[48px] md:text-[144px] leading-[0.98] tracking-[-0.03em]"
+          />
+        </div>
+
+        <RevealFadeUp delay={0.3} className="mt-8 md:mt-14">
+          <p
+            className="text-[16px] md:text-[19px] leading-[1.5]"
+            style={{ color: "var(--demo-muted)" }}
           >
-            {config.contact.title}
-          </h2>
-        </Reveal>
-
-        {config.contact.subline ? (
-          <Reveal delay={0.16}>
-            <p
-              className="mt-8 max-w-2xl text-base leading-[1.55] md:mt-12 md:text-lg"
-              style={{ color: "var(--demo-muted)" }}
-            >
-              {config.contact.subline}
-            </p>
-          </Reveal>
-        ) : null}
-
-        <Reveal delay={0.24}>
-          <div className="mt-10 md:mt-16">
-            <HapticLink
-              href={config.contact.primaryCtaHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              haptic={[8, 30, 8]}
-              className="inline-flex items-center justify-center gap-3 rounded-full px-8 py-5 font-sans text-base font-semibold tracking-[-0.01em] transition-opacity hover:opacity-90 active:scale-[0.98] md:px-10 md:py-6 md:text-lg"
-              style={{
-                backgroundColor: "var(--demo-accent)",
-                color: "var(--demo-bg)",
-              }}
-            >
-              {config.contact.primaryCtaLabel}
-              <span aria-hidden>→</span>
-            </HapticLink>
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.32}>
-          <div
-            className="mt-16 grid grid-cols-1 gap-x-12 gap-y-8 border-t pt-10 md:mt-24 md:grid-cols-3 md:pt-12"
-            style={{ borderColor: "var(--demo-hair)" }}
-          >
-            {config.contact.items.map((item) => (
-              <div key={item.label} className="flex flex-col gap-2">
-                <p
-                  className="font-mono text-[9px] uppercase tracking-[0.08em]"
-                  style={{ color: "var(--demo-accent-soft)" }}
-                >
-                  {item.label}
-                </p>
-                {item.href ? (
-                  <a
-                    href={item.href}
-                    target={
-                      item.href.startsWith("http") ? "_blank" : undefined
-                    }
-                    rel={
-                      item.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="font-sans text-base transition-opacity hover:opacity-70 md:text-lg"
-                    style={{ color: "var(--demo-fg)" }}
-                  >
-                    {item.value}
-                  </a>
-                ) : (
-                  <span
-                    className="font-sans text-base md:text-lg"
-                    style={{ color: "var(--demo-fg)" }}
-                  >
-                    {item.value}
-                  </span>
-                )}
-              </div>
+            {contato.body.split(". ").map((sentence, i, arr) => (
+              <span key={i} className="block">
+                {sentence}
+                {i < arr.length - 1 ? "." : ""}
+              </span>
             ))}
-          </div>
-        </Reveal>
+          </p>
+        </RevealFadeUp>
+
+        {/* CTA pill grande dourado */}
+        <RevealFadeUp delay={0.5} className="mt-10 md:mt-16">
+          <motion.a
+            href={contato.primaryCta.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: DURATION.hover, ease: EASE.outExpo }}
+            className="inline-flex items-center justify-center rounded-full px-8 py-5 text-[12px] md:text-[14px] font-medium tracking-[0.14em] md:tracking-[0.16em]"
+            style={{ background: "var(--demo-accent)", color: "var(--demo-bg)" }}
+          >
+            {contato.primaryCta.label}   →
+          </motion.a>
+        </RevealFadeUp>
+
+        <RevealFadeUp delay={0.6} className="mt-5 md:mt-7">
+          <p
+            className="text-[11px] md:text-[13px] tracking-[0.14em]"
+            style={{ color: "var(--demo-muted)", fontFamily: "var(--font-mono)" }}
+          >
+            {contato.phoneText}
+          </p>
+        </RevealFadeUp>
+
+        {/* Links sociais */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.06, delayChildren: 0.7 } },
+          }}
+          className="mt-16 md:mt-24 flex flex-col gap-2 md:flex-row md:gap-12"
+        >
+          {contato.socialLinks.map((link) => (
+            <motion.span
+              key={link}
+              variants={{
+                hidden: { opacity: 0, y: 12 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: DURATION.entrance, ease: EASE.outExpo },
+                },
+              }}
+              className="text-[10px] md:text-[11px] tracking-[0.14em]"
+              style={{ color: "var(--demo-fg)", fontFamily: "var(--font-mono)" }}
+            >
+              {link}
+            </motion.span>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

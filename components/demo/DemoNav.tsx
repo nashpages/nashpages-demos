@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent, useTransform } from "framer-motion";
 import type { DemoConfig } from "@/lib/types";
 import { EASE, DURATION } from "@/lib/motion";
 
@@ -12,21 +12,36 @@ type Props = {
 
 export function DemoNav({ nav, logoText }: Props) {
   const [scrolled, setScrolled] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const { scrollY } = useScroll();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (v) => {
     setScrolled(v > 80);
   });
+
+  // Desktop: nav width interpola de 65% (em cima da foto do Dr no hero) a 100%
+  // (full width nas sections de baixo) conforme scrollY passa 800→1100.
+  // Hero é 1080px alto; transição começa 280px antes do fim do hero pra ficar fluida.
+  const navWidthDesktop = useTransform(scrollY, [800, 1100], ["65%", "100%"]);
 
   return (
     <motion.nav
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: DURATION.entrance, ease: EASE.outExpo, delay: 0.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 md:right-auto md:w-[65%] ${
+      className={`fixed top-0 left-0 z-50 transition-colors duration-300 ${
         scrolled ? "backdrop-blur-md border-b" : ""
       }`}
       style={{
+        width: isDesktop ? navWidthDesktop : "100%",
         background: scrolled ? "color-mix(in oklab, var(--demo-bg) 85%, transparent)" : "transparent",
         borderColor: scrolled ? "var(--demo-hair)" : "transparent",
       }}

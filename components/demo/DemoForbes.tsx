@@ -25,7 +25,7 @@ export function DemoForbes({ forbes }: Props) {
           src={forbes.coverSrc}
           alt="Destaque Forbes Latina 2025"
           fill
-          quality={92}
+          quality={100}
           className="object-cover object-center"
           sizes="(min-width: 768px) 50vw, 100vw"
         />

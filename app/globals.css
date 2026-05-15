@@ -18,8 +18,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 
   /* Tokens apontam pras CSS vars dinâmicas */
   --color-demo-bg: var(--demo-bg);

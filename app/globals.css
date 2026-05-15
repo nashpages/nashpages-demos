@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
-/* Defaults da base — cada demo customiza via inline style no <body> */
+/* Defaults base — cada demo customiza via inline style no <body> via paletteToCssVars */
+/* Estes defaults são fallback se a paleta não for injetada. */
 :root {
-  --demo-bg: #FAFAF7;
-  --demo-fg: #1A1A19;
-  --demo-muted: #6B6660;
-  --demo-hair: #E8E4DE;
-  --demo-accent: #1A1A19;
-  --demo-accent-soft: #1A1A19;
+  --demo-bg: #FFFFFF;
+  --demo-fg: #1A1A1A;
+  --demo-muted: #4A4A4A;
+  --demo-hair: #E8E8E8;
+  --demo-accent: #B89554;
+  --demo-accent-soft: #B89554;
 }
 
 @theme {

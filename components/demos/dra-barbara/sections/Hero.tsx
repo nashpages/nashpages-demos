@@ -53,29 +53,32 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        <div className="absolute left-[64px] top-[200px]">
+        {/* Content reserva o espaço da foto: right=34% (foto) + 64px safety gap.
+            Headline com clamp 72→110px pra escalar com viewport e nunca encostar. */}
+        <div className="absolute left-[64px] top-[200px] right-[calc(34%+64px)]">
           <WordReveal
             lines={hero.headlineLines}
             delay={0.2}
             stagger={0.09}
-            className="text-white block whitespace-nowrap text-[110px]"
+            className="text-white block"
             lineClassName="leading-[0.96]"
             style={{
               fontFamily: "var(--font-playfair)",
               fontWeight: 400,
-              letterSpacing: "-1.65px",
+              fontSize: "clamp(72px, 7.6vw, 110px)",
+              letterSpacing: "-0.015em",
             }}
           />
           <FadeUp delay={0.85}>
             <p
-              className="mt-8 text-white text-[14px] leading-normal whitespace-nowrap"
+              className="mt-8 text-white text-[14px] leading-normal"
               style={{ fontFamily: "var(--font-inter)", fontWeight: 400 }}
             >
               {hero.subline}
             </p>
           </FadeUp>
           <FadeUp delay={1.0}>
-            <div className="mt-10 flex gap-7">
+            <div className="mt-10 flex gap-7 flex-wrap">
               <CtaUnderline
                 href={hero.primaryCta.href}
                 label={hero.primaryCta.label}

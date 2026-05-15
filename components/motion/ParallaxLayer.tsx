@@ -24,7 +24,7 @@ export function ParallaxLayer({ children, range = 80, direction = "up", classNam
 
   return (
     <div ref={ref} className={className}>
-      <motion.div style={{ y }} className="will-change-transform">
+      <motion.div style={{ y }} className="will-change-transform h-full w-full">
         {children}
       </motion.div>
     </div>

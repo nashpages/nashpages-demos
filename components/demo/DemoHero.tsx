@@ -78,7 +78,7 @@ export function DemoHero({ hero }: Props) {
       </div>
 
       {/* RIGHT zone (35%) — foto com parallax */}
-      <div className="relative md:flex-[0_0_35%] h-[320px] md:h-auto order-first md:order-last overflow-hidden">
+      <div className="relative md:flex-[0_0_35%] h-[320px] md:h-auto md:self-stretch order-first md:order-last overflow-hidden">
         <ParallaxLayer range={60} direction="up" className="absolute inset-0">
           <div className="relative h-full w-full md:h-[120%] md:-mt-[10%]">
             <Image

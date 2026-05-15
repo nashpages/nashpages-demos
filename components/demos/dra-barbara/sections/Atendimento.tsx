@@ -1,4 +1,5 @@
 import { BARBARA_DATA } from "../data";
+import { FadeUp, Stagger, StaggerItem } from "../motion";
 
 export function Atendimento() {
   const a = BARBARA_DATA.atendimento;
@@ -8,26 +9,40 @@ export function Atendimento() {
       className="bg-[var(--c-cream)] py-20 px-6 lg:py-[120px] lg:px-16"
     >
       <div className="max-w-[1280px] mx-auto">
-        <p
-          className="text-[10px] lg:text-[11px] tracking-[0.16em] font-medium text-[var(--c-grafite)] mb-6 lg:mb-10"
-          style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-        >
-          {a.eyebrow}
-        </p>
-        <h2
-          className="font-normal text-[var(--c-tinta)] leading-[1] tracking-[-0.02em] text-[56px] lg:text-[80px]"
-          style={{ fontFamily: "var(--font-playfair)" }}
-        >
-          {a.headlineLines.map((line, i) => (
-            <span key={i} className="block">{line}</span>
-          ))}
-        </h2>
-        <div className="mt-8 lg:mt-14 h-px w-[60px] lg:w-[80px] bg-[var(--c-nude)]" />
+        <FadeUp>
+          <p
+            className="text-[10px] lg:text-[11px] tracking-[0.16em] font-medium text-[var(--c-grafite)] mb-6 lg:mb-10"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+          >
+            {a.eyebrow}
+          </p>
+        </FadeUp>
+        <FadeUp delay={0.1}>
+          <h2
+            className="font-normal text-[var(--c-tinta)] leading-[1] tracking-[-0.02em] text-[56px] lg:text-[80px]"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            {a.headlineLines.map((line, i) => (
+              <span key={i} className="block">{line}</span>
+            ))}
+          </h2>
+        </FadeUp>
+        <FadeUp delay={0.22}>
+          <div className="mt-8 lg:mt-14 h-px w-[60px] lg:w-[80px] bg-[var(--c-nude)]" />
+        </FadeUp>
 
-        <div className="mt-10 lg:mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
-          <AtBlock label="ONDE" items={a.onde} />
-          <AtBlock label="COMO" items={a.como} />
-        </div>
+        <Stagger
+          delay={0.35}
+          staggerChildren={0.18}
+          className="mt-10 lg:mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20"
+        >
+          <StaggerItem>
+            <AtBlock label="ONDE" items={a.onde} />
+          </StaggerItem>
+          <StaggerItem>
+            <AtBlock label="COMO" items={a.como} />
+          </StaggerItem>
+        </Stagger>
       </div>
     </section>
   );

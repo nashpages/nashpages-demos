@@ -24,9 +24,10 @@ export function DemoNav({ nav, logoText }: Props) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: DURATION.entrance, ease: EASE.outExpo, delay: 0.2 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        scrolled ? "bg-white/85 backdrop-blur-md border-b" : "bg-transparent"
+        scrolled ? "backdrop-blur-md border-b" : ""
       }`}
       style={{
+        background: scrolled ? "color-mix(in oklab, var(--demo-bg) 85%, transparent)" : "transparent",
         borderColor: scrolled ? "var(--demo-hair)" : "transparent",
       }}
     >

@@ -20,16 +20,19 @@ export function DemoForbes({ forbes }: Props) {
       className="relative w-full min-h-[800px] md:min-h-[1080px] flex flex-col md:flex-row"
       style={{ background: "var(--demo-bg)" }}
     >
-      {/* LEFT 50% — capa Forbes (dark) com parallax */}
-      <div className="relative md:flex-[0_0_50%] h-[470px] md:h-auto md:self-stretch order-first overflow-hidden">
-        <ParallaxLayer range={40} direction="up" className="absolute inset-0">
-          <div className="relative h-full w-full md:h-[110%] md:-mt-[5%]">
+      {/* LEFT 50% — capa Forbes enquadrada (magazine spread) com parallax sutil */}
+      <div
+        className="relative md:flex-[0_0_50%] h-[470px] md:h-auto md:self-stretch order-first overflow-hidden"
+        style={{ background: "#0A0A0A" }}
+      >
+        <ParallaxLayer range={24} direction="up" className="absolute inset-0">
+          <div className="relative h-full w-full">
             <Image
               src={forbes.coverSrc}
               alt="Destaque Forbes Latina 2025"
               fill
               quality={92}
-              className="object-cover"
+              className="object-contain object-center"
               sizes="(min-width: 768px) 50vw, 100vw"
             />
           </div>

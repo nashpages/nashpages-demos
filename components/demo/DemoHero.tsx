@@ -77,7 +77,7 @@ export function DemoHero({ hero }: Props) {
         </div>
       </div>
 
-      {/* RIGHT zone (35%) — foto com parallax */}
+      {/* RIGHT zone (35%) — foto com parallax + grading cinematográfico */}
       <div className="relative md:flex-[0_0_35%] h-[320px] md:h-auto md:self-stretch order-first md:order-last overflow-hidden">
         <ParallaxLayer range={60} direction="up" className="absolute inset-0">
           <div className="relative h-full w-full md:h-[120%] md:-mt-[10%]">
@@ -89,9 +89,19 @@ export function DemoHero({ hero }: Props) {
               quality={92}
               className="object-cover"
               sizes="(min-width: 768px) 35vw, 100vw"
+              style={{ filter: "contrast(1.07) saturate(0.93) brightness(0.97)" }}
             />
           </div>
         </ParallaxLayer>
+        {/* Vignette overlay — radial soft dark nas bordas pra dar profundidade cinematic */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.18) 100%)",
+          }}
+        />
       </div>
     </section>
   );

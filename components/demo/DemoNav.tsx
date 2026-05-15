@@ -1,36 +1,73 @@
-import { HapticLink } from "@/components/HapticLink";
-import type { DemoConfig } from "@/lib/types";
+"use client";
 
-export function DemoNav({ config }: { config: DemoConfig }) {
+import { useEffect, useState } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import type { DemoConfig } from "@/lib/types";
+import { EASE, DURATION } from "@/lib/motion";
+
+type Props = {
+  nav: DemoConfig["nav"];
+  logoText: string;
+};
+
+export function DemoNav({ nav, logoText }: Props) {
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (v) => {
+    setScrolled(v > 80);
+  });
+
   return (
-    <header
-      className="sticky top-0 z-50 border-b backdrop-blur-sm"
+    <motion.nav
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: DURATION.entrance, ease: EASE.outExpo, delay: 0.2 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolled ? "bg-white/85 backdrop-blur-md border-b" : "bg-transparent"
+      }`}
       style={{
-        borderColor: "var(--demo-hair)",
-        backgroundColor: "color-mix(in srgb, var(--demo-bg) 92%, transparent)",
+        borderColor: scrolled ? "var(--demo-hair)" : "transparent",
       }}
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-12 md:py-5">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-4 md:px-[120px] md:py-8">
+        {/* Logo */}
         <a
-          href="#hero"
-          className="font-sans text-sm font-semibold tracking-[-0.02em] md:text-base"
+          href="#top"
+          className="text-[12px] md:text-[13px] font-semibold tracking-[0.18em]"
           style={{ color: "var(--demo-fg)" }}
         >
-          {config.name}
+          {logoText}
         </a>
-        <HapticLink
-          href={config.contact.primaryCtaHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full px-4 py-2 font-sans text-xs font-medium transition-opacity hover:opacity-90 active:scale-[0.97] md:px-5 md:py-2.5 md:text-sm"
-          style={{
-            backgroundColor: "var(--demo-accent)",
-            color: "var(--demo-bg)",
-          }}
-        >
-          {config.contact.primaryCtaLabel}
-        </HapticLink>
+
+        {/* Links + CTA */}
+        <div className="flex items-center gap-6 md:gap-9">
+          <div className="hidden md:flex items-center gap-9">
+            {nav.links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-[11px] font-medium tracking-[0.16em] transition-colors"
+                style={{ color: "var(--demo-fg)" }}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <a
+            href={nav.ctaHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.16em] transition-transform hover:scale-[1.05]"
+            style={{
+              background: "var(--demo-accent)",
+              color: "var(--demo-bg)",
+            }}
+          >
+            {nav.ctaLabel}
+          </a>
+        </div>
       </div>
-    </header>
+    </motion.nav>
   );
 }

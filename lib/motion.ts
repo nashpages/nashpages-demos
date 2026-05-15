@@ -15,33 +15,7 @@ export const DURATION = {
 } as const;
 
 export const STAGGER = {
-  tight: 0.03, // letter-by-letter
   word: 0.08, // word entrance
   card: 0.1, // cards em grid
   section: 0.15, // sections sequenciais
 } as const;
-
-// Variants reutilizáveis pra Framer Motion
-export const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: DURATION.entrance, ease: EASE.outExpo },
-  },
-};
-
-export const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: DURATION.entrance, ease: EASE.outExpo },
-  },
-};
-
-export const staggerContainer = (gap = STAGGER.word) => ({
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: gap, delayChildren: 0.05 },
-  },
-});

@@ -69,6 +69,7 @@ export function DemoTratamentos({ tratamentos }: Props) {
                     src={item.photoSrc}
                     alt={item.name}
                     fill
+                    quality={90}
                     className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-105"
                     sizes="(min-width: 768px) 33vw, 100vw"
                   />

@@ -86,6 +86,7 @@ export function DemoHero({ hero }: Props) {
               alt={`Dr Ricardo Rizzo Luiz`}
               fill
               priority
+              quality={92}
               className="object-cover"
               sizes="(min-width: 768px) 35vw, 100vw"
             />

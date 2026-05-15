@@ -27,6 +27,7 @@ export function DemoTecnologia({ tecnologia }: Props) {
               src={tecnologia.photoSrc}
               alt="Consultório do Dr Ricardo Rizzo Luiz"
               fill
+              quality={90}
               className="object-cover"
               sizes="100vw"
             />

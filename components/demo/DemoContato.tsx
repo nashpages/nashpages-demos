@@ -17,7 +17,7 @@ export function DemoContato({ config }: { config: DemoConfig }) {
 
         <Reveal delay={0.08}>
           <h2
-            className="mt-6 font-sans text-[48px] font-semibold tracking-[-0.03em] leading-[1.02] md:mt-10 md:text-[112px]"
+            className="mt-6 font-[family-name:var(--font-display)] text-[56px] font-medium tracking-[-0.01em] leading-[1.02] md:mt-10 md:text-[120px]"
             style={{ color: "var(--demo-fg)" }}
           >
             {config.contact.title}

@@ -23,7 +23,7 @@ export function DemoDiferenciais({ config }: { config: DemoConfig }) {
 
         <Reveal delay={0.08}>
           <h2
-            className="mt-6 max-w-3xl font-sans text-[36px] font-semibold tracking-[-0.03em] leading-[1.02] md:mt-10 md:text-[64px]"
+            className="mt-6 max-w-3xl font-[family-name:var(--font-display)] text-[40px] font-medium tracking-[-0.01em] leading-[1.02] md:mt-10 md:text-[64px]"
             style={{ color: "var(--demo-fg)" }}
           >
             {config.differentials.title}
@@ -44,7 +44,7 @@ export function DemoDiferenciais({ config }: { config: DemoConfig }) {
                   {item.label}
                 </p>
                 <h3
-                  className="font-sans text-xl font-semibold tracking-[-0.02em] leading-tight md:text-2xl"
+                  className="font-[family-name:var(--font-display)] text-[22px] font-medium tracking-[-0.005em] leading-tight md:text-[28px]"
                   style={{ color: "var(--demo-fg)" }}
                 >
                   {item.title}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,7 +12,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Meta default — cada demo sobrescreve via generateMetadata em [slug]/page.tsx
+// Serif display pra headlines editorial (magazine-style)
+const cormorant = Cormorant_Garamond({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
   title: "Nashpages — demos",
   description: "Demos de site para profissionais.",
@@ -30,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable}`}
     >
       <body className="min-h-screen antialiased">{children}</body>
     </html>

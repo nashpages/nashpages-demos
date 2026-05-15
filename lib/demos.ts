@@ -4,11 +4,10 @@
 
 import type { DemoConfig } from "./types";
 
-// Importações dinâmicas dos configs registrados
-import drVascularConfig from "@/demos/dr-vascular-placeholder/config";
+import drRicardoRizzoLuiz from "@/demos/dr-ricardo-rizzo-luiz/config";
 
 export const demoRegistry: Record<string, DemoConfig> = {
-  [drVascularConfig.slug]: drVascularConfig,
+  [drRicardoRizzoLuiz.slug]: drRicardoRizzoLuiz,
 };
 
 export function getDemoConfig(slug: string): DemoConfig | null {

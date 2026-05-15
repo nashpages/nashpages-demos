@@ -20,7 +20,7 @@ export function DemoEspecialidades({ config }: { config: DemoConfig }) {
 
         <Reveal delay={0.08}>
           <h2
-            className="mt-6 font-sans text-[36px] font-semibold tracking-[-0.03em] leading-[1.02] md:mt-10 md:text-[72px]"
+            className="mt-6 font-[family-name:var(--font-display)] text-[40px] font-medium tracking-[-0.01em] leading-[1.02] md:mt-10 md:text-[72px]"
             style={{ color: "var(--demo-fg)" }}
           >
             {config.specialties.title}
@@ -41,7 +41,7 @@ export function DemoEspecialidades({ config }: { config: DemoConfig }) {
                   § 03.{String(i + 1).padStart(2, "0")}
                 </span>
                 <h3
-                  className="font-sans text-xl font-semibold tracking-[-0.02em] md:text-2xl"
+                  className="font-[family-name:var(--font-display)] text-[22px] font-medium tracking-[-0.005em] md:text-[28px]"
                   style={{ color: "var(--demo-fg)" }}
                 >
                   {item.title}

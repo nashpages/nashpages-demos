@@ -20,6 +20,7 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 
   /* Tokens apontam pras CSS vars dinâmicas */
   --color-demo-bg: var(--demo-bg);

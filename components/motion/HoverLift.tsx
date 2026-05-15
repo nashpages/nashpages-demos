@@ -23,7 +23,7 @@ export function HoverLift({ children, className }: Props) {
         hover: { y: -4 },
       }}
       transition={{ duration: DURATION.hover, ease: EASE.outExpo }}
-      className={className}
+      className={`group ${className ?? ""}`}
     >
       {children}
     </motion.div>

@@ -23,7 +23,7 @@ export function DemoNav({ nav, logoText }: Props) {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: DURATION.entrance, ease: EASE.outExpo, delay: 0.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 md:right-auto md:w-[65%] ${
         scrolled ? "backdrop-blur-md border-b" : ""
       }`}
       style={{
@@ -31,7 +31,7 @@ export function DemoNav({ nav, logoText }: Props) {
         borderColor: scrolled ? "var(--demo-hair)" : "transparent",
       }}
     >
-      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-4 md:px-[120px] md:py-8">
+      <div className="flex w-full items-center justify-between px-6 py-4 md:px-[120px] md:py-8">
         {/* Logo */}
         <a
           href="#top"

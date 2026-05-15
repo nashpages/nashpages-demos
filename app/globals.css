@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/* Defaults da base — cada demo customiza via inline style no <body> */
+:root {
+  --demo-bg: #FAFAF7;
+  --demo-fg: #1A1A19;
+  --demo-muted: #6B6660;
+  --demo-hair: #E8E4DE;
+  --demo-accent: #1A1A19;
+  --demo-accent-soft: #1A1A19;
+}
+
+@theme {
+  /* Easings editoriais */
+  --ease-out-expo: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out-cubic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Tokens apontam pras CSS vars dinâmicas */
+  --color-demo-bg: var(--demo-bg);
+  --color-demo-fg: var(--demo-fg);
+  --color-demo-muted: var(--demo-muted);
+  --color-demo-hair: var(--demo-hair);
+  --color-demo-accent: var(--demo-accent);
+  --color-demo-accent-soft: var(--demo-accent-soft);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  background: var(--demo-bg);
+  color: var(--demo-fg);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background: var(--demo-accent);
+  color: var(--demo-bg);
+}
+
+/* Isola repaints entre sections (perf) */
+main > section {
+  contain: layout paint;
+}
+
+/* Page-load fade-in */
+@keyframes demo-page-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+body {
+  animation: demo-page-in 480ms var(--ease-out-cubic) both;
+}

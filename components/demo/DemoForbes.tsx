@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import type { DemoConfig } from "@/lib/types";
-import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { RevealFadeUp } from "@/components/motion/RevealFadeUp";
 import { LetterReveal } from "@/components/motion/LetterReveal";
 import { AnimatedUnderline } from "@/components/motion/AnimatedUnderline";
@@ -20,23 +19,16 @@ export function DemoForbes({ forbes }: Props) {
       className="relative w-full min-h-[800px] md:min-h-[1080px] flex flex-col md:flex-row"
       style={{ background: "var(--demo-bg)" }}
     >
-      {/* LEFT 50% — capa Forbes enquadrada (magazine spread) com parallax sutil */}
-      <div
-        className="relative md:flex-[0_0_50%] h-[470px] md:h-auto md:self-stretch order-first overflow-hidden"
-        style={{ background: "#0A0A0A" }}
-      >
-        <ParallaxLayer range={24} direction="up" className="absolute inset-0">
-          <div className="relative h-full w-full">
-            <Image
-              src={forbes.coverSrc}
-              alt="Destaque Forbes Latina 2025"
-              fill
-              quality={92}
-              className="object-contain object-center"
-              sizes="(min-width: 768px) 50vw, 100vw"
-            />
-          </div>
-        </ParallaxLayer>
+      {/* LEFT 50% — capa Forbes (vertical 3:4 no mobile pra match foto; stretch no desktop) */}
+      <div className="relative md:flex-[0_0_50%] aspect-[3/4] md:aspect-auto md:h-auto md:self-stretch order-first overflow-hidden">
+        <Image
+          src={forbes.coverSrc}
+          alt="Destaque Forbes Latina 2025"
+          fill
+          quality={92}
+          className="object-cover object-center"
+          sizes="(min-width: 768px) 50vw, 100vw"
+        />
       </div>
 
       {/* RIGHT 50% — texto editorial */}

@@ -43,9 +43,9 @@ export function LetterReveal({
       transition={{ staggerChildren: stagger, delayChildren: delay }}
     >
       {lines.map((line, lineIdx) => (
-        <span key={lineIdx} className="block overflow-hidden">
+        <span key={lineIdx} className="block overflow-hidden pb-[0.05em]">
           <motion.span
-            className="inline-block"
+            className="inline-block will-change-transform"
             variants={{
               hidden: { y: "100%" },
               visible: {

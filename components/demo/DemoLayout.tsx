@@ -1,25 +1,35 @@
 import type { DemoConfig } from "@/lib/types";
 import { paletteToCssVars } from "@/lib/utils";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { DemoNav } from "./DemoNav";
 import { DemoHero } from "./DemoHero";
-import { DemoAbout } from "./DemoAbout";
-import { DemoEspecialidades } from "./DemoEspecialidades";
-import { DemoDiferenciais } from "./DemoDiferenciais";
+import { DemoSobre } from "./DemoSobre";
+import { DemoForbes } from "./DemoForbes";
+import { DemoTratamentos } from "./DemoTratamentos";
+import { DemoTecnologia } from "./DemoTecnologia";
+import { DemoAtendimento } from "./DemoAtendimento";
 import { DemoContato } from "./DemoContato";
 import { DemoFooter } from "./DemoFooter";
 
-export function DemoLayout({ config }: { config: DemoConfig }) {
+type Props = {
+  config: DemoConfig;
+};
+
+export function DemoLayout({ config }: Props) {
   return (
-    <div style={paletteToCssVars(config.palette)} className="min-h-screen">
-      <DemoNav config={config} />
+    <div style={paletteToCssVars(config.palette)}>
+      <SmoothScroll />
+      <DemoNav nav={config.nav} logoText={config.logoText} />
       <main>
-        <DemoHero config={config} />
-        <DemoAbout config={config} />
-        <DemoEspecialidades config={config} />
-        <DemoDiferenciais config={config} />
-        <DemoContato config={config} />
+        <DemoHero hero={config.hero} />
+        <DemoSobre sobre={config.sobre} />
+        {config.forbes && <DemoForbes forbes={config.forbes} />}
+        <DemoTratamentos tratamentos={config.tratamentos} />
+        <DemoTecnologia tecnologia={config.tecnologia} />
+        <DemoAtendimento atendimento={config.atendimento} />
+        <DemoContato contato={config.contato} />
       </main>
-      <DemoFooter config={config} />
+      <DemoFooter footer={config.footer} logoText={config.logoText} />
     </div>
   );
 }

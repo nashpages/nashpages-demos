@@ -34,7 +34,7 @@ export default function Home() {
                       {cfg.name}
                     </span>
                     <span className="mt-1 block text-xs text-neutral-400">
-                      {cfg.title}
+                      {cfg.meta.title}
                     </span>
                   </span>
                   <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-neutral-500">

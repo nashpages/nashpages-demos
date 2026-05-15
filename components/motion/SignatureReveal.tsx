@@ -18,9 +18,13 @@ type Props = {
  * Reveal left-to-right via overflow-hidden + translateX no inner span.
  * Vibe assinatura manuscrita / tinta correndo da esquerda pra direita.
  *
- * Por que NÃO clip-path: em iOS Safari (especialmente iPhones), motion-driven
- * clip-path inset() pode falhar silenciosamente. Esta versão usa apenas
- * overflow-hidden + transform translateX no inner — suporte universal.
+ * Padrão variants: o OUTER tem whileInView (e está sempre visível, então
+ * o IntersectionObserver detecta entrada corretamente). O INNER reage via
+ * variants cascade — mesmo translated -101% (off-screen), anima corretamente.
+ *
+ * Por que NÃO clip-path: em iOS Safari, motion-driven clip-path inset() pode
+ * falhar silenciosamente. Por que NÃO whileInView direto no inner: o inner
+ * translated -101% fica off-screen, e o IntersectionObserver nunca dispara.
  *
  * Respeita prefers-reduced-motion (mostra direto).
  */
@@ -42,15 +46,19 @@ export function SignatureReveal({
   }
 
   return (
-    <span
+    <motion.span
       className={`inline-block overflow-hidden align-baseline ${className ?? ""}`}
       style={style}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
     >
       <motion.span
         className="inline-block whitespace-nowrap"
-        initial={{ x: "-101%" }}
-        whileInView={{ x: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          hidden: { x: "-101%" },
+          visible: { x: 0 },
+        }}
         transition={{
           duration,
           delay,
@@ -59,6 +67,6 @@ export function SignatureReveal({
       >
         {children}
       </motion.span>
-    </span>
+    </motion.span>
   );
 }

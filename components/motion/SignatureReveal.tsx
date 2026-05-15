@@ -15,8 +15,13 @@ type Props = {
 };
 
 /**
- * Reveal left-to-right via clip-path — vibe assinatura manuscrita / tinta correndo.
- * Conteúdo aparece como se uma caneta estivesse escrevendo da esquerda pra direita.
+ * Reveal left-to-right via overflow-hidden + translateX no inner span.
+ * Vibe assinatura manuscrita / tinta correndo da esquerda pra direita.
+ *
+ * Por que NÃO clip-path: em iOS Safari (especialmente iPhones), motion-driven
+ * clip-path inset() pode falhar silenciosamente. Esta versão usa apenas
+ * overflow-hidden + transform translateX no inner — suporte universal.
+ *
  * Respeita prefers-reduced-motion (mostra direto).
  */
 export function SignatureReveal({
@@ -37,19 +42,23 @@ export function SignatureReveal({
   }
 
   return (
-    <motion.span
-      className={`inline-block ${className ?? ""}`}
+    <span
+      className={`inline-block overflow-hidden align-baseline ${className ?? ""}`}
       style={style}
-      initial={{ clipPath: "inset(0 100% 0 0)" }}
-      whileInView={{ clipPath: "inset(0 0 0 0)" }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{
-        duration,
-        delay,
-        ease: EASE.outExpo,
-      }}
     >
-      {children}
-    </motion.span>
+      <motion.span
+        className="inline-block whitespace-nowrap"
+        initial={{ x: "-101%" }}
+        whileInView={{ x: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{
+          duration,
+          delay,
+          ease: EASE.outExpo,
+        }}
+      >
+        {children}
+      </motion.span>
+    </span>
   );
 }

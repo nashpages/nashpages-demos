@@ -16,7 +16,8 @@ export function DemoNav({ nav, logoText }: Props) {
   const { scrollY } = useScroll();
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
+    // ≥1024px (lg) — pra iPad portrait/landscape pequeno usar nav full-width
+    const mq = window.matchMedia("(min-width: 1024px)");
     const update = () => setIsDesktop(mq.matches);
     update();
     mq.addEventListener("change", update);
@@ -46,7 +47,7 @@ export function DemoNav({ nav, logoText }: Props) {
         borderColor: scrolled ? "var(--demo-hair)" : "transparent",
       }}
     >
-      <div className="flex w-full items-center justify-between px-6 py-4 md:px-[120px] md:py-8">
+      <div className="flex w-full items-center justify-between px-6 py-4 md:px-10 md:py-6 lg:px-[120px] lg:py-8">
         {/* Logo */}
         <a
           href="#top"

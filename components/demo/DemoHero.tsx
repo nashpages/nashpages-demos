@@ -16,7 +16,8 @@ export function DemoHero({ hero }: Props) {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
+    // ≥1024px (lg) — pra iPad portrait/landscape pequeno usar layout vertical
+    const mq = window.matchMedia("(min-width: 1024px)");
     const update = () => setIsDesktop(mq.matches);
     update();
     mq.addEventListener("change", update);
@@ -26,11 +27,11 @@ export function DemoHero({ hero }: Props) {
   return (
     <section
       id="top"
-      className="relative w-full min-h-screen md:min-h-[1080px] flex flex-col md:flex-row"
+      className="relative w-full min-h-screen lg:min-h-[1080px] flex flex-col lg:flex-row"
       style={{ background: "var(--demo-bg)" }}
     >
       {/* LEFT zone (65%) — texto */}
-      <div className="relative z-10 flex flex-1 md:flex-[0_0_65%] flex-col justify-start md:justify-center px-6 pt-8 pb-10 md:px-[120px] md:py-0">
+      <div className="relative z-10 flex flex-1 lg:flex-[0_0_65%] flex-col justify-start lg:justify-center px-6 pt-8 pb-10 lg:px-[120px] lg:py-0">
         <RevealFadeUp delay={0.4} className="mb-6">
           <p
             className="text-[11px] font-medium tracking-[0.16em]"
@@ -43,11 +44,10 @@ export function DemoHero({ hero }: Props) {
         <LetterReveal
           lines={hero.headlineLines}
           delay={0.6}
-          className="text-[40px] md:text-[108px] leading-[0.95] tracking-[-0.025em] font-normal"
-          // style applied via tailwind, color via inheritance from body
+          className="text-[40px] md:text-[72px] lg:text-[108px] leading-[0.95] tracking-[-0.025em] font-normal"
         />
 
-        <div className="mt-8 md:mt-14 flex flex-col gap-4 md:flex-row md:gap-14">
+        <div className="mt-8 lg:mt-14 flex flex-col gap-4 lg:flex-row lg:gap-14">
           <RevealFadeUp delay={1.2}>
             <AnimatedUnderline
               href={hero.primaryCta.href}
@@ -69,8 +69,8 @@ export function DemoHero({ hero }: Props) {
           </RevealFadeUp>
         </div>
 
-        {/* Meta bar bottom — só desktop */}
-        <div className="hidden md:flex absolute bottom-12 left-[120px] right-[120px] items-center justify-between">
+        {/* Meta bar bottom — só desktop (lg+) */}
+        <div className="hidden lg:flex absolute bottom-12 left-[120px] right-[120px] items-center justify-between">
           <p
             className="text-[11px] tracking-[0.16em]"
             style={{ color: "var(--demo-muted)", fontFamily: "var(--font-mono)" }}
@@ -86,18 +86,18 @@ export function DemoHero({ hero }: Props) {
         </div>
       </div>
 
-      {/* RIGHT zone (35%) — foto com parallax (só desktop) + grading cinematográfico */}
-      <div className="relative md:flex-[0_0_35%] h-[420px] md:h-auto md:self-stretch order-first md:order-last overflow-hidden">
+      {/* RIGHT zone (35%) — foto com parallax (só desktop lg+) + grading cinematográfico */}
+      <div className="relative lg:flex-[0_0_35%] h-[420px] md:h-[520px] lg:h-auto lg:self-stretch order-first lg:order-last overflow-hidden">
         <ParallaxLayer range={isDesktop ? 60 : 0} direction="up" className="absolute inset-0">
-          <div className="relative h-full w-full md:h-[120%] md:-mt-[10%]">
+          <div className="relative h-full w-full lg:h-[120%] lg:-mt-[10%]">
             <Image
               src={hero.photoSrc}
               alt={`Dr Ricardo Rizzo Luiz`}
               fill
               priority
               quality={100}
-              className="object-cover object-top md:object-center"
-              sizes="(min-width: 768px) 35vw, 100vw"
+              className="object-cover object-top lg:object-center"
+              sizes="(min-width: 1024px) 35vw, 100vw"
               style={{ filter: "contrast(1.07) saturate(0.93) brightness(0.97)" }}
             />
           </div>

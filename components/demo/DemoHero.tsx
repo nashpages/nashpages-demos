@@ -1,19 +1,28 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
 import type { DemoConfig } from "@/lib/types";
 import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { LetterReveal } from "@/components/motion/LetterReveal";
 import { RevealFadeUp } from "@/components/motion/RevealFadeUp";
 import { AnimatedUnderline } from "@/components/motion/AnimatedUnderline";
-import { EASE, DURATION } from "@/lib/motion";
 
 type Props = {
   hero: DemoConfig["hero"];
 };
 
 export function DemoHero({ hero }: Props) {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   return (
     <section
       id="top"
@@ -21,7 +30,7 @@ export function DemoHero({ hero }: Props) {
       style={{ background: "var(--demo-bg)" }}
     >
       {/* LEFT zone (65%) — texto */}
-      <div className="relative z-10 flex flex-1 md:flex-[0_0_65%] flex-col justify-end md:justify-center px-6 pt-24 pb-10 md:px-[120px] md:py-0">
+      <div className="relative z-10 flex flex-1 md:flex-[0_0_65%] flex-col justify-start md:justify-center px-6 pt-8 pb-10 md:px-[120px] md:py-0">
         <RevealFadeUp delay={0.4} className="mb-6">
           <p
             className="text-[11px] font-medium tracking-[0.16em]"
@@ -77,9 +86,9 @@ export function DemoHero({ hero }: Props) {
         </div>
       </div>
 
-      {/* RIGHT zone (35%) — foto com parallax + grading cinematográfico */}
-      <div className="relative md:flex-[0_0_35%] h-[320px] md:h-auto md:self-stretch order-first md:order-last overflow-hidden">
-        <ParallaxLayer range={60} direction="up" className="absolute inset-0">
+      {/* RIGHT zone (35%) — foto com parallax (só desktop) + grading cinematográfico */}
+      <div className="relative md:flex-[0_0_35%] h-[420px] md:h-auto md:self-stretch order-first md:order-last overflow-hidden">
+        <ParallaxLayer range={isDesktop ? 60 : 0} direction="up" className="absolute inset-0">
           <div className="relative h-full w-full md:h-[120%] md:-mt-[10%]">
             <Image
               src={hero.photoSrc}
@@ -87,7 +96,7 @@ export function DemoHero({ hero }: Props) {
               fill
               priority
               quality={100}
-              className="object-cover"
+              className="object-cover object-top md:object-center"
               sizes="(min-width: 768px) 35vw, 100vw"
               style={{ filter: "contrast(1.07) saturate(0.93) brightness(0.97)" }}
             />

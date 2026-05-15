@@ -11,46 +11,26 @@ export function Hero() {
   const { hero } = BARBARA_DATA;
   const reduce = useReducedMotion();
   return (
-    <section
-      id="top"
-      className="relative w-full overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(to right, #BE9989 0%, #EBD9D1 60%, #F9F4EF 100%)",
-      }}
-    >
-      {/* Desktop */}
-      <div className="hidden lg:flex relative min-h-[720px] items-center">
-        <div className="flex-1 px-16 lg:pl-[64px] lg:pr-12 py-24">
-          <FadeUp delay={0.1}>
-            <p
-              className="text-[11px] tracking-[0.16em] font-medium text-[var(--c-cream)] mb-6"
-              style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-            >
-              /  {hero.eyebrow}
-            </p>
-          </FadeUp>
-          <WordReveal
-            lines={hero.headlineLines}
-            delay={0.25}
-            stagger={0.09}
-            className="font-normal text-[var(--c-cream)] leading-[1.02] tracking-[-0.02em] text-[88px] xl:text-[108px]"
-            lineClassName=""
-          />
-          <FadeUp delay={0.85}>
-            <p className="mt-8 text-[var(--c-cream)]/90 text-[17px] leading-relaxed max-w-md font-[var(--font-inter)]">
-              {hero.subline}
-            </p>
-          </FadeUp>
-          <FadeUp delay={1.0}>
-            <div className="mt-12 flex gap-12">
-              <CtaUnderline href={hero.primaryCta.href} label={hero.primaryCta.label} opacity={1} />
-              <CtaUnderline href={hero.secondaryCta.href} label={hero.secondaryCta.label} opacity={0.7} />
-            </div>
-          </FadeUp>
-        </div>
+    <section id="top" className="relative w-full overflow-hidden">
+      {/* ============================================================
+          DESKTOP — Figma 7:2 (1440 × 720)
+          - bg gradient horizontal #BE988A → #EBD9D1 (65%) → #F9F4EE
+          - foto absolute right 0, top 0, w 34% (490/1440), h full
+          - content absolute left=64, top=200
+          - SEM eyebrow
+          - Headline Playfair Regular 110px, leading 0.96, tracking -1.65px
+          - Subline Inter Regular 14px
+          - CTAs Inter Medium 13px tracking 1.82px white; CTA2 underline 40%
+          ============================================================ */}
+      <div
+        className="hidden lg:block relative w-full h-[720px]"
+        style={{
+          background:
+            "linear-gradient(to right, #BE988A 0%, #EBD9D1 65%, #F9F4EE 100%)",
+        }}
+      >
         <motion.div
-          className="relative flex-[0_0_34%] self-stretch min-h-[720px] overflow-hidden"
+          className="absolute right-0 top-0 bottom-0 w-[34%] overflow-hidden"
           initial={reduce ? false : { opacity: 0 }}
           animate={reduce ? undefined : { opacity: 1 }}
           transition={{ duration: 1.2, ease: EASE }}
@@ -72,12 +52,63 @@ export function Hero() {
             />
           </motion.div>
         </motion.div>
+
+        <div className="absolute left-[64px] top-[200px]">
+          <WordReveal
+            lines={hero.headlineLines}
+            delay={0.2}
+            stagger={0.09}
+            className="text-white block whitespace-nowrap text-[110px]"
+            lineClassName="leading-[0.96]"
+            style={{
+              fontFamily: "var(--font-playfair)",
+              fontWeight: 400,
+              letterSpacing: "-1.65px",
+            }}
+          />
+          <FadeUp delay={0.85}>
+            <p
+              className="mt-8 text-white text-[14px] leading-normal whitespace-nowrap"
+              style={{ fontFamily: "var(--font-inter)", fontWeight: 400 }}
+            >
+              {hero.subline}
+            </p>
+          </FadeUp>
+          <FadeUp delay={1.0}>
+            <div className="mt-10 flex gap-7">
+              <CtaUnderline
+                href={hero.primaryCta.href}
+                label={hero.primaryCta.label}
+                underlineOpacity={1}
+              />
+              <CtaUnderline
+                href={hero.secondaryCta.href}
+                label={hero.secondaryCta.label}
+                underlineOpacity={0.4}
+              />
+            </div>
+          </FadeUp>
+        </div>
       </div>
 
-      {/* Mobile */}
-      <div className="lg:hidden relative">
+      {/* ============================================================
+          MOBILE — Figma 47:3 (375 × 760)
+          - bg gradient vertical #EBD9D1 → #BE9989
+          - foto absolute x=0 y=0 w=375 h=440
+          - content absolute x=24 y=472 w=327
+          - COM eyebrow JetBrains Mono Medium 10px
+          - Headline Playfair Regular 40px leading 1.05 tracking -0.8px
+          - Subline Inter Regular 14px leading 1.5
+          - CTAs JetBrains Mono Medium 11px tracking 1.1px, underline full-width
+          ============================================================ */}
+      <div
+        className="lg:hidden relative w-full h-[760px]"
+        style={{
+          background: "linear-gradient(to bottom, #EBD9D1 0%, #BE9989 100%)",
+        }}
+      >
         <motion.div
-          className="relative w-full h-[440px] overflow-hidden"
+          className="absolute left-0 top-0 w-full h-[440px] overflow-hidden"
           initial={reduce ? false : { opacity: 0 }}
           animate={reduce ? undefined : { opacity: 1 }}
           transition={{ duration: 1, ease: EASE }}
@@ -99,30 +130,43 @@ export function Hero() {
             />
           </motion.div>
         </motion.div>
-        <div className="px-6 pt-10 pb-16">
+
+        <div className="absolute left-[24px] top-[472px] w-[327px]">
           <FadeUp delay={0.2}>
             <p
-              className="text-[10px] tracking-[0.16em] font-medium text-[var(--c-cream)] mb-5"
-              style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+              className="text-[#F8F2EA] text-[10px] tracking-[0.08em]"
+              style={{ fontFamily: "var(--font-jetbrains-mono)", fontWeight: 500 }}
             >
               /  {hero.eyebrow}
             </p>
           </FadeUp>
+          <div className="h-[20px]" />
           <WordReveal
             lines={hero.headlineLines}
             delay={0.35}
             stagger={0.07}
-            className="font-normal text-[var(--c-cream)] leading-[1.05] tracking-[-0.02em] text-[40px]"
+            className="text-[#F8F2EA] block text-[40px]"
+            lineClassName="leading-[1.05]"
+            style={{
+              fontFamily: "var(--font-playfair)",
+              fontWeight: 400,
+              letterSpacing: "-0.8px",
+            }}
           />
+          <div className="h-[20px]" />
           <FadeUp delay={0.8}>
-            <p className="mt-5 text-[var(--c-cream)]/90 text-[14px] leading-relaxed font-[var(--font-inter)]">
+            <p
+              className="text-[#F8F2EA] text-[14px] leading-[1.5]"
+              style={{ fontFamily: "var(--font-inter)", fontWeight: 400 }}
+            >
               {hero.subline}
             </p>
           </FadeUp>
+          <div className="h-[28px]" />
           <FadeUp delay={0.95}>
-            <div className="mt-8 flex flex-col gap-4">
-              <CtaUnderline href={hero.primaryCta.href} label={hero.primaryCta.label} opacity={1} />
-              <CtaUnderline href={hero.secondaryCta.href} label={hero.secondaryCta.label} opacity={0.7} />
+            <div className="flex flex-col gap-3 w-full">
+              <CtaUnderlineMobile href={hero.primaryCta.href} label={hero.primaryCta.label} />
+              <CtaUnderlineMobile href={hero.secondaryCta.href} label={hero.secondaryCta.label} />
             </div>
           </FadeUp>
         </div>
@@ -131,14 +175,15 @@ export function Hero() {
   );
 }
 
+/* Desktop CTA — Inter Medium 13px tracking 1.82px (14%) white */
 function CtaUnderline({
   href,
   label,
-  opacity,
+  underlineOpacity,
 }: {
   href: string;
   label: string;
-  opacity: number;
+  underlineOpacity: number;
 }) {
   const isExternal = href.startsWith("http");
   return (
@@ -146,16 +191,42 @@ function CtaUnderline({
       href={href}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
-      className="inline-flex flex-col gap-2 group"
-      style={{ opacity }}
+      className="group inline-flex flex-col gap-[10px]"
     >
       <span
-        className="text-[11px] tracking-[0.16em] font-medium text-[var(--c-cream)] transition-transform duration-300 group-hover:translate-x-1"
-        style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+        className="text-white text-[13px] tracking-[0.14em] whitespace-pre transition-transform duration-300 group-hover:translate-x-1"
+        style={{ fontFamily: "var(--font-inter)", fontWeight: 500 }}
       >
         {label}  →
       </span>
-      <span className="h-px w-full bg-[var(--c-cream)] origin-left transition-transform duration-500 group-hover:scale-x-110" />
+      <span
+        className="h-px bg-white origin-left transition-transform duration-500 group-hover:scale-x-110"
+        style={{
+          opacity: underlineOpacity,
+          width: label === "AGENDAR CONSULTA" ? "188px" : "224px",
+        }}
+      />
+    </a>
+  );
+}
+
+/* Mobile CTA — JetBrains Mono Medium 11px tracking 1.1px (10%) cream */
+function CtaUnderlineMobile({ href, label }: { href: string; label: string }) {
+  const isExternal = href.startsWith("http");
+  return (
+    <a
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className="group inline-flex flex-col gap-2 w-full"
+    >
+      <span
+        className="text-[#F8F2EA] text-[11px] tracking-[0.1em] whitespace-pre transition-transform duration-300 group-hover:translate-x-1"
+        style={{ fontFamily: "var(--font-jetbrains-mono)", fontWeight: 500 }}
+      >
+        {label}  →
+      </span>
+      <span className="h-px w-full bg-[#F8F2EA] origin-left transition-transform duration-500 group-hover:scale-x-105" />
     </a>
   );
 }

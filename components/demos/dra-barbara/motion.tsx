@@ -118,19 +118,21 @@ export function WordReveal({
   lines,
   className,
   lineClassName,
+  style,
   delay = 0,
   stagger = 0.08,
 }: {
   lines: readonly string[];
   className?: string;
   lineClassName?: string;
+  style?: React.CSSProperties;
   delay?: number;
   stagger?: number;
 }) {
   const reduce = useReducedMotion();
   if (reduce) {
     return (
-      <span className={className}>
+      <span className={className} style={style}>
         {lines.map((line, i) => (
           <span key={i} className={`block ${lineClassName ?? ""}`}>{line}</span>
         ))}
@@ -140,7 +142,7 @@ export function WordReveal({
   // Flatten word index across lines to stagger globally
   let wordIdx = 0;
   return (
-    <span className={className}>
+    <span className={className} style={style}>
       {lines.map((line, li) => (
         <span key={li} className={`block ${lineClassName ?? ""}`}>
           {line.split(" ").map((word, wi) => {

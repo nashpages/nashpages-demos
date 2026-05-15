@@ -4,11 +4,9 @@
 
 import type { DemoConfig } from "./types";
 
-import drRicardoRizzoLuiz from "@/demos/dr-ricardo-rizzo-luiz/config";
-
-export const demoRegistry: Record<string, DemoConfig> = {
-  [drRicardoRizzoLuiz.slug]: drRicardoRizzoLuiz,
-};
+// Nenhuma demo publicada no momento — voltarei a publicar depois que a versão
+// Premium do Dr Ricardo Rizzo Luiz for aprovada no Figma e re-implementada.
+export const demoRegistry: Record<string, DemoConfig> = {};
 
 export function getDemoConfig(slug: string): DemoConfig | null {
   return demoRegistry[slug] ?? null;

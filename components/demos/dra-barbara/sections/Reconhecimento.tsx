@@ -32,7 +32,7 @@ export function Reconhecimento() {
               src={r.photo}
               alt="Dra. Bárbara Pimenta"
               fill
-              quality={90}
+              quality={100}
               sizes="(min-width: 1024px) 42vw, 100vw"
               className="object-cover object-center"
             />
@@ -63,7 +63,7 @@ export function Reconhecimento() {
               src={r.photo}
               alt="Dra. Bárbara Pimenta"
               fill
-              quality={90}
+              quality={100}
               sizes="100vw"
               className="object-cover object-center"
             />

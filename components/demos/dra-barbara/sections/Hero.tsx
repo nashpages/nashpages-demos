@@ -66,7 +66,7 @@ export function Hero() {
               alt="Dra. Bárbara Pimenta"
               fill
               priority
-              quality={90}
+              quality={100}
               sizes="(min-width: 1024px) 34vw, 100vw"
               className="object-cover object-center"
             />
@@ -93,7 +93,7 @@ export function Hero() {
               alt="Dra. Bárbara Pimenta"
               fill
               priority
-              quality={90}
+              quality={100}
               sizes="100vw"
               className="object-cover object-center"
             />

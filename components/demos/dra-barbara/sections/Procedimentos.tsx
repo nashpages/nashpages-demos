@@ -62,7 +62,7 @@ export function Procedimentos() {
                 src={p.photo}
                 alt="Procedimento dermatológico"
                 fill
-                quality={90}
+                quality={100}
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="object-cover object-center"
               />
@@ -108,7 +108,7 @@ export function Procedimentos() {
                 src={p.photo}
                 alt="Procedimento dermatológico"
                 fill
-                quality={90}
+                quality={100}
                 sizes="100vw"
                 className="object-cover object-center"
               />

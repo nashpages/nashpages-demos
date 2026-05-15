@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import type { DemoConfig } from "@/lib/types";
 import { RevealFadeUp } from "@/components/motion/RevealFadeUp";
 import { LetterReveal } from "@/components/motion/LetterReveal";
+import { TypewriterReveal } from "@/components/motion/TypewriterReveal";
+import { SignatureReveal } from "@/components/motion/SignatureReveal";
 import { EASE, DURATION, STAGGER } from "@/lib/motion";
 
 type Props = {
@@ -56,24 +58,23 @@ export function DemoSobre({ sobre }: Props) {
         {/* 2-col: quote left + bio right */}
         <div className="mt-10 md:mt-14 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-20">
           <div>
-            <RevealFadeUp>
-              <p
-                className="text-[24px] md:text-[36px] leading-[1.1] tracking-[-0.01em] italic"
-                style={{ color: "var(--demo-fg)" }}
-              >
-                {sobre.quote.text.split("\n").map((line, i) => (
-                  <span key={i} className="block">"{line}"</span>
-                ))}
-              </p>
-            </RevealFadeUp>
-            <RevealFadeUp delay={0.15} className="mt-5">
-              <p
-                className="text-[11px] tracking-[0.14em]"
-                style={{ color: "var(--demo-muted)", fontFamily: "var(--font-mono)" }}
-              >
+            <p
+              className="text-[24px] md:text-[36px] leading-[1.1] tracking-[-0.01em] italic"
+              style={{ color: "var(--demo-fg)" }}
+            >
+              <TypewriterReveal
+                text={`"${sobre.quote.text}"`}
+                charStagger={0.04}
+              />
+            </p>
+            <p
+              className="mt-5 text-[11px] tracking-[0.14em]"
+              style={{ color: "var(--demo-muted)", fontFamily: "var(--font-mono)" }}
+            >
+              <SignatureReveal duration={1.0} delay={0.6}>
                 {sobre.quote.attribution}
-              </p>
-            </RevealFadeUp>
+              </SignatureReveal>
+            </p>
           </div>
 
           <div>

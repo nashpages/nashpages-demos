@@ -1,0 +1,193 @@
+// Dados da demo Dra. Amanda Fistarol — Rouge Editorial v4 (cream warm + carmim fashion).
+
+export const AMANDA_PALETTE = {
+  papel: "#FCF4ED",
+  neve: "#F4E2DA",
+  tinta: "#2A1A1A",
+  neblina: "#8F7670",
+  linha: "#E8D2CB",
+  carmim: "#C73B5C",
+  footerBg: "#1F0D11",
+  footerMuted: "#806468",
+  footerDivider: "#3C2026",
+} as const;
+
+export const AMANDA_DATA = {
+  whatsapp: "https://wa.me/5547991156709",
+  whatsappPhone: "(47) 99115-6709",
+  fixedPhone: "(47) 3326-5232",
+  instagram: "https://instagram.com/amandafistarol",
+  website: "https://amandafistarol.com.br",
+  photoHero: "/demos/dra-amanda-fistarol/retrato-hero.jpg",
+  photoPalestra: "/demos/dra-amanda-fistarol/palestra.jpg",
+  photoCongresso: "/demos/dra-amanda-fistarol/congresso.jpg",
+  photoUltraformer: "/demos/dra-amanda-fistarol/ultraformer.jpg",
+
+  identity: {
+    nameLines: ["Dra. Amanda", "Fistarol."],
+    eyebrow: "/  DERMATOLOGIA",
+    crmRqe: "CRM 24.614 SC  ·  RQE 20.197",
+    areas: ["CLÍNICA", "CIRÚRGICA", "ESTÉTICA", "ONCOLÓGICA"],
+  },
+
+  nav: {
+    logo: "NASHPAGES DEMO",
+    links: [
+      { label: "SOBRE",       href: "#sobre" },
+      { label: "TRATAMENTOS", href: "#tratamentos" },
+      { label: "AGENDA",      href: "#atendimento" },
+      { label: "CONTATO",     href: "#contato" },
+    ],
+  },
+
+  hero: {
+    eyebrow: "§ 01  /  MANIFESTO",
+    headlineLines: ["Pele é onde a", "saúde aparece."],
+    subline: "Dermatologia clínica, cirúrgica, estética e oncológica em consultório próprio em Blumenau. Cada pele lida, cada lesão observada, cada tratamento pensado.",
+    quote: "“A pele é o maior órgão do corpo. E o que mais conta histórias.”",
+    quoteAttribution: "— DRA. AMANDA FISTAROL",
+    primaryCta: { label: "AGENDAR CONSULTA", href: "https://wa.me/5547991156709" },
+    secondaryCta: { label: "CONHECER A DRA", href: "#sobre" },
+    meta: [
+      "BLUMENAU · SC",
+      "CEDERMA · ALAMEDA RIO BRANCO 477",
+      "FURB · UNISA · SBD",
+    ],
+  },
+
+  sobre: {
+    eyebrow: "§ 02  /  SOBRE A DRA",
+    headlineLines: ["Quatro frentes,", "um só olhar."],
+    quoteLines: ["“Cada caso tem", "sua própria", "leitura.”"],
+    quoteAttribution: "— DRA. AMANDA FISTAROL",
+    bio: [
+      "Médica formada pela Universidade Regional de Blumenau (FURB), com especialização em Dermatologia pela Universidade de Santo Amaro (UNISA), em São Paulo. Membro da Sociedade Brasileira de Dermatologia.",
+      "Atua em CEDERMA — Centro Dermatológico Alameda — em Blumenau, com prática nas quatro frentes da especialidade: clínica, cirúrgica, estética e oncológica.",
+    ],
+    credentials: [
+      { num: "01", label: "FURB",  sub: "GRADUAÇÃO MEDICINA · 2017" },
+      { num: "02", label: "UNISA", sub: "ESPECIALIZAÇÃO DERMATO SP · 2021" },
+      { num: "03", label: "SBD",   sub: "TÍTULO DE ESPECIALISTA · MEMBRO ATIVA" },
+    ],
+  },
+
+  tratamentos: {
+    eyebrow: "§ 03  /  TRATAMENTOS",
+    headlineLines: ["Quatro frentes", "da pele."],
+    cards: [
+      { num: "01", label: "CLÍNICA",    body: "Acne, melasma, rosácea, psoríase, dermatites e demais condições cutâneas. Diagnóstico aprofundado antes do tratamento." },
+      { num: "02", label: "CIRÚRGICA",  body: "Remoção de lesões benignas e malignas, nevos, lipomas e biópsia diagnóstica. Cirurgia ambulatorial com técnica precisa." },
+      { num: "03", label: "ESTÉTICA",   body: "Toxina botulínica, preenchimentos com ácido hialurônico, bioestimuladores, skinboosters e Ultraformer (HIFU)." },
+      { num: "04", label: "ONCOLÓGICA", body: "Avaliação especializada de lesões suspeitas. Acompanhamento dermatoscópico e tratamento de câncer de pele." },
+    ],
+  },
+
+  tecnologia: {
+    eyebrow: "§ 04  /  TECNOLOGIA",
+    headlineLines: ["Ultraformer", "e dermatoscopia."],
+    photoCaption: "ULTRAFORMER HIFU  ·  TERÇO INFERIOR DO ROSTO",
+    paragraphs: [
+      "Ultraformer (HIFU) — lifting facial não-invasivo de última geração. Estimula colágeno em camadas profundas da pele com ultrassom focalizado.",
+      "Dermatoscopia digital — diagnóstico por imagem de lesões suspeitas. Acompanhamento longitudinal de nevos atípicos e detecção precoce de câncer de pele.",
+    ],
+    note: "Equipamentos em consultório, sem peregrinação por centros externos.",
+    specs: [
+      { num: "01", label: "ULTRAFORMER",   sub: "HIFU · LIFTING NÃO-INVASIVO" },
+      { num: "02", label: "DERMATOSCOPIA", sub: "DIAGNÓSTICO POR IMAGEM" },
+      { num: "03", label: "CONSULTÓRIO",   sub: "EQUIPAMENTOS PRÓPRIOS" },
+    ],
+  },
+
+  reconhecimento: {
+    eyebrow: "§ 05  /  RECONHECIMENTO",
+    headlineLines: ["Em palco.", "Em congresso."],
+    photo1Caption: "PALESTRA  ·  CONGRESSO BRASILEIRO DE DERMATOLOGIA",
+    photo2Caption: "CONGRESSO BRASILEIRO DE DERMATOLOGIA",
+    paragraph: "Membro ativa da Sociedade Brasileira de Dermatologia. Participação contínua em congressos nacionais, palestras e atualização clínica permanente.",
+    note: "Dermatologia é uma área que muda a cada ano. A presença em eventos científicos não é vaidade — é o que mantém a prática atualizada.",
+    specs: [
+      { num: "01", label: "SBD",       sub: "MEMBRO ATIVA · SOC. BRASILEIRA DERMATO" },
+      { num: "02", label: "PALESTRAS", sub: "CONGRESSOS NACIONAIS REGULARES" },
+      { num: "03", label: "UNISA",     sub: "ESPECIALIZAÇÃO SÃO PAULO · 2021" },
+    ],
+  },
+
+  atendimento: {
+    eyebrow: "§ 06  /  ATENDIMENTO",
+    headlineLines: ["Onde,", "e como."],
+    onde: [
+      "Alameda Rio Branco, 477 — 3º andar.",
+      "Jardim Blumenau · Blumenau/SC.",
+      "CEP 89010-301.",
+      "CEDERMA — Centro Dermatológico Alameda.",
+    ],
+    como: [
+      "Particular.",
+      "Unimed (sob consulta).",
+      "Agenda individual e tempo dedicado.",
+      "Avaliação completa na primeira consulta.",
+    ],
+    note: "Atendimento adultos. Sem teleconsulta — exame dermatológico requer presença física.",
+  },
+
+  contato: {
+    eyebrow: "§ 07  /  CONTATO",
+    headlineLines: ["Vamos", "conversar."],
+    accent: "blumenau · ao seu tempo.",
+    body: "Agende sua consulta pelo WhatsApp. Resposta no mesmo dia útil.",
+    cta: { label: "AGENDAR PELO WHATSAPP", href: "https://wa.me/5547991156709" },
+    phoneLine: "(47) 99115-6709",
+    phoneLabel: "DIRETO COM A DOUTORA",
+    socials: [
+      { label: "@amandafistarol", href: "https://instagram.com/amandafistarol" },
+      { label: "amandafistarol.com.br", href: "https://amandafistarol.com.br" },
+    ],
+    fixedNote: "(47) 3326-5232  ·  fixo CEDERMA",
+  },
+
+  footer: {
+    logo: "Dra. Amanda",
+    logoSub: "DERMATOLOGIA",
+    dados: [
+      "CRM 24.614 SC  ·  RQE 20.197",
+      "ALAMEDA RIO BRANCO, 477 — 3º",
+      "JARDIM BLUMENAU",
+      "BLUMENAU/SC  ·  CEP 89010-301",
+      "CEDERMA — CENTRO DERMATOLÓGICO",
+    ],
+    dadosMobile: [
+      "CRM 24.614 SC  ·  RQE 20.197",
+      "ALAMEDA RIO BRANCO, 477 — 3º",
+      "JARDIM BLUMENAU  ·  BLUMENAU/SC",
+      "CEP 89010-301",
+    ],
+    navegar: ["SOBRE", "TRATAMENTOS", "TECNOLOGIA", "RECONHECIMENTO", "CONTATO"],
+    navegarMobile: ["SOBRE", "TRATAMENTOS", "TECNOLOGIA", "CONTATO"],
+    redes: ["@AMANDAFISTAROL", "AMANDAFISTAROL.COM.BR", "WHATSAPP (47) 99115-6709", "FIXO (47) 3326-5232"],
+    copyright: "©  2026  DRA. AMANDA PRISCILA FISTAROL  ·  TODOS OS DIREITOS RESERVADOS",
+    copyrightMobile: ["©  2026  DRA. AMANDA PRISCILA FISTAROL", "TODOS OS DIREITOS RESERVADOS"],
+    credit: "SITE POR NASHPAGES",
+  },
+
+  sectionIds: {
+    hero: "top",
+    sobre: "sobre",
+    tratamentos: "tratamentos",
+    tecnologia: "tecnologia",
+    reconhecimento: "reconhecimento",
+    atendimento: "atendimento",
+    contato: "contato",
+  },
+
+  sectionLabels: [
+    { id: "top",            label: "MANIFESTO" },
+    { id: "sobre",          label: "SOBRE" },
+    { id: "tratamentos",    label: "TRATAMENTOS" },
+    { id: "tecnologia",     label: "TECNOLOGIA" },
+    { id: "reconhecimento", label: "RECONHECIMENTO" },
+    { id: "atendimento",    label: "ATENDIMENTO" },
+    { id: "contato",        label: "CONTATO" },
+  ],
+} as const;
+
+export type AmandaData = typeof AMANDA_DATA;

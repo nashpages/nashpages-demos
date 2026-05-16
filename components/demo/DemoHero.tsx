@@ -30,8 +30,10 @@ export function DemoHero({ hero }: Props) {
       className="relative w-full min-h-screen lg:min-h-[1080px] flex flex-col lg:flex-row"
       style={{ background: "var(--demo-bg)" }}
     >
-      {/* LEFT zone (65%) — texto */}
-      <div className="relative z-10 flex flex-1 lg:flex-[0_0_65%] flex-col justify-start lg:justify-center px-6 pt-8 pb-10 lg:px-[120px] lg:py-0">
+      {/* LEFT zone (65%) — texto.
+          Padding-left dinâmico: em viewport ≤1440 = 120px (Figma), em >1440 = (vw-1440)/2 + 120
+          → alinha com text de TODAS as outras sections (que usam max-w-[1440px] mx-auto + px-120). */}
+      <div className="relative z-10 flex flex-1 lg:flex-[0_0_65%] flex-col justify-start lg:justify-center px-6 pt-8 pb-10 lg:py-0 lg:pl-[max(120px,calc((100vw-1440px)/2+120px))] lg:pr-[48px]">
         <RevealFadeUp delay={0.4} className="mb-6">
           <p
             className="text-[11px] font-medium tracking-[0.16em]"
@@ -69,8 +71,8 @@ export function DemoHero({ hero }: Props) {
           </RevealFadeUp>
         </div>
 
-        {/* Meta bar bottom — só desktop (lg+) */}
-        <div className="hidden lg:flex absolute bottom-12 left-[120px] right-[120px] items-center justify-between">
+        {/* Meta bar bottom — alinhado com padding do parent (matches Hero text columns) */}
+        <div className="hidden lg:flex absolute bottom-12 left-[max(120px,calc((100vw-1440px)/2+120px))] right-[48px] items-center justify-between">
           <p
             className="text-[11px] tracking-[0.16em]"
             style={{ color: "var(--demo-muted)", fontFamily: "var(--font-mono)" }}

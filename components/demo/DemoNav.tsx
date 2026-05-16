@@ -47,7 +47,9 @@ export function DemoNav({ nav, logoText }: Props) {
         borderColor: scrolled ? "var(--demo-hair)" : "transparent",
       }}
     >
-      <div className="flex w-full items-center justify-between px-6 py-4 md:px-10 md:py-6 lg:px-[120px] lg:py-8">
+      {/* Padding lateral dinâmico — alinha logo e CTA com TODAS as outras sections.
+          Em ≤1440px = 120 (Figma exato); em >1440px = (vw-1440)/2+120 (mesmo offset do container 1440 mx-auto). */}
+      <div className="flex w-full items-center justify-between px-6 py-4 md:px-10 md:py-6 lg:py-8 lg:pl-[max(120px,calc((100vw-1440px)/2+120px))] lg:pr-[max(120px,calc((100vw-1440px)/2+120px))]">
         {/* Logo */}
         <a
           href="#top"

@@ -69,14 +69,16 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* Headline @ y=240 left=80 — Geist Medium 88px, lineHeight 96px */}
+          {/* Headline @ y=240 left=80 — Geist Medium 88px, lineHeight 96px
+              Cada linha vira <span class="block"> (display block quebra entre elas).
+              IMPORTANTE: SEM whiteSpace nowrap no container — ele herda pros filhos
+              e força tudo numa linha. */}
           <div className="absolute left-[80px] top-[240px]">
             <WordReveal
               lines={hero.headlineLines}
               delay={0.3}
               stagger={0.09}
-              className="block"
-              lineClassName="block"
+              lineClassName="whitespace-nowrap"
               style={{
                 fontFamily: "var(--font-geist)",
                 fontWeight: 500,
@@ -84,7 +86,6 @@ export function Hero() {
                 lineHeight: "96px",
                 letterSpacing: "-2.5px",
                 color: "var(--c-grafite)",
-                whiteSpace: "nowrap",
               }}
             />
           </div>

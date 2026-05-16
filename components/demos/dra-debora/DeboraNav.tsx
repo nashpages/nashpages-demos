@@ -38,10 +38,14 @@ export function DeboraNav() {
         WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
       }}
     >
-      <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[80px] py-5 lg:py-7 flex items-center justify-between gap-6">
+      {/* MOBILE: logo LEFT + MENU RIGHT (justify-between)
+          DESKTOP: logo + links agrupados LEFT-aligned (justify-start) com gaps Figma:
+          Figma 1440 → DRA. DÉBORA@80, SOBRE@280, TRATAMENTOS@380, CONSULTÓRIO@530, CONTATO@680.
+          Pra harmonia: logo + ml-[120px] + links com gap-10 entre eles. */}
+      <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[80px] py-5 lg:py-7 flex items-center justify-between md:justify-start gap-6">
         <a
           href="#top"
-          className={`text-[14px] lg:text-[18px] tracking-[0.12em] transition-colors duration-500 ${textColorClass}`}
+          className={`text-[14px] lg:text-[18px] tracking-[0.12em] whitespace-nowrap transition-colors duration-500 ${textColorClass}`}
           style={{
             fontFamily: "var(--font-geist)",
             fontWeight: 500,
@@ -49,12 +53,12 @@ export function DeboraNav() {
         >
           {nav.logo}
         </a>
-        <nav className="hidden md:flex items-center gap-5 lg:gap-8">
+        <nav className="hidden md:flex items-center gap-7 lg:gap-10 md:ml-12 lg:ml-16">
           {nav.links.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className={`text-[11px] tracking-[0.16em] transition-colors duration-500 hover:opacity-70 ${textColorClass}`}
+              className={`text-[11px] tracking-[0.16em] whitespace-nowrap transition-colors duration-500 hover:opacity-70 ${textColorClass}`}
               style={{
                 fontFamily: "var(--font-geist-mono)",
                 fontWeight: 500,
@@ -68,7 +72,7 @@ export function DeboraNav() {
           href={hero.primaryCta.href}
           target="_blank"
           rel="noopener noreferrer"
-          className={`md:hidden text-[10px] tracking-[0.12em] transition-colors duration-500 ${textColorClass}`}
+          className={`md:hidden ml-auto text-[10px] tracking-[0.12em] transition-colors duration-500 ${textColorClass}`}
           style={{
             fontFamily: "var(--font-geist-mono)",
             fontWeight: 500,

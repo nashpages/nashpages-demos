@@ -1,5 +1,10 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import { BARBARA_DATA } from "../data";
-import { FadeUp, Stagger, StaggerItem } from "../motion";
+import { FadeUp, Stagger, StaggerItem, WordReveal } from "../motion";
+
+const EASE = [0.32, 0.72, 0, 1] as const;
 
 /* §02 Sobre — Figma 15:2 (desktop) / 47:22 (mobile)
    Desktop:
@@ -12,6 +17,7 @@ import { FadeUp, Stagger, StaggerItem } from "../motion";
 */
 export function Sobre() {
   const { sobre } = BARBARA_DATA;
+  const reduce = useReducedMotion();
   return (
     <section id="sobre" className="relative w-full bg-[#F8F2EA]">
       <div className="max-w-[1440px] mx-auto">
@@ -51,30 +57,50 @@ export function Sobre() {
             </FadeUp>
             <div className="h-[56px]" />
             <div className="w-full flex gap-[80px] items-start">
-              <FadeUp delay={0.3} className="flex-1 flex flex-col gap-4">
-                <p
-                  className="italic text-[#2A2520] text-[38px]"
+              <div className="flex-1 flex flex-col items-start gap-7">
+                {/* Quote: word-by-word reveal — frase "pronunciada" */}
+                <WordReveal
+                  lines={sobre.quote.lines}
+                  delay={0.35}
+                  stagger={0.13}
+                  className="block italic text-[#2A2520] text-[38px]"
+                  lineClassName="leading-[1.1]"
                   style={{
                     fontFamily: "var(--font-playfair)",
+                    fontStyle: "italic",
                     fontWeight: 400,
                     letterSpacing: "-0.38px",
                   }}
+                />
+                {/* Atribuição + signature mark — entra como assinatura ao final */}
+                <motion.div
+                  className="flex flex-col items-start gap-3"
+                  initial={reduce ? false : { opacity: 0, y: 8 }}
+                  whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px 0px" }}
+                  transition={{ duration: 0.7, ease: EASE, delay: 1.5 }}
                 >
-                  {sobre.quote.lines.map((l, i) => (
-                    <span key={i} className="block leading-[1.1]">{l}</span>
-                  ))}
-                </p>
-                <p
-                  className="text-[#6B5F5A] text-[11px]"
-                  style={{
-                    fontFamily: "var(--font-jetbrains-mono)",
-                    fontWeight: 400,
-                    letterSpacing: "1.54px",
-                  }}
-                >
-                  {sobre.quote.attribution}
-                </p>
-              </FadeUp>
+                  <p
+                    className="text-[#6B5F5A] text-[11px]"
+                    style={{
+                      fontFamily: "var(--font-jetbrains-mono)",
+                      fontWeight: 400,
+                      letterSpacing: "1.54px",
+                    }}
+                  >
+                    {sobre.quote.attribution}
+                  </p>
+                  <motion.span
+                    aria-hidden
+                    className="block h-px bg-[#C4998A] origin-left"
+                    style={{ width: 40 }}
+                    initial={reduce ? false : { scaleX: 0 }}
+                    whileInView={reduce ? undefined : { scaleX: 1 }}
+                    viewport={{ once: true, margin: "-80px 0px" }}
+                    transition={{ duration: 0.9, ease: EASE, delay: 1.9 }}
+                  />
+                </motion.div>
+              </div>
               <Stagger delay={0.4} staggerChildren={0.15} className="flex-1 flex flex-col gap-6">
                 {sobre.bio.map((p, i) => (
                   <StaggerItem key={i}>
@@ -126,29 +152,47 @@ export function Sobre() {
               <div className="h-px w-[60px] bg-[#C4998A]" />
             </FadeUp>
             <div className="h-[32px]" />
-            <FadeUp delay={0.3} className="flex flex-col gap-3">
-              <p
-                className="italic text-[#2A2520] text-[28px]"
+            <div className="flex flex-col items-start gap-5">
+              <WordReveal
+                lines={sobre.quote.lines}
+                delay={0.35}
+                stagger={0.11}
+                className="block italic text-[#2A2520] text-[28px]"
+                lineClassName="leading-[1.25]"
                 style={{
                   fontFamily: "var(--font-playfair)",
+                  fontStyle: "italic",
                   fontWeight: 400,
                 }}
+              />
+              <motion.div
+                className="flex flex-col items-start gap-2.5"
+                initial={reduce ? false : { opacity: 0, y: 8 }}
+                whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px 0px" }}
+                transition={{ duration: 0.7, ease: EASE, delay: 1.4 }}
               >
-                {sobre.quote.lines.map((l, i) => (
-                  <span key={i} className="block leading-[1.25]">{l}</span>
-                ))}
-              </p>
-              <p
-                className="text-[#6B5F5A] text-[10px]"
-                style={{
-                  fontFamily: "var(--font-jetbrains-mono)",
-                  fontWeight: 500,
-                  letterSpacing: "0.8px",
-                }}
-              >
-                {sobre.quote.attribution}
-              </p>
-            </FadeUp>
+                <p
+                  className="text-[#6B5F5A] text-[10px]"
+                  style={{
+                    fontFamily: "var(--font-jetbrains-mono)",
+                    fontWeight: 500,
+                    letterSpacing: "0.8px",
+                  }}
+                >
+                  {sobre.quote.attribution}
+                </p>
+                <motion.span
+                  aria-hidden
+                  className="block h-px bg-[#C4998A] origin-left"
+                  style={{ width: 32 }}
+                  initial={reduce ? false : { scaleX: 0 }}
+                  whileInView={reduce ? undefined : { scaleX: 1 }}
+                  viewport={{ once: true, margin: "-80px 0px" }}
+                  transition={{ duration: 0.8, ease: EASE, delay: 1.8 }}
+                />
+              </motion.div>
+            </div>
             <div className="h-[28px]" />
             <Stagger delay={0.4} staggerChildren={0.15} className="flex flex-col gap-4">
               {sobre.bio.map((p, i) => (

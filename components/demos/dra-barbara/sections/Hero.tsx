@@ -35,11 +35,8 @@ export function Hero() {
           animate={reduce ? undefined : { opacity: 1 }}
           transition={{ duration: 1.2, ease: EASE }}
         >
-          <motion.div
+          <div
             className="absolute inset-0"
-            initial={reduce ? false : { scale: 1.08 }}
-            animate={reduce ? undefined : { scale: 1 }}
-            transition={{ duration: 2, ease: EASE }}
             style={{
               // Warming filter (Figma temp 0.15 / exp 0.04 / contrast 0.04 — magazine premium)
               filter: "sepia(0.12) saturate(1.10) brightness(1.04) contrast(1.05)",
@@ -52,9 +49,9 @@ export function Hero() {
               priority
               quality={100}
               sizes="(min-width: 1024px) 34vw, 100vw"
-              className="object-cover object-center"
+              className="object-cover object-[center_35%]"
             />
-          </motion.div>
+          </div>
           {/* Gradient feather overlay — LEFT edge dissolves into cream bg */}
           <div
             aria-hidden
@@ -129,11 +126,8 @@ export function Hero() {
           animate={reduce ? undefined : { opacity: 1 }}
           transition={{ duration: 1, ease: EASE }}
         >
-          <motion.div
+          <div
             className="absolute inset-0"
-            initial={reduce ? false : { scale: 1.08 }}
-            animate={reduce ? undefined : { scale: 1 }}
-            transition={{ duration: 1.8, ease: EASE }}
             style={{
               filter: "sepia(0.12) saturate(1.10) brightness(1.04) contrast(1.05)",
             }}
@@ -145,9 +139,9 @@ export function Hero() {
               priority
               quality={100}
               sizes="100vw"
-              className="object-cover object-center"
+              className="object-cover object-[center_35%]"
             />
-          </motion.div>
+          </div>
         </motion.div>
 
         <div className="absolute left-[24px] top-[472px] w-[327px]">

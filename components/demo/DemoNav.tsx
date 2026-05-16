@@ -51,23 +51,23 @@ export function DemoNav({ nav, logoText }: Props) {
           Padding-right fixo 120 evita overflow quando nav width = 65% (no Hero) —
           o calc só faz sentido aqui se nav fosse always 100% width. */}
       <div className="flex w-full items-center justify-between px-6 py-4 md:px-10 md:py-6 lg:py-8 lg:pl-[max(120px,calc((100vw-1440px)/2+120px))] lg:pr-[120px]">
-        {/* Logo */}
+        {/* Logo — tracking reduzido em vw<1440 pra liberar espaço pros links */}
         <a
           href="#top"
-          className="text-[12px] md:text-[13px] font-semibold tracking-[0.18em] whitespace-nowrap shrink-0"
+          className="text-[12px] md:text-[13px] font-semibold tracking-[0.14em] min-[1440px]:tracking-[0.18em] whitespace-nowrap shrink-0"
           style={{ color: "var(--demo-fg)" }}
         >
           {logoText}
         </a>
 
-        {/* Links + CTA */}
-        <div className="flex items-center gap-6 md:gap-9 shrink-0">
-          <div className="hidden md:flex items-center gap-9">
+        {/* Links + CTA — gap+tracking reduzidos em vw<1440, Figma exato em ≥1440 */}
+        <div className="flex items-center gap-5 min-[1440px]:gap-9 shrink-0">
+          <div className="hidden md:flex items-center gap-5 min-[1440px]:gap-9">
             {nav.links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-[11px] font-medium tracking-[0.16em] transition-colors whitespace-nowrap"
+                className="text-[11px] font-medium tracking-[0.14em] min-[1440px]:tracking-[0.16em] transition-colors whitespace-nowrap"
                 style={{ color: "var(--demo-fg)" }}
               >
                 {link.label}
@@ -78,7 +78,7 @@ export function DemoNav({ nav, logoText }: Props) {
             href={nav.ctaHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.16em] transition-transform hover:scale-[1.05] whitespace-nowrap"
+            className="rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.14em] min-[1440px]:tracking-[0.16em] transition-transform hover:scale-[1.05] whitespace-nowrap"
             style={{
               background: "var(--demo-accent)",
               color: "var(--demo-bg)",

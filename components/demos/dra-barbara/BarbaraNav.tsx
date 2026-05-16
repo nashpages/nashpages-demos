@@ -41,7 +41,7 @@ export function BarbaraNav() {
           - gap 56 entre logo e nav-center, gap 28 entre links
           - LEFT-aligned (sem CTA pill no Hero — só ao scrollar)
           ============================================================ */}
-      <div className="relative hidden lg:flex items-center h-[72px] pl-[64px] pr-[32px] gap-[56px]">
+      <div className="relative hidden lg:flex items-center h-[72px] pl-[80px] pr-[80px] gap-[56px]">
         <a href="#top" className="group">
           <motion.span
             className="block text-[11px] tracking-[0.16em] whitespace-nowrap"

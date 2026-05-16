@@ -66,9 +66,10 @@ export function Hero() {
           />
         </motion.div>
 
-        {/* Content reserva o espaço da foto: right=34% (foto) + 64px safety gap.
+        {/* Content reserva o espaço da foto: right=34% (foto) + 48px safety gap.
+            Padding lateral 80px pra alinhar com todas as outras sections (Figma uniform).
             Headline com clamp 72→110px pra escalar com viewport e nunca encostar. */}
-        <div className="absolute left-[64px] top-[200px] right-[calc(34%+64px)]">
+        <div className="absolute left-[80px] top-[200px] right-[calc(34%+48px)]">
           <WordReveal
             lines={hero.headlineLines}
             delay={0.2}

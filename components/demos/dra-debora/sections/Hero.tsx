@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { DEBORA_DATA } from "../data";
-import { FadeUp, WordReveal } from "../motion";
+import { FadeUp } from "../motion";
 
 const EASE = [0.32, 0.72, 0, 1] as const;
 
@@ -12,44 +12,55 @@ export function Hero() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="top" className="relative w-full overflow-hidden">
+    <section id="top" className="relative w-full overflow-hidden" style={{ backgroundColor: "var(--c-pedra)" }}>
       {/* ============================================================
-          DESKTOP — Figma 12:3 (1440 × 720) — PIXEL-PERFECT
-          Layout em coords absolutas dentro de container max-w-[1440px]:
-          - Eyebrow: y=200 left=80 (musgo)
-          - Headline: y=240 left=80 (Geist Medium 88px, 2 lines × 96px lineHeight)
-          - Subline: y=460 left=80 (Inter 17px, 2 lines × 26px, w=600px, néuoa)
-          - CTAs: y=580 — AGENDAR x=80 + CONHECER x=360 (NÃO flex gap)
-          - Underlines: y=604 — musgo 1.5px × 220w / névoa 1px × 190w
-          - Divider: y=650 left=80 w=1280 h=1px (LINHA #d4cec3)
-          - Meta: y=670 em x: 80 / 320 / 720 / 1060 (Geist Mono 10px 1.1px)
+          DESKTOP — split: foto direita 4K + bg pedra esquerda
+          - Foto atendendo.jpg (3648×5472, 4K real) full-bleed direita do viewport
+          - Width clamp(440, 34vw, 540) — Figma exato em 1440 ~ 490
+          - Bg section PEDRA sólido (mesma cor da paleta — match perfeito)
+          - Text LEFT em coords absolutas alinhado com container 1440 mx-auto
+          - CSS filter warming sutil + gradient feather no edge esquerdo da foto
           ============================================================ */}
       <div className="hidden lg:block relative w-full h-[720px]">
+        {/* FOTO — fora do container 1440, full-bleed na borda direita do viewport */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute right-0 top-0 bottom-0 overflow-hidden"
+          style={{ width: "clamp(440px, 34vw, 540px)" }}
           initial={reduce ? false : { opacity: 0 }}
           animate={reduce ? undefined : { opacity: 1 }}
           transition={{ duration: 1.2, ease: EASE }}
         >
           <motion.div
             className="absolute inset-0"
-            initial={reduce ? false : { scale: 1.04 }}
+            initial={reduce ? false : { scale: 1.06 }}
             animate={reduce ? undefined : { scale: 1 }}
-            transition={{ duration: 1.8, ease: EASE }}
+            transition={{ duration: 2, ease: EASE }}
+            style={{
+              filter: "sepia(0.08) saturate(1.06) brightness(1.03) contrast(1.04)",
+            }}
           >
             <Image
-              src={hero.photoExpanded}
+              src={hero.photo}
               alt="Dra. Débora Soares — Dermatologia"
               fill
               priority
               quality={100}
-              sizes="100vw"
-              className="object-cover object-center"
+              sizes="(min-width: 1024px) clamp(440px, 34vw, 540px), 100vw"
+              className="object-cover object-[center_18%]"
             />
           </motion.div>
+          {/* Gradient feather no edge esquerdo da foto pra integração com bg pedra */}
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(236,231,223,0.55) 0%, rgba(236,231,223,0) 22%)",
+            }}
+          />
         </motion.div>
 
-        {/* Pixel-perfect container 1440 mx-auto */}
+        {/* TEXT zone — dentro do container 1440 mx-auto */}
         <div className="relative h-full max-w-[1440px] mx-auto">
           {/* Eyebrow @ y=200 left=80 */}
           <div className="absolute left-[80px] top-[200px]">
@@ -70,8 +81,7 @@ export function Hero() {
           </div>
 
           {/* Headline @ y=240 left=80 — Geist Medium 88px, lineHeight 96px
-              Render nativo: <h1> com 2 <span class="block">. SEM WordReveal
-              (que estava consumindo os espaços trailing dos inline-blocks). */}
+              <h1> nativo com 2 <span class="block"> (render direto preserva espaços) */}
           <div className="absolute left-[80px] top-[240px]">
             <FadeUp delay={0.3} y={32} duration={0.9}>
               <h1
@@ -91,8 +101,12 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* Subline @ y=460 left=80 — Inter 17px, lineHeight 26px, w=600px */}
-          <div className="absolute left-[80px] top-[460px] w-[600px]">
+          {/* Subline @ y=460 left=80 — Inter 17px lineHeight 26px */}
+          <div className="absolute left-[80px] top-[460px]"
+            style={{
+              right: "calc(clamp(440px, 34vw, 540px) + 48px - max(0px, (100vw - 1440px) / 2))",
+            }}
+          >
             <FadeUp delay={0.9}>
               <p
                 style={{
@@ -109,7 +123,7 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* AGENDAR CONSULTA CTA @ y=580 left=80 + underline musgo 220×1.5px @ y=604 */}
+          {/* AGENDAR CONSULTA @ y=580 left=80 + underline musgo 220×1.5px */}
           <div className="absolute left-[80px] top-[580px]">
             <FadeUp delay={1.05}>
               <a
@@ -142,7 +156,7 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* CONHECER A DRA CTA @ y=580 left=360 + underline névoa 190×1px @ y=604 */}
+          {/* CONHECER A DRA @ y=580 left=360 + underline névoa 190×1px */}
           <div className="absolute left-[360px] top-[580px]">
             <FadeUp delay={1.15}>
               <a href={hero.secondaryCta.href} className="group block">
@@ -170,17 +184,17 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* Divider @ y=650 left=80 w=1280 h=1px LINHA */}
+          {/* Divider @ y=650 left=80 — width termina antes da foto pra não cruzar */}
           <div
             className="absolute left-[80px] top-[650px]"
             style={{
-              width: "1280px",
+              right: "calc(clamp(440px, 34vw, 540px) + 0px - max(0px, (100vw - 1440px) / 2))",
               height: "1px",
               backgroundColor: "var(--c-linha)",
             }}
           />
 
-          {/* Meta @ y=670 — coords absolutas individuais (NÃO justify-between) */}
+          {/* Meta @ y=670 — coords absolutas (LEFT antes da foto começar) */}
           <FadeUp delay={1.25}>
             <p
               className="absolute left-[80px] top-[670px] whitespace-nowrap"
@@ -195,7 +209,7 @@ export function Hero() {
               {hero.meta[0]}
             </p>
             <p
-              className="absolute left-[320px] top-[670px] whitespace-nowrap"
+              className="absolute left-[280px] top-[670px] whitespace-nowrap"
               style={{
                 fontFamily: "var(--font-geist-mono)",
                 fontWeight: 400,
@@ -207,7 +221,7 @@ export function Hero() {
               {hero.meta[1]}
             </p>
             <p
-              className="absolute left-[720px] top-[670px] whitespace-nowrap"
+              className="absolute left-[600px] top-[670px] whitespace-nowrap"
               style={{
                 fontFamily: "var(--font-geist-mono)",
                 fontWeight: 400,
@@ -219,7 +233,7 @@ export function Hero() {
               {hero.meta[2]}
             </p>
             <p
-              className="absolute left-[1060px] top-[670px] whitespace-pre"
+              className="absolute left-[820px] top-[670px] whitespace-pre"
               style={{
                 fontFamily: "var(--font-geist-mono)",
                 fontWeight: 400,
@@ -235,9 +249,8 @@ export function Hero() {
       </div>
 
       {/* ============================================================
-          MOBILE — Figma 25:2 (375 × 800)
-          - foto retrato-hero full-bleed top 440h with gradient overlay
-          - content abaixo: eyebrow + headline + CTA pill + secondary link
+          MOBILE — foto full-bleed top 440h + content abaixo
+          Mesma foto atendendo.jpg (4K) — qualidade preservada em 375w
           ============================================================ */}
       <div className="lg:hidden relative w-full" style={{ backgroundColor: "var(--c-pedra)" }}>
         <motion.div
@@ -248,18 +261,21 @@ export function Hero() {
         >
           <motion.div
             className="absolute inset-0"
-            initial={reduce ? false : { scale: 1.08 }}
+            initial={reduce ? false : { scale: 1.06 }}
             animate={reduce ? undefined : { scale: 1 }}
             transition={{ duration: 1.8, ease: EASE }}
+            style={{
+              filter: "sepia(0.08) saturate(1.06) brightness(1.03) contrast(1.04)",
+            }}
           >
             <Image
-              src={hero.photoMobile}
+              src={hero.photo}
               alt="Dra. Débora Soares"
               fill
               priority
               quality={100}
               sizes="100vw"
-              className="object-cover object-[center_top]"
+              className="object-cover object-[center_18%]"
             />
           </motion.div>
           {/* Gradient overlay for nav contrast */}
@@ -283,23 +299,22 @@ export function Hero() {
             </p>
           </FadeUp>
           <div className="h-[16px]" />
-          <WordReveal
-            lines={hero.headlineLines.map((l) =>
-              l.replace("Diagnóstico clínico", "Diagnóstico\nclínico").replace("para cada pele.", "para cada\npele.")
-            )}
-            delay={0.35}
-            stagger={0.07}
-            className="block"
-            lineClassName="leading-[1.1]"
-            style={{
-              fontFamily: "var(--font-geist)",
-              fontWeight: 500,
-              fontSize: "40px",
-              letterSpacing: "-0.03em",
-              color: "var(--c-grafite)",
-              whiteSpace: "pre-line",
-            }}
-          />
+          <FadeUp delay={0.35} y={24} duration={0.8}>
+            <h1
+              style={{
+                fontFamily: "var(--font-geist)",
+                fontWeight: 500,
+                fontSize: "40px",
+                lineHeight: "44px",
+                letterSpacing: "-1.2px",
+                color: "var(--c-grafite)",
+                margin: 0,
+              }}
+            >
+              <span className="block">{hero.headlineLines[0]}</span>
+              <span className="block">{hero.headlineLines[1]}</span>
+            </h1>
+          </FadeUp>
           <div className="h-[32px]" />
           <FadeUp delay={0.9}>
             <a

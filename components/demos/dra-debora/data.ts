@@ -34,8 +34,8 @@ export const DEBORA_DATA = {
     subline: "Dermatologia clínica, estética e cirúrgica. Atendimento particular em Blumenau.",
     primaryCta: { label: "AGENDAR CONSULTA", href: "https://wa.me/5547996159443" },
     secondaryCta: { label: "CONHECER A DRA", href: "#sobre" },
-    photoExpanded: "/demos/dra-debora-soares/hero-bg.png",
-    photoMobile: "/demos/dra-debora-soares/retrato-hero.jpg",
+    // 4K real (3648×5472) — ela sorrindo em consulta, alta qualidade
+    photo: "/demos/dra-debora-soares/atendendo.jpg",
     meta: [
       "BLUMENAU · SC",
       "CEDERMA · ALAMEDA RIO BRANCO 477",
@@ -99,7 +99,7 @@ export const DEBORA_DATA = {
     eyebrow: "§ 04  /  CONSULTÓRIO",
     headlineLines: ["Consultório próprio", "em Blumenau."],
     body: "Diagnóstico, tratamento e acompanhamento na CEDERMA — Centro Dermatológico Alameda — em pleno centro de Blumenau. Atendimento exclusivamente particular, com agenda própria e tempo dedicado por consulta.",
-    photo: "/demos/dra-debora-soares/atendendo.jpg",
+    photo: "/demos/dra-debora-soares/fachada-cederma.jpg",
     specs: [
       { num: "01", label: "CEDERMA",       sub: "CENTRO DERMATOLÓGICO ALAMEDA · BLUMENAU", subMobile: "CENTRO DERMATOLÓGICO ALAMEDA" },
       { num: "02", label: "SANTA ISABEL",  sub: "AFILIAÇÃO HOSPITALAR BLUMENAU", subMobile: "AFILIAÇÃO HOSPITALAR BLUMENAU" },

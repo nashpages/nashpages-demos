@@ -70,24 +70,25 @@ export function Hero() {
           </div>
 
           {/* Headline @ y=240 left=80 — Geist Medium 88px, lineHeight 96px
-              Cada linha vira <span class="block"> (display block quebra entre elas).
-              IMPORTANTE: SEM whiteSpace nowrap no container — ele herda pros filhos
-              e força tudo numa linha. */}
+              Render nativo: <h1> com 2 <span class="block">. SEM WordReveal
+              (que estava consumindo os espaços trailing dos inline-blocks). */}
           <div className="absolute left-[80px] top-[240px]">
-            <WordReveal
-              lines={hero.headlineLines}
-              delay={0.3}
-              stagger={0.09}
-              lineClassName="whitespace-nowrap"
-              style={{
-                fontFamily: "var(--font-geist)",
-                fontWeight: 500,
-                fontSize: "88px",
-                lineHeight: "96px",
-                letterSpacing: "-2.5px",
-                color: "var(--c-grafite)",
-              }}
-            />
+            <FadeUp delay={0.3} y={32} duration={0.9}>
+              <h1
+                style={{
+                  fontFamily: "var(--font-geist)",
+                  fontWeight: 500,
+                  fontSize: "88px",
+                  lineHeight: "96px",
+                  letterSpacing: "-2.5px",
+                  color: "var(--c-grafite)",
+                  margin: 0,
+                }}
+              >
+                <span className="block whitespace-nowrap">{hero.headlineLines[0]}</span>
+                <span className="block whitespace-nowrap">{hero.headlineLines[1]}</span>
+              </h1>
+            </FadeUp>
           </div>
 
           {/* Subline @ y=460 left=80 — Inter 17px, lineHeight 26px, w=600px */}

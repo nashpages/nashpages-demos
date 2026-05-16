@@ -14,11 +14,15 @@ export function Hero() {
   return (
     <section id="top" className="relative w-full overflow-hidden">
       {/* ============================================================
-          DESKTOP — Figma 12:3 (1440 × 720)
-          - bg: IDEIA 1 expanded photo full-bleed (hero-bg.png)
-          - text LEFT @ x=80 y=200 over warm-bg natural area
-          - foto da Débora visível à direita (parte da bg image)
-          - meta bar bottom @ y=670
+          DESKTOP — Figma 12:3 (1440 × 720) — PIXEL-PERFECT
+          Layout em coords absolutas dentro de container max-w-[1440px]:
+          - Eyebrow: y=200 left=80 (musgo)
+          - Headline: y=240 left=80 (Geist Medium 88px, 2 lines × 96px lineHeight)
+          - Subline: y=460 left=80 (Inter 17px, 2 lines × 26px, w=600px, néuoa)
+          - CTAs: y=580 — AGENDAR x=80 + CONHECER x=360 (NÃO flex gap)
+          - Underlines: y=604 — musgo 1.5px × 220w / névoa 1px × 190w
+          - Divider: y=650 left=80 w=1280 h=1px (LINHA #d4cec3)
+          - Meta: y=670 em x: 80 / 320 / 720 / 1060 (Geist Mono 10px 1.1px)
           ============================================================ */}
       <div className="hidden lg:block relative w-full h-[720px]">
         <motion.div
@@ -45,87 +49,192 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* TEXT zone */}
+        {/* Pixel-perfect container 1440 mx-auto */}
         <div className="relative h-full max-w-[1440px] mx-auto">
-          <div className="absolute left-[80px] top-[200px] max-w-[680px]">
+          {/* Eyebrow @ y=200 left=80 */}
+          <div className="absolute left-[80px] top-[200px]">
             <FadeUp delay={0.2}>
               <p
-                className="text-[11px] tracking-[0.16em]"
+                className="whitespace-pre"
                 style={{
                   fontFamily: "var(--font-geist-mono)",
                   fontWeight: 500,
+                  fontSize: "11px",
+                  letterSpacing: "1.76px",
                   color: "var(--c-musgo)",
                 }}
               >
-                /  {hero.eyebrow}
+                {`/  ${hero.eyebrow}`}
               </p>
             </FadeUp>
-            <div className="h-[24px]" />
+          </div>
+
+          {/* Headline @ y=240 left=80 — Geist Medium 88px, lineHeight 96px */}
+          <div className="absolute left-[80px] top-[240px]">
             <WordReveal
               lines={hero.headlineLines}
               delay={0.3}
               stagger={0.09}
               className="block"
-              lineClassName="leading-[1.09]"
+              lineClassName="block"
               style={{
                 fontFamily: "var(--font-geist)",
                 fontWeight: 500,
-                fontSize: "clamp(64px, 6.4vw, 88px)",
-                letterSpacing: "-0.028em",
+                fontSize: "88px",
+                lineHeight: "96px",
+                letterSpacing: "-2.5px",
                 color: "var(--c-grafite)",
+                whiteSpace: "nowrap",
               }}
             />
-            <div className="h-[28px]" />
+          </div>
+
+          {/* Subline @ y=460 left=80 — Inter 17px, lineHeight 26px, w=600px */}
+          <div className="absolute left-[80px] top-[460px] w-[600px]">
             <FadeUp delay={0.9}>
               <p
-                className="text-[15px] leading-[1.6] max-w-[520px]"
                 style={{
                   fontFamily: "var(--font-inter)",
                   fontWeight: 400,
+                  fontSize: "17px",
+                  lineHeight: "26px",
                   color: "var(--c-nevoa)",
                 }}
               >
-                {hero.subline}
+                <span className="block">Dermatologia clínica, estética e cirúrgica.</span>
+                <span className="block">Atendimento particular em Blumenau.</span>
               </p>
-            </FadeUp>
-            <div className="h-[40px]" />
-            <FadeUp delay={1.05}>
-              <div className="flex gap-10">
-                <CtaUnderline
-                  href={hero.primaryCta.href}
-                  label={hero.primaryCta.label}
-                  underlineColor="var(--c-musgo)"
-                  underlineHeight={1.5}
-                />
-                <CtaUnderline
-                  href={hero.secondaryCta.href}
-                  label={hero.secondaryCta.label}
-                  underlineColor="var(--c-nevoa)"
-                  underlineHeight={1}
-                />
-              </div>
             </FadeUp>
           </div>
 
-          {/* Meta bar bottom */}
-          <div className="absolute left-[80px] right-[80px] bottom-[50px]">
-            <div className="h-px w-full" style={{ backgroundColor: "var(--c-linha)" }} />
-            <FadeUp delay={1.2}>
-              <div className="mt-5 flex justify-between text-[10px] tracking-[0.11em]"
-                style={{ fontFamily: "var(--font-geist-mono)", fontWeight: 400, color: "var(--c-nevoa)" }}>
-                {hero.meta.map((m) => (
-                  <span key={m}>{m}</span>
-                ))}
-              </div>
+          {/* AGENDAR CONSULTA CTA @ y=580 left=80 + underline musgo 220×1.5px @ y=604 */}
+          <div className="absolute left-[80px] top-[580px]">
+            <FadeUp delay={1.05}>
+              <a
+                href={hero.primaryCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block"
+              >
+                <span
+                  className="whitespace-pre block transition-transform duration-300 group-hover:translate-x-1"
+                  style={{
+                    fontFamily: "var(--font-geist-mono)",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    letterSpacing: "1.92px",
+                    color: "var(--c-grafite)",
+                  }}
+                >
+                  {`${hero.primaryCta.label}  →`}
+                </span>
+                <span
+                  className="block mt-[12px] origin-left transition-transform duration-500 group-hover:scale-x-110"
+                  style={{
+                    width: "220px",
+                    height: "1.5px",
+                    backgroundColor: "var(--c-musgo)",
+                  }}
+                />
+              </a>
             </FadeUp>
           </div>
+
+          {/* CONHECER A DRA CTA @ y=580 left=360 + underline névoa 190×1px @ y=604 */}
+          <div className="absolute left-[360px] top-[580px]">
+            <FadeUp delay={1.15}>
+              <a href={hero.secondaryCta.href} className="group block">
+                <span
+                  className="whitespace-pre block transition-transform duration-300 group-hover:translate-x-1"
+                  style={{
+                    fontFamily: "var(--font-geist-mono)",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    letterSpacing: "1.92px",
+                    color: "var(--c-nevoa)",
+                  }}
+                >
+                  {`${hero.secondaryCta.label}  →`}
+                </span>
+                <span
+                  className="block mt-[12px] origin-left transition-transform duration-500 group-hover:scale-x-110"
+                  style={{
+                    width: "190px",
+                    height: "1px",
+                    backgroundColor: "var(--c-nevoa)",
+                  }}
+                />
+              </a>
+            </FadeUp>
+          </div>
+
+          {/* Divider @ y=650 left=80 w=1280 h=1px LINHA */}
+          <div
+            className="absolute left-[80px] top-[650px]"
+            style={{
+              width: "1280px",
+              height: "1px",
+              backgroundColor: "var(--c-linha)",
+            }}
+          />
+
+          {/* Meta @ y=670 — coords absolutas individuais (NÃO justify-between) */}
+          <FadeUp delay={1.25}>
+            <p
+              className="absolute left-[80px] top-[670px] whitespace-nowrap"
+              style={{
+                fontFamily: "var(--font-geist-mono)",
+                fontWeight: 400,
+                fontSize: "10px",
+                letterSpacing: "1.1px",
+                color: "var(--c-nevoa)",
+              }}
+            >
+              {hero.meta[0]}
+            </p>
+            <p
+              className="absolute left-[320px] top-[670px] whitespace-nowrap"
+              style={{
+                fontFamily: "var(--font-geist-mono)",
+                fontWeight: 400,
+                fontSize: "10px",
+                letterSpacing: "1.1px",
+                color: "var(--c-nevoa)",
+              }}
+            >
+              {hero.meta[1]}
+            </p>
+            <p
+              className="absolute left-[720px] top-[670px] whitespace-nowrap"
+              style={{
+                fontFamily: "var(--font-geist-mono)",
+                fontWeight: 400,
+                fontSize: "10px",
+                letterSpacing: "1.1px",
+                color: "var(--c-nevoa)",
+              }}
+            >
+              {hero.meta[2]}
+            </p>
+            <p
+              className="absolute left-[1060px] top-[670px] whitespace-pre"
+              style={{
+                fontFamily: "var(--font-geist-mono)",
+                fontWeight: 400,
+                fontSize: "10px",
+                letterSpacing: "1.1px",
+                color: "var(--c-nevoa)",
+              }}
+            >
+              {hero.meta[3]}
+            </p>
+          </FadeUp>
         </div>
       </div>
 
       {/* ============================================================
           MOBILE — Figma 25:2 (375 × 800)
           - foto retrato-hero full-bleed top 440h with gradient overlay
-          - nav DRA. DÉBORA + MENU branco sobre overlay
           - content abaixo: eyebrow + headline + CTA pill + secondary link
           ============================================================ */}
       <div className="lg:hidden relative w-full" style={{ backgroundColor: "var(--c-pedra)" }}>
@@ -223,46 +332,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  );
-}
-
-function CtaUnderline({
-  href,
-  label,
-  underlineColor,
-  underlineHeight,
-}: {
-  href: string;
-  label: string;
-  underlineColor: string;
-  underlineHeight: number;
-}) {
-  const isExternal = href.startsWith("http");
-  return (
-    <a
-      href={href}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
-      className="group inline-flex flex-col gap-[10px]"
-    >
-      <span
-        className="text-[12px] tracking-[0.16em] whitespace-pre transition-transform duration-300 group-hover:translate-x-1"
-        style={{
-          fontFamily: "var(--font-geist-mono)",
-          fontWeight: 500,
-          color: "var(--c-grafite)",
-        }}
-      >
-        {label}  →
-      </span>
-      <span
-        className="origin-left transition-transform duration-500 group-hover:scale-x-110"
-        style={{
-          height: `${underlineHeight}px`,
-          backgroundColor: underlineColor,
-          width: label === "AGENDAR CONSULTA" ? "220px" : "190px",
-        }}
-      />
-    </a>
   );
 }

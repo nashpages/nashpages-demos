@@ -18,6 +18,14 @@ export function DeboraNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Cor do texto:
+  // - DESKTOP: SEMPRE carvão (bg do Hero é warm pedra; lê bem com ou sem scroll)
+  // - MOBILE !scrolled: branco (sobre foto + gradient overlay dark)
+  // - MOBILE scrolled: carvão (sobre bg pedra blur)
+  const textColorClass = scrolled
+    ? "text-[var(--c-grafite)]"
+    : "text-white lg:text-[var(--c-grafite)]";
+
   return (
     <motion.header
       initial={reduce ? false : { opacity: 0, y: -10 }}
@@ -33,11 +41,10 @@ export function DeboraNav() {
       <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[80px] py-5 lg:py-7 flex items-center justify-between gap-6">
         <a
           href="#top"
-          className="text-[14px] lg:text-[18px] tracking-[0.12em]"
+          className={`text-[14px] lg:text-[18px] tracking-[0.12em] transition-colors duration-500 ${textColorClass}`}
           style={{
             fontFamily: "var(--font-geist)",
             fontWeight: 500,
-            color: scrolled ? "var(--c-grafite)" : "#ffffff",
           }}
         >
           {nav.logo}
@@ -47,11 +54,10 @@ export function DeboraNav() {
             <a
               key={link.label}
               href={link.href}
-              className="text-[11px] tracking-[0.16em] transition-opacity hover:opacity-70"
+              className={`text-[11px] tracking-[0.16em] transition-colors duration-500 hover:opacity-70 ${textColorClass}`}
               style={{
                 fontFamily: "var(--font-geist-mono)",
                 fontWeight: 500,
-                color: scrolled ? "var(--c-grafite)" : "#ffffff",
               }}
             >
               {link.label}
@@ -62,11 +68,10 @@ export function DeboraNav() {
           href={hero.primaryCta.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="md:hidden text-[10px] tracking-[0.12em]"
+          className={`md:hidden text-[10px] tracking-[0.12em] transition-colors duration-500 ${textColorClass}`}
           style={{
             fontFamily: "var(--font-geist-mono)",
             fontWeight: 500,
-            color: scrolled ? "var(--c-grafite)" : "#ffffff",
           }}
         >
           MENU

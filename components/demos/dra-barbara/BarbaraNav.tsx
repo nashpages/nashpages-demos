@@ -33,15 +33,14 @@ export function BarbaraNav() {
         transition={{ duration: 0.4, ease: EASE }}
       />
 
+      {/* Container 1440 centralizado pra alinhar items do nav com text de TODAS as sections.
+          O bg overlay acima permanece full viewport (cobre toda a tela ao scrollar). */}
+      <div className="relative max-w-[1440px] mx-auto">
+
       {/* ============================================================
-          DESKTOP NAV — Figma 7:4
-          - h 72, pl 64, pr 32, py 24
-          - logo Inter Semi Bold 11px tracking 1.76px (16%) white
-          - links Inter Regular 11px tracking 1.54px (14%) white
-          - gap 56 entre logo e nav-center, gap 28 entre links
-          - LEFT-aligned (sem CTA pill no Hero — só ao scrollar)
+          DESKTOP NAV — Figma 7:4 (logo Inter Semi Bold, links Inter Regular)
           ============================================================ */}
-      <div className="relative hidden lg:flex items-center h-[72px] pl-[80px] pr-[80px] gap-[56px]">
+      <div className="hidden lg:flex items-center h-[72px] pl-[80px] pr-[80px] gap-[56px]">
         <a href="#top" className="group">
           <motion.span
             className="block text-[11px] tracking-[0.16em] whitespace-nowrap"
@@ -101,11 +100,8 @@ export function BarbaraNav() {
 
       {/* ============================================================
           MOBILE NAV — Figma 47:5
-          - px 24 py 20
-          - JetBrains Mono Medium 11px tracking 1.1px (10%) cream
-          - justify-between: DRA. BÁRBARA | MENU
           ============================================================ */}
-      <div className="relative flex lg:hidden items-center justify-between px-[24px] py-[20px]">
+      <div className="flex lg:hidden items-center justify-between px-[24px] py-[20px]">
         <motion.a
           href="#top"
           className="text-[11px] tracking-[0.1em]"
@@ -124,6 +120,7 @@ export function BarbaraNav() {
         >
           MENU
         </motion.button>
+      </div>
       </div>
     </motion.nav>
   );

@@ -29,47 +29,45 @@ export function Hero() {
             "linear-gradient(to right, #BE988A 0%, #EBD9D1 65%, #F9F4EE 100%)",
         }}
       >
-        <motion.div
-          className="absolute right-0 top-0 bottom-0 w-[34%] overflow-hidden"
-          initial={reduce ? false : { opacity: 0 }}
-          animate={reduce ? undefined : { opacity: 1 }}
-          transition={{ duration: 1.2, ease: EASE }}
-        >
+        {/* Container 1440 mx-auto pra alinhar com TODAS as outras sections (max-w-1440 mx-auto).
+            Em viewports >1440, conteúdo+foto ficam centralizados; bg gradient cobre full viewport. */}
+        <div className="max-w-[1440px] mx-auto relative h-full">
           <motion.div
-            className="absolute inset-0"
-            initial={reduce ? false : { scale: 1.08 }}
-            animate={reduce ? undefined : { scale: 1 }}
-            transition={{ duration: 2, ease: EASE }}
-            style={{
-              // Warming filter (Figma temp 0.15 / exp 0.04 / contrast 0.04 — magazine premium)
-              filter: "sepia(0.12) saturate(1.10) brightness(1.04) contrast(1.05)",
-            }}
+            className="absolute right-0 top-0 bottom-0 w-[34%] overflow-hidden"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={reduce ? undefined : { opacity: 1 }}
+            transition={{ duration: 1.2, ease: EASE }}
           >
-            <Image
-              src={hero.photo}
-              alt="Dra. Bárbara Pimenta"
-              fill
-              priority
-              quality={100}
-              sizes="(min-width: 1024px) 34vw, 100vw"
-              className="object-cover object-center"
+            <motion.div
+              className="absolute inset-0"
+              initial={reduce ? false : { scale: 1.08 }}
+              animate={reduce ? undefined : { scale: 1 }}
+              transition={{ duration: 2, ease: EASE }}
+              style={{
+                filter: "sepia(0.12) saturate(1.10) brightness(1.04) contrast(1.05)",
+              }}
+            >
+              <Image
+                src={hero.photo}
+                alt="Dra. Bárbara Pimenta"
+                fill
+                priority
+                quality={100}
+                sizes="(min-width: 1024px) 34vw, 100vw"
+                className="object-cover object-center"
+              />
+            </motion.div>
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(to right, rgba(249,244,238,0.75) 0%, rgba(249,244,238,0) 28%)",
+              }}
             />
           </motion.div>
-          {/* Gradient feather overlay — LEFT edge dissolves into cream bg */}
-          <div
-            aria-hidden
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to right, rgba(249,244,238,0.75) 0%, rgba(249,244,238,0) 28%)",
-            }}
-          />
-        </motion.div>
 
-        {/* Content reserva o espaço da foto: right=34% (foto) + 48px safety gap.
-            Padding lateral 80px pra alinhar com todas as outras sections (Figma uniform).
-            Headline com clamp 72→110px pra escalar com viewport e nunca encostar. */}
-        <div className="absolute left-[80px] top-[200px] right-[calc(34%+48px)]">
+          <div className="absolute left-[80px] top-[200px] right-[calc(34%+48px)]">
           <WordReveal
             lines={hero.headlineLines}
             delay={0.2}
@@ -105,6 +103,7 @@ export function Hero() {
               />
             </div>
           </FadeUp>
+        </div>
         </div>
       </div>
 

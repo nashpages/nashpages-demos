@@ -40,6 +40,10 @@ export function Hero() {
             initial={reduce ? false : { scale: 1.08 }}
             animate={reduce ? undefined : { scale: 1 }}
             transition={{ duration: 2, ease: EASE }}
+            style={{
+              // Warming filter (Figma temp 0.15 / exp 0.04 / contrast 0.04 — magazine premium)
+              filter: "sepia(0.12) saturate(1.10) brightness(1.04) contrast(1.05)",
+            }}
           >
             <Image
               src={hero.photo}
@@ -51,6 +55,15 @@ export function Hero() {
               className="object-cover object-center"
             />
           </motion.div>
+          {/* Gradient feather overlay — LEFT edge dissolves into cream bg */}
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(249,244,238,0.75) 0%, rgba(249,244,238,0) 28%)",
+            }}
+          />
         </motion.div>
 
         {/* Content reserva o espaço da foto: right=34% (foto) + 64px safety gap.
@@ -121,6 +134,9 @@ export function Hero() {
             initial={reduce ? false : { scale: 1.08 }}
             animate={reduce ? undefined : { scale: 1 }}
             transition={{ duration: 1.8, ease: EASE }}
+            style={{
+              filter: "sepia(0.12) saturate(1.10) brightness(1.04) contrast(1.05)",
+            }}
           >
             <Image
               src={hero.photo}

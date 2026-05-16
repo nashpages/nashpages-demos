@@ -41,6 +41,10 @@ export function Reconhecimento() {
             whileInView={reduce ? undefined : { scale: 1 }}
             viewport={{ once: true, margin: "-80px 0px" }}
             transition={{ duration: 1.8, ease: EASE }}
+            style={{
+              // Warming filter — foto já é warm, intensidade leve (Figma temp 0.10)
+              filter: "sepia(0.08) saturate(1.08) brightness(1.04) contrast(1.04)",
+            }}
           >
             <Image
               src={r.photo}
@@ -51,6 +55,15 @@ export function Reconhecimento() {
               className="object-cover object-center"
             />
           </motion.div>
+          {/* Feather subtle — RIGHT edge dissolves into rose claro bg (15% width) */}
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(242,228,221,0) 85%, rgba(242,228,221,0.45) 100%)",
+            }}
+          />
         </motion.div>
         <div className="absolute left-[680px] top-[80px] w-[680px] flex flex-col items-start">
           <ReconContent />
@@ -72,6 +85,9 @@ export function Reconhecimento() {
             whileInView={reduce ? undefined : { scale: 1 }}
             viewport={{ once: true, margin: "-80px 0px" }}
             transition={{ duration: 1.6, ease: EASE }}
+            style={{
+              filter: "sepia(0.08) saturate(1.08) brightness(1.04) contrast(1.04)",
+            }}
           >
             <Image
               src={r.photo}

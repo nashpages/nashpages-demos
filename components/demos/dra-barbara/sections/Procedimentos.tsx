@@ -86,6 +86,11 @@ export function Procedimentos() {
                   whileInView={reduce ? undefined : { scale: 1 }}
                   viewport={{ once: true, margin: "-80px 0px" }}
                   transition={{ duration: 1.6, ease: EASE, delay: 0.15 }}
+                  style={{
+                    // Warming filter — foto tem azul/verde frio, precisa harmonizar (Figma temp 0.12)
+                    // SEM feather: bordas duras viram frame editorial intencional
+                    filter: "sepia(0.10) saturate(1.10) brightness(1.04) contrast(1.05)",
+                  }}
                 >
                   <Image
                     src={p.photo}
@@ -168,6 +173,9 @@ export function Procedimentos() {
                 whileInView={reduce ? undefined : { scale: 1 }}
                 viewport={{ once: true, margin: "-80px 0px" }}
                 transition={{ duration: 1.6, ease: EASE }}
+                style={{
+                  filter: "sepia(0.10) saturate(1.10) brightness(1.04) contrast(1.05)",
+                }}
               >
                 <Image
                   src={p.photo}

@@ -24,11 +24,13 @@ export function BarbaraNav() {
       transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
     >
       <motion.div
-        className="absolute inset-0 backdrop-blur-md"
+        className="absolute inset-0"
         animate={{
           backgroundColor: scrolled
             ? "rgba(248, 242, 234, 0.92)"
             : "rgba(248, 242, 234, 0)",
+          backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
+          WebkitBackdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
         }}
         transition={{ duration: 0.4, ease: EASE }}
       />

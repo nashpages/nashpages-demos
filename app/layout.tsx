@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -22,6 +22,18 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
 export const metadata: Metadata = {
   title: "Nashpages — demos",
   description: "Demos de site para profissionais.",
@@ -39,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable}`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable}`}
     >
       <body className="min-h-screen antialiased">{children}</body>
     </html>

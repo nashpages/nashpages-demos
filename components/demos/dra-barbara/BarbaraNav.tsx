@@ -85,11 +85,11 @@ export function BarbaraNav() {
               href={BARBARA_DATA.hero.primaryCta.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-auto rounded-full text-[10px] tracking-[0.14em] text-[#F8F2EA] bg-[#C4998A] hover:opacity-90 transition-opacity overflow-hidden whitespace-nowrap"
-              initial={{ opacity: 0, scale: 0.9, width: 0, paddingLeft: 0, paddingRight: 0, paddingTop: 10, paddingBottom: 10 }}
-              animate={{ opacity: 1, scale: 1, width: "auto", paddingLeft: 20, paddingRight: 20 }}
-              exit={{ opacity: 0, scale: 0.9, width: 0, paddingLeft: 0, paddingRight: 0 }}
-              transition={{ duration: 0.4, ease: EASE }}
+              className="ml-auto rounded-full text-[10px] tracking-[0.14em] text-[#F8F2EA] bg-[#C4998A] hover:opacity-90 transition-opacity whitespace-nowrap px-[20px] py-[10px]"
+              initial={{ opacity: 0, scale: 0.92, x: 16 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.92, x: 16 }}
+              transition={{ duration: 0.45, ease: EASE }}
               style={{ fontFamily: "var(--font-inter)", fontWeight: 500 }}
             >
               AGENDAR  →

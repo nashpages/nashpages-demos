@@ -88,10 +88,11 @@ export function DemoHero({ hero }: Props) {
         </div>
       </div>
 
-      {/* RIGHT zone (35%) — foto com parallax (só desktop lg+) + grading cinematográfico */}
+      {/* RIGHT zone (35%) — foto com parallax leve (só desktop lg+) + grading cinematográfico.
+          Reduzido overshoot 120%→105% e parallax range 60→24 pra foto ficar com zoom natural. */}
       <div className="relative lg:flex-[0_0_35%] h-[420px] md:h-[520px] lg:h-auto lg:self-stretch order-first lg:order-last overflow-hidden">
-        <ParallaxLayer range={isDesktop ? 60 : 0} direction="up" className="absolute inset-0">
-          <div className="relative h-full w-full lg:h-[120%] lg:-mt-[10%]">
+        <ParallaxLayer range={isDesktop ? 24 : 0} direction="up" className="absolute inset-0">
+          <div className="relative h-full w-full lg:h-[105%] lg:-mt-[2.5%]">
             <Image
               src={hero.photoSrc}
               alt={`Dr Ricardo Rizzo Luiz`}

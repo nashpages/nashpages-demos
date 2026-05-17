@@ -115,7 +115,7 @@ export function WordReveal({
   lineClassName,
   style,
 }: {
-  lines: string[];
+  lines: readonly string[];
   delay?: number;
   stagger?: number;
   className?: string;

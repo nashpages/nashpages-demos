@@ -8,6 +8,7 @@ import { Tecnologia } from "./sections/Tecnologia";
 import { Presenca } from "./sections/Presenca";
 import { Contato } from "./sections/Contato";
 import { Footer } from "./sections/Footer";
+import { TravelingPhotos } from "./TravelingPhotos";
 import { AMANDA_PALETTE } from "./data";
 import { useAmandaCoreography } from "./coreography";
 
@@ -37,6 +38,7 @@ export function AmandaLayout() {
       <Presenca />
       <Contato />
       <Footer />
+      <TravelingPhotos />
     </main>
   );
 }

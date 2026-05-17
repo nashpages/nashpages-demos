@@ -1,8 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { AMANDA_DATA, AMANDA_PALETTE, AMANDA_PHOTOS } from "../data";
+import { AMANDA_DATA, AMANDA_PALETTE } from "../data";
 import { FadeUp, WordReveal } from "../motion";
 
 export function Hero() {
@@ -13,39 +11,7 @@ export function Hero() {
       style={{ backgroundColor: AMANDA_PALETTE.papel, minHeight: 900 }}
     >
       <div className="relative max-w-[1440px] mx-auto h-[900px]">
-        {/* Foto Palestra ESQUERDA — entrada simples Framer (GSAP Tasks 12+ vai substituir) */}
-        <motion.div
-          initial={{ scale: 1.04, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.34, 1.32, 0.64, 1] }}
-          className="hidden lg:block absolute"
-          data-hero-photo
-          style={{
-            left: 120,
-            top: 140,
-            width: 620,
-            height: 720,
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{ width: "100%", height: "100%", overflow: "hidden", position: "relative" }}
-          >
-            <Image
-              src={AMANDA_PHOTOS.palestra}
-              alt="Dra. Amanda Fistarol em palestra"
-              fill
-              quality={100}
-              sizes="620px"
-              style={{
-                objectFit: "cover",
-                objectPosition: "center 20%",
-                filter: "sepia(0.06) saturate(1.04) brightness(1.02) contrast(1.04)",
-              }}
-              priority
-            />
-          </div>
-        </motion.div>
+        {/* Foto Palestra agora vive em TravelingPhotos (wrapper position:fixed) */}
 
         {/* Texto à direita */}
         <div

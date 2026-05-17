@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { AMANDA_DATA, AMANDA_PALETTE, AMANDA_PHOTOS } from "../data";
+import { AMANDA_DATA, AMANDA_PALETTE } from "../data";
 import { FadeUp, Stagger, StaggerItem, WordReveal } from "../motion";
 
 export function Contato() {
@@ -12,31 +11,7 @@ export function Contato() {
       style={{ backgroundColor: AMANDA_PALETTE.neve, minHeight: 950 }}
     >
       <div className="relative max-w-[1440px] mx-auto h-[950px]">
-        {/* Foto Retrato VIRA CABEÇALHO (controlado via FLIP Task 13) */}
-        <div
-          className="hidden lg:block absolute"
-          style={{
-            left: 120,
-            top: 100,
-            width: 280,
-            height: 360,
-            overflow: "hidden",
-          }}
-          data-contato-photo
-        >
-          <Image
-            src={AMANDA_PHOTOS.hero}
-            alt="Dra. Amanda Fistarol"
-            fill
-            quality={100}
-            sizes="280px"
-            style={{
-              objectFit: "cover",
-              objectPosition: "center 25%",
-              filter: "sepia(0.05) saturate(1.05) brightness(1.02) contrast(1.04)",
-            }}
-          />
-        </div>
+        {/* Foto Retrato agora vive em TravelingPhotos (wrapper position:fixed) */}
 
         {/* Conteúdo principal à direita */}
         <div className="hidden lg:block absolute" style={{ left: 440, top: 120, width: 900 }}>

@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { AMANDA_DATA, AMANDA_PALETTE, AMANDA_PHOTOS } from "../data";
+import { AMANDA_DATA, AMANDA_PALETTE } from "../data";
 import { FadeUp } from "../motion";
 
 export function Presenca() {
@@ -12,31 +11,7 @@ export function Presenca() {
       style={{ backgroundColor: AMANDA_PALETTE.papel, minHeight: 950 }}
     >
       <div className="relative max-w-[1440px] mx-auto h-[950px]">
-        {/* Foto Retrato-hero ESQ — controlada via FLIP nas Tasks 13 e 15 */}
-        <div
-          className="hidden lg:block absolute"
-          style={{
-            left: 120,
-            top: 160,
-            width: 520,
-            height: 720,
-            overflow: "hidden",
-          }}
-          data-presenca-photo
-        >
-          <Image
-            src={AMANDA_PHOTOS.hero}
-            alt="Dra. Amanda Fistarol — jaleco SBD"
-            fill
-            quality={100}
-            sizes="520px"
-            style={{
-              objectFit: "cover",
-              objectPosition: "center 25%",
-              filter: "sepia(0.05) saturate(1.05) brightness(1.02) contrast(1.04)",
-            }}
-          />
-        </div>
+        {/* Foto Retrato agora vive em TravelingPhotos (wrapper position:fixed) */}
 
         {/* Texto à direita */}
         <div className="hidden lg:block absolute" style={{ left: 720, top: 120, width: 600 }}>

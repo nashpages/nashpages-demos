@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { AMANDA_DATA, AMANDA_PALETTE, AMANDA_PHOTOS } from "../data";
+import { AMANDA_DATA, AMANDA_PALETTE } from "../data";
 import { FadeUp, Stagger, StaggerItem, WordReveal } from "../motion";
 
 export function Tecnologia() {
@@ -12,31 +11,7 @@ export function Tecnologia() {
       style={{ backgroundColor: AMANDA_PALETTE.papel, minHeight: 900 }}
     >
       <div className="relative max-w-[1440px] mx-auto h-[900px]">
-        {/* Foto Ultraformer DIR — cap rígido 440w pra evitar pixelização (fonte 640w) */}
-        <div
-          className="hidden lg:block absolute"
-          style={{
-            right: 120,
-            top: 160,
-            width: 440,
-            height: 580,
-            overflow: "hidden",
-          }}
-          data-tecnologia-photo
-        >
-          <Image
-            src={AMANDA_PHOTOS.ultraformer}
-            alt="Equipamento Ultraformer"
-            fill
-            quality={100}
-            sizes="440px"
-            style={{
-              objectFit: "cover",
-              objectPosition: "center",
-              filter: "sepia(0.05) saturate(1.04) brightness(1.02) contrast(1.05)",
-            }}
-          />
-        </div>
+        {/* Foto Ultraformer agora vive em TravelingPhotos (wrapper position:fixed) */}
 
         {/* Texto à esquerda */}
         <div className="hidden lg:block absolute" style={{ left: 120, top: 120, width: 680 }}>

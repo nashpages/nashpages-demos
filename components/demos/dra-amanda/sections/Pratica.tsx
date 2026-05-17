@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { AMANDA_DATA, AMANDA_PALETTE, AMANDA_PHOTOS } from "../data";
+import { AMANDA_DATA, AMANDA_PALETTE } from "../data";
 import { FadeUp, Stagger, StaggerItem } from "../motion";
 
 export function Pratica() {
@@ -12,31 +11,7 @@ export function Pratica() {
       style={{ backgroundColor: AMANDA_PALETTE.papel, minHeight: 1050 }}
     >
       <div className="relative max-w-[1440px] mx-auto h-[1050px]">
-        {/* Foto Palestra MENOR ESQ — controlada via FLIP na Task 12 */}
-        <div
-          className="hidden lg:block absolute"
-          style={{
-            left: 120,
-            top: 200,
-            width: 360,
-            height: 500,
-            overflow: "hidden",
-          }}
-          data-pratica-photo
-        >
-          <Image
-            src={AMANDA_PHOTOS.palestra}
-            alt="Dra. Amanda em palestra"
-            fill
-            quality={100}
-            sizes="360px"
-            style={{
-              objectFit: "cover",
-              objectPosition: "center 20%",
-              filter: "sepia(0.06) saturate(1.04) brightness(1.02) contrast(1.04)",
-            }}
-          />
-        </div>
+        {/* Foto Palestra agora vive em TravelingPhotos (wrapper position:fixed) */}
 
         {/* Texto à direita */}
         <div className="hidden lg:block absolute" style={{ left: 520, top: 120, width: 800 }}>

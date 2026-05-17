@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { AmandaNav } from "./AmandaNav";
+import { Hero } from "./sections/Hero";
 import { AMANDA_PALETTE } from "./data";
 
 const themeVars: CSSProperties = {
@@ -22,9 +23,7 @@ export function AmandaLayout() {
   return (
     <main style={themeVars}>
       <AmandaNav />
-      <p style={{ paddingTop: 200, paddingLeft: 80, color: AMANDA_PALETTE.tinta }}>
-        Em reconstrução — sections a vir.
-      </p>
+      <Hero />
     </main>
   );
 }

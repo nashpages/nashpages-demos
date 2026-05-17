@@ -29,7 +29,7 @@ export function Hero() {
             initial={reduce ? false : { scale: 1.06 }}
             animate={reduce ? undefined : { scale: 1 }}
             transition={{ duration: 2, ease: EASE }}
-            style={{ filter: "sepia(0.05) saturate(1.04) brightness(1.02)" }}
+            style={{}}
           >
             <Image
               src={hero.photo}
@@ -221,7 +221,7 @@ export function Hero() {
             initial={reduce ? false : { scale: 1.06 }}
             animate={reduce ? undefined : { scale: 1 }}
             transition={{ duration: 1.8, ease: EASE }}
-            style={{ filter: "sepia(0.05) saturate(1.04) brightness(1.02)" }}
+            style={{}}
           >
             <Image
               src={hero.photo}

@@ -54,10 +54,10 @@ export function Atendimento() {
                   src={atendimento.photo}
                   alt="Dra. Renata Americo"
                   fill
-                  quality={92}
+                  quality={100}
                   sizes="440px"
                   className="object-cover object-center"
-                  style={{ filter: "sepia(0.05) saturate(1.04)" }}
+                  style={{}}
                 />
               </div>
             </FadeUp>

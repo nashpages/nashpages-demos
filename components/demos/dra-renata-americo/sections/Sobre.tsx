@@ -17,10 +17,10 @@ export function Sobre() {
               src={sobre.photo}
               alt="Dra. Renata Americo"
               fill
-              quality={95}
+              priority
+              quality={100}
               sizes="440px"
               className="object-cover object-center"
-              style={{ filter: "sepia(0.05) saturate(1.04)" }}
             />
           </div>
 
@@ -120,10 +120,10 @@ export function Sobre() {
               src={sobre.photo}
               alt="Dra. Renata Americo"
               fill
-              quality={95}
+              priority
+              quality={100}
               sizes="100vw"
               className="object-cover object-center"
-              style={{ filter: "sepia(0.05) saturate(1.04)" }}
             />
           </div>
           <div className="px-6 pt-12 pb-16">

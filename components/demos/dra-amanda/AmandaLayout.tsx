@@ -7,6 +7,7 @@ import { Pratica } from "./sections/Pratica";
 import { Tecnologia } from "./sections/Tecnologia";
 import { Presenca } from "./sections/Presenca";
 import { Contato } from "./sections/Contato";
+import { Footer } from "./sections/Footer";
 import { AMANDA_PALETTE } from "./data";
 
 const themeVars: CSSProperties = {
@@ -32,6 +33,7 @@ export function AmandaLayout() {
       <Tecnologia />
       <Presenca />
       <Contato />
+      <Footer />
     </main>
   );
 }

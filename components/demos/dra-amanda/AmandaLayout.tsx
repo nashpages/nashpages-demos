@@ -9,6 +9,7 @@ import { Presenca } from "./sections/Presenca";
 import { Contato } from "./sections/Contato";
 import { Footer } from "./sections/Footer";
 import { AMANDA_PALETTE } from "./data";
+import { useAmandaCoreography } from "./coreography";
 
 const themeVars: CSSProperties = {
   ["--c-papel" as string]: AMANDA_PALETTE.papel,
@@ -25,6 +26,8 @@ const themeVars: CSSProperties = {
 };
 
 export function AmandaLayout() {
+  useAmandaCoreography();
+
   return (
     <main style={themeVars}>
       <AmandaNav />

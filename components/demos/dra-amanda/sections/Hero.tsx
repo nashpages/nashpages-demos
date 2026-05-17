@@ -19,6 +19,7 @@ export function Hero() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.34, 1.32, 0.64, 1] }}
           className="hidden lg:block absolute"
+          data-hero-photo
           style={{
             left: 120,
             top: 140,
@@ -29,7 +30,6 @@ export function Hero() {
         >
           <div
             style={{ width: "100%", height: "100%", overflow: "hidden", position: "relative" }}
-            data-hero-photo
           >
             <Image
               src={AMANDA_PHOTOS.palestra}

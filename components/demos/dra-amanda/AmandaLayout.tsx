@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { AmandaNav } from "./AmandaNav";
 import { Hero } from "./sections/Hero";
 import { Pratica } from "./sections/Pratica";
+import { Tecnologia } from "./sections/Tecnologia";
 import { AMANDA_PALETTE } from "./data";
 
 const themeVars: CSSProperties = {
@@ -26,6 +27,7 @@ export function AmandaLayout() {
       <AmandaNav />
       <Hero />
       <Pratica />
+      <Tecnologia />
     </main>
   );
 }

@@ -107,6 +107,66 @@ export function useAmandaCoreography() {
             },
           });
         }
+
+        // === Cross-morph #1: Prática → Tecnologia (momento WOW) ===
+        // praticaPhoto e heroPhoto já declarados no bloco Morph #1 acima — reutilizados aqui.
+        const tecnologiaPhoto = document.querySelector<HTMLElement>("[data-tecnologia-photo]");
+        const tecnologiaSection = document.querySelector<HTMLElement>("#tecnologia");
+
+        if (praticaPhoto && tecnologiaPhoto && tecnologiaSection) {
+          // Estado inicial — tecnologiaPhoto começa invisível à direita
+          gsap.set(tecnologiaPhoto, { opacity: 0, x: 200, scale: 0.8 });
+
+          ScrollTrigger.create({
+            trigger: tecnologiaSection,
+            start: "top 90%",
+            end: "top 30%",
+            scrub: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const p = self.progress; // 0..1
+
+              // === Palestra ESCAPA pra ESQUERDA ===
+              // scale 1→0.85, x 0→-200, opacity 1→0.4
+              const scaleOut = 1 - 0.15 * p;
+              const xOut = -200 * p;
+              const opacityOut = 1 - 0.6 * p;
+              gsap.set(praticaPhoto, {
+                scale: scaleOut,
+                x: xOut,
+                opacity: opacityOut,
+              });
+
+              // Também esconde heroPhoto (overlap pós-Morph#1)
+              if (heroPhoto) gsap.set(heroPhoto, { opacity: opacityOut });
+
+              // === Ultraformer ENTRA pela DIREITA ===
+              // Mapeia p 0.2..1 → 0..1 (entrada atrasada — começa quando palestra já saiu 20%)
+              const enterProgress = Math.max(0, (p - 0.2) / 0.8);
+              const scaleIn = 0.8 + 0.2 * enterProgress;
+              const xIn = 200 - 200 * enterProgress;
+              const opacityIn = enterProgress;
+              gsap.set(tecnologiaPhoto, {
+                scale: scaleIn,
+                x: xIn,
+                opacity: opacityIn,
+              });
+            },
+            onLeave: () => {
+              // Snap final + micro-overshoot back.out(1.3) na chegada
+              gsap.set(tecnologiaPhoto, { scale: 1, x: 0, opacity: 1 });
+              gsap.fromTo(
+                tecnologiaPhoto,
+                { scale: 1 },
+                { scale: 1.02, duration: 0.18, ease: "back.out(1.3)", yoyo: true, repeat: 1 }
+              );
+            },
+            onEnterBack: () => {
+              // Scroll reverso — voltar pra estado da Prática com opacity 1
+              if (praticaPhoto) gsap.set(praticaPhoto, { opacity: 1 });
+            },
+          });
+        }
       }
     );
 

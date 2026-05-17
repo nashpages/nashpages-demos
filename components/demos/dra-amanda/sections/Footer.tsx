@@ -5,8 +5,8 @@ import { AMANDA_DATA } from "../data";
 export function Footer() {
   const { footer } = AMANDA_DATA;
   return (
-    <footer className="w-full lg:px-[120px] px-6 lg:py-[80px] py-12" style={{ backgroundColor: "var(--c-footer-bg)" }}>
-      <div className="mx-auto w-full max-w-[1440px]">
+    <footer className="w-full lg:py-[80px] py-12" style={{ backgroundColor: "var(--c-footer-bg)" }}>
+      <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[120px]">
         <div className="grid lg:grid-cols-[260px_320px_180px_280px] grid-cols-1 gap-8">
           <div>
             <p className="lg:text-[32px] text-[28px]"

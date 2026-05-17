@@ -58,9 +58,9 @@ export function Contato() {
 
   return (
     <section ref={sectionRef} id="contato"
-      className="relative w-full lg:min-h-screen lg:px-[120px] px-6 lg:py-[120px] py-16 overflow-hidden"
+      className="relative w-full lg:min-h-screen lg:py-[120px] py-16 overflow-hidden"
       style={{ backgroundColor: "var(--c-papel)" }}>
-      <div className="mx-auto w-full max-w-[1440px]">
+      <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[120px]">
         <p ref={eyebrowRef} className="text-[12px] tracking-[0.16em]"
           style={{ fontFamily: "var(--font-ibm-plex-mono)", fontWeight: 500, color: "var(--c-carmim)" }}>
           {contato.eyebrow}

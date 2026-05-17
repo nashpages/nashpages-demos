@@ -6,9 +6,9 @@ import { FadeUp, Stagger, StaggerItem } from "../motion";
 export function Sobre() {
   const { sobre } = AMANDA_DATA;
   return (
-    <section id="sobre" className="w-full lg:px-[120px] px-6 lg:py-[120px] py-16"
+    <section id="sobre" className="w-full lg:py-[120px] py-16"
       style={{ backgroundColor: "var(--c-neve)" }}>
-      <div className="mx-auto w-full max-w-[1440px]">
+      <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[120px]">
         <FadeUp>
           <p className="text-[12px] tracking-[0.16em]"
             style={{ fontFamily: "var(--font-ibm-plex-mono)", fontWeight: 500, color: "var(--c-carmim)" }}>

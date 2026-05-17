@@ -28,7 +28,7 @@ export function AmandaNav() {
         WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
       }}
     >
-      <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[80px] py-5 lg:py-7 flex items-center justify-between md:justify-start gap-6">
+      <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[120px] py-5 lg:py-7 flex items-center justify-between md:justify-start gap-6">
         <a href="#top"
           className="text-[16px] lg:text-[22px] tracking-[-0.3px]"
           style={{ fontFamily: "var(--font-fraunces)", fontWeight: 400, color: "var(--c-tinta)" }}>

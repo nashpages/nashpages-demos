@@ -5,6 +5,7 @@ import { AmandaNav } from "./AmandaNav";
 import { Hero } from "./sections/Hero";
 import { Pratica } from "./sections/Pratica";
 import { Tecnologia } from "./sections/Tecnologia";
+import { Presenca } from "./sections/Presenca";
 import { AMANDA_PALETTE } from "./data";
 
 const themeVars: CSSProperties = {
@@ -28,6 +29,7 @@ export function AmandaLayout() {
       <Hero />
       <Pratica />
       <Tecnologia />
+      <Presenca />
     </main>
   );
 }

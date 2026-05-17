@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AmandaLayout } from "@/components/demos/dra-amanda/AmandaLayout";
 
 export const metadata: Metadata = {
   title: "Dra. Amanda Fistarol — Dermatologia em Blumenau",
@@ -8,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return (
-    <main style={{ padding: 48, fontFamily: "sans-serif" }}>
-      <p>Em reconstrução.</p>
-    </main>
-  );
+  return <AmandaLayout />;
 }

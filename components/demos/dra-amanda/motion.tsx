@@ -6,8 +6,8 @@ import { type ReactNode } from "react";
 // Easing oscilante "back.out(1.2)" emulado em cubic-bezier.
 // GSAP back.out(1.2) ≈ cubic-bezier(0.34, 1.32, 0.64, 1) — micro-overshoot suave.
 // Pra dermato evitamos exagero (back default GSAP é 1.7).
-const EASE_BACK = [0.34, 1.32, 0.64, 1] as const;
-const EASE_OUT = [0.16, 1, 0.3, 1] as const;
+export const EASE_BACK = [0.34, 1.32, 0.64, 1] as const;
+export const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 
 export function FadeUp({
   children,

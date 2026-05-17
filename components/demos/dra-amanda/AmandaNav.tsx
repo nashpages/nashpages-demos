@@ -1,23 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { AMANDA_DATA, AMANDA_PALETTE } from "./data";
+import { EASE_OUT } from "./motion";
 
 export function AmandaNav() {
   const [scrolled, setScrolled] = useState(false);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll(); // initial check — handles page load mid-scroll
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <motion.header
-      initial={{ y: -16, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+      initial={reduced ? false : { y: -16, opacity: 0 }}
+      animate={reduced ? undefined : { y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.2, ease: EASE_OUT }}
       className="fixed top-0 left-0 right-0 z-50 transition-colors"
       style={{
         backgroundColor: scrolled ? `${AMANDA_PALETTE.papel}E6` : "transparent",

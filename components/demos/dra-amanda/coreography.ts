@@ -167,6 +167,59 @@ export function useAmandaCoreography() {
             },
           });
         }
+
+        // === Cross-morph #2: Tecnologia → Presença (espelho do #1) ===
+        // tecnologiaPhoto declarado no bloco Cross-morph #1 acima — reutilizado aqui.
+        // presencaPhoto declarado no bloco Morph #2 acima — reutilizado aqui.
+        const presencaSection = document.querySelector<HTMLElement>("#presenca");
+
+        if (tecnologiaPhoto && presencaPhoto && presencaSection) {
+          // Estado inicial — presencaPhoto começa invisível à esquerda
+          gsap.set(presencaPhoto, { opacity: 0, x: -200, scale: 0.8 });
+
+          ScrollTrigger.create({
+            trigger: presencaSection,
+            start: "top 90%",
+            end: "top 30%",
+            scrub: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const p = self.progress;
+
+              // Ultraformer ESCAPA pra DIREITA
+              const scaleOut = 1 - 0.15 * p;
+              const xOut = 200 * p;
+              const opacityOut = 1 - 0.6 * p;
+              gsap.set(tecnologiaPhoto, {
+                scale: scaleOut,
+                x: xOut,
+                opacity: opacityOut,
+              });
+
+              // Retrato ENTRA pela ESQUERDA — espelhado
+              const enterProgress = Math.max(0, (p - 0.2) / 0.8);
+              const scaleIn = 0.8 + 0.2 * enterProgress;
+              const xIn = -200 + 200 * enterProgress; // -200 → 0 (entra pela esquerda)
+              const opacityIn = enterProgress;
+              gsap.set(presencaPhoto, {
+                scale: scaleIn,
+                x: xIn,
+                opacity: opacityIn,
+              });
+            },
+            onLeave: () => {
+              gsap.set(presencaPhoto, { scale: 1, x: 0, opacity: 1 });
+              gsap.fromTo(
+                presencaPhoto,
+                { scale: 1 },
+                { scale: 1.02, duration: 0.18, ease: "back.out(1.3)", yoyo: true, repeat: 1 }
+              );
+            },
+            onEnterBack: () => {
+              if (tecnologiaPhoto) gsap.set(tecnologiaPhoto, { opacity: 1 });
+            },
+          });
+        }
       }
     );
 

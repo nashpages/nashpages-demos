@@ -68,40 +68,44 @@ export function Hero() {
 
   return (
     <section id="top" className="relative w-full overflow-hidden" style={{ backgroundColor: "var(--c-papel)" }}>
-      {/* DESKTOP — espelha Figma 6:2 (1440 × 760, foto janela 620 × 752 em x=820 y=8, imagem h=134.5% top-anchored) */}
+      {/* DESKTOP — padrão Derize: foto ocupa altura total no canto direito + texto sobre container 1440 */}
       <div className="hidden lg:block relative w-full h-[760px]">
-        <div className="relative h-full max-w-[1440px] mx-auto">
-          {/* FOTO — janela 620 × 752 ancorada à direita do container 1440 (= left:820 quando viewport >= 1440) */}
+        {/* FOTO — right-aligned, altura total, width responsivo (centrada em 620/1440 = 43vw) */}
+        <motion.div
+          ref={photoRef}
+          className="absolute right-0 top-0 bottom-0 overflow-hidden"
+          style={{ width: "clamp(500px, 43vw, 620px)" }}
+          initial={reduce ? false : { opacity: 0, y: 24 }}
+          animate={reduce ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 1.8, ease: EASE_SMOOTH, delay: 0.15 }}
+        >
           <motion.div
-            ref={photoRef}
-            className="absolute overflow-hidden"
-            style={{ right: 0, top: "8px", width: "620px", height: "752px" }}
-            initial={reduce ? false : { opacity: 0, y: 28 }}
-            animate={reduce ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 1.8, ease: EASE_SMOOTH, delay: 0.15 }}
+            className="absolute inset-0"
+            initial={reduce ? false : { scale: 1.08 }}
+            animate={reduce ? undefined : { scale: 1 }}
+            transition={{ duration: 2.6, ease: EASE_SMOOTH }}
+            style={reduce ? undefined : { y: photoY }}
           >
-            <motion.div
-              className="absolute left-0 right-0"
-              style={reduce
-                ? { top: 0, height: "134.5%" }
-                : { top: 0, height: "134.5%", y: photoY }}
-              initial={reduce ? false : { scale: 1.06 }}
-              animate={reduce ? undefined : { scale: 1 }}
-              transition={{ duration: 2.6, ease: EASE_SMOOTH }}
-            >
-              <Image
-                src={hero.photo}
-                alt="Dra. Elisangela Medeiros"
-                fill
-                priority
-                quality={100}
-                sizes="620px"
-                className="object-cover object-top"
-              />
-            </motion.div>
+            <Image
+              src={hero.photo}
+              alt="Dra. Elisangela Medeiros"
+              fill
+              priority
+              quality={100}
+              sizes="(min-width: 1024px) clamp(500px, 43vw, 620px), 100vw"
+              className="object-cover object-top"
+            />
           </motion.div>
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(to right, rgba(244,244,238,0.22) 0%, rgba(244,244,238,0) 18%)" }}
+          />
+        </motion.div>
 
-          {/* Eyebrow */}
+        {/* CONTAINER 1440 — textos ancorados em left:80 */}
+        <div className="relative h-full max-w-[1440px] mx-auto">
+          {/* Eyebrow — top 232 (Figma) */}
           <div className="absolute left-[80px] top-[232px]">
             <FadeUp delay={0.3} duration={0.8}>
               <p
@@ -118,7 +122,7 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* Headline — 72px fixo, leading 82px (Figma) */}
+          {/* Headline — top 270, 72px Cormorant Italic / leading 82 (Figma) */}
           <div className="absolute left-[80px] top-[270px]">
             <h1
               style={{
@@ -150,14 +154,23 @@ export function Hero() {
             transition={{ duration: 1, ease: EASE_SMOOTH, delay: 1.4 }}
           />
 
-          {/* Subline — top 500, 16px / 26px / 560 (Figma) */}
-          <div className="absolute left-[80px] top-[500px]" style={{ width: "560px" }}>
+          {/* Subline — top 500, 16/26 Inter Light (Figma) — limitado pra não invadir foto */}
+          <div
+            className="absolute left-[80px] top-[500px]"
+            style={{ right: "calc(clamp(500px, 43vw, 620px) + 48px - max(0px, (100vw - 1440px) / 2))" }}
+          >
             <FadeUp delay={1.55} y={20} duration={0.9}>
-              <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: "16px", lineHeight: "26px", color: "var(--c-neblina)", margin: 0 }}>
+              <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: "16px", lineHeight: "26px", color: "var(--c-neblina)", maxWidth: "560px", margin: 0 }}>
                 {hero.subline}
               </p>
             </FadeUp>
           </div>
+
+          {/* Linha hair — top 600 (acima da marginalia) */}
+          <div
+            className="absolute left-[80px] top-[600px]"
+            style={{ right: "calc(clamp(500px, 43vw, 620px) + 0px - max(0px, (100vw - 1440px) / 2))", height: "1px", backgroundColor: "var(--c-linha)" }}
+          />
 
           {/* Marginalia — top 620 (Figma) */}
           <FadeUp delay={1.75} duration={0.8}>

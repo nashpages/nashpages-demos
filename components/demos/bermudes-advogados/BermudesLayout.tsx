@@ -32,6 +32,7 @@ export function BermudesLayout() {
           backgroundColor: "var(--c-papel)",
           color: "var(--c-tinta)",
           fontFamily: "var(--font-inter)",
+          fontVariationSettings: '"opsz" 144, "SOFT" 30',
         }}
         className="min-h-screen overflow-x-hidden"
       >

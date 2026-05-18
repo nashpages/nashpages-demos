@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader } from "next/font/google";
+import { Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader, Spectral } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -74,6 +74,13 @@ const newsreader = Newsreader({
   style: ["normal", "italic"],
 });
 
+const spectral = Spectral({
+  variable: "--font-spectral",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
   title: "Nashpages — demos",
   description: "Demos de site para profissionais.",
@@ -91,7 +98,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable}`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable} ${spectral.variable}`}
     >
       <body className="min-h-screen antialiased">{children}</body>
     </html>

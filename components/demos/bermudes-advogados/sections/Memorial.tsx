@@ -25,6 +25,7 @@ export function Memorial() {
           fill
           quality={95}
           sizes="100vw"
+          loading="eager"
           className="object-cover object-center"
         />
       </div>

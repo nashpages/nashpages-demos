@@ -24,6 +24,7 @@ export function Herzog() {
           fill
           quality={92}
           sizes="100vw"
+          loading="eager"
           className="object-cover object-center"
         />
       </div>

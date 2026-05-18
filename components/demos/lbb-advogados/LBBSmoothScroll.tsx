@@ -4,7 +4,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 
 const MAGNET_INNER = 8;
-const MAGNET_OUTER = 160;
+const MAGNET_DOWN_RANGE = 500; // snap pra próxima section se estiver ≤500px de distância
+const MAGNET_UP_RANGE = 80;    // snap pra alinhar topo da section atual só se MUITO perto
 const STABLE_FRAMES = 14;
 const SNAP_DURATION = 0.7;
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
@@ -64,23 +65,40 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     let snapReleaseTime = 0;
     let lastTriggerReason = "";
 
-    const findClosestSection = () => {
+    const findSnapTarget = () => {
       const sections = Array.from(
         document.querySelectorAll<HTMLElement>("[data-snap-section]")
       );
       if (sections.length === 0) return null;
       const scrollY = window.scrollY;
-      const tops = sections.map((s) => s.getBoundingClientRect().top + scrollY);
-      let closestIdx = 0;
-      let minDist = Math.abs(tops[0] - scrollY);
-      for (let i = 1; i < tops.length; i++) {
-        const d = Math.abs(tops[i] - scrollY);
-        if (d < minDist) {
-          minDist = d;
-          closestIdx = i;
-        }
+      // posição absoluta de cada section start
+      const items = sections.map((el) => ({
+        el,
+        top: el.getBoundingClientRect().top + scrollY,
+      }));
+      items.sort((a, b) => a.top - b.top);
+
+      // section start logo acima (prev) e logo abaixo (next) do scrollY
+      let prev: (typeof items)[0] | null = null;
+      let next: (typeof items)[0] | null = null;
+      for (const it of items) {
+        if (it.top <= scrollY + 1) prev = it;
+        else if (next === null) next = it;
       }
-      return { target: sections[closestIdx], distance: minDist, total: sections.length };
+      const distPrev = prev ? scrollY - prev.top : Infinity;
+      const distNext = next ? next.top - scrollY : Infinity;
+
+      // 1) Snap DOWN — passou da metade entre prev e next (mais perto do next)
+      if (next && distNext > MAGNET_INNER && distNext <= MAGNET_DOWN_RANGE && distNext < distPrev) {
+        return { target: next.el, distance: distNext, total: items.length, reason: "down" };
+      }
+      // 2) Snap UP — está MUITO perto do topo da section atual (alinha)
+      if (prev && distPrev > MAGNET_INNER && distPrev <= MAGNET_UP_RANGE) {
+        return { target: prev.el, distance: distPrev, total: items.length, reason: "up" };
+      }
+      // 3) Nenhum snap (no meio de uma section longa, scroll natural)
+      const closer = distNext <= distPrev ? next : prev;
+      return { target: closer?.el ?? items[0].el, distance: Math.min(distNext, distPrev), total: items.length, reason: "none" };
     };
 
     const raf = (time: number) => {
@@ -101,27 +119,27 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
 
       if (!isSnapping && stableFrames >= STABLE_FRAMES) {
         stableFrames = 0;
-        const result = findClosestSection();
+        const result = findSnapTarget();
         if (result) {
-          const { target, distance } = result;
-          if (distance > MAGNET_INNER && distance < MAGNET_OUTER) {
+          const { target, distance, reason } = result;
+          if (reason === "down" || reason === "up") {
             isSnapping = true;
             snapReleaseTime = time + SNAP_DURATION * 1000 + 200;
-            lastTriggerReason = `SNAP → ${target.id || "?"} (dist ${Math.round(distance)})`;
+            lastTriggerReason = `SNAP ${reason} → ${target.id || "?"} (dist ${Math.round(distance)})`;
             lenis.scrollTo(target, {
               duration: SNAP_DURATION,
               easing: EASE_OUT_QUART,
             });
           } else if (distance <= MAGNET_INNER) {
-            lastTriggerReason = `aligned (dist ${Math.round(distance)} ≤ ${MAGNET_INNER})`;
+            lastTriggerReason = `aligned (dist ${Math.round(distance)})`;
           } else {
-            lastTriggerReason = `too far (dist ${Math.round(distance)} ≥ ${MAGNET_OUTER})`;
+            lastTriggerReason = `no-snap (dist ${Math.round(distance)})`;
           }
         }
       }
 
       if (debugRef.current) {
-        const r = findClosestSection();
+        const r = findSnapTarget();
         const sectionsList = Array.from(
           document.querySelectorAll<HTMLElement>("[data-snap-section]")
         ).map((s) => s.id || "?").join(", ");
@@ -130,8 +148,8 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
           `stable       ${stableFrames}/${STABLE_FRAMES}`,
           `snapping     ${isSnapping}`,
           `sections     ${r?.total ?? 0}  [${sectionsList}]`,
-          `closest      ${r?.target.id ?? "—"}`,
-          `distance     ${r ? Math.round(r.distance) : "—"}  (zone ${MAGNET_INNER}–${MAGNET_OUTER})`,
+          `target       ${r?.target.id ?? "—"}  (${r?.reason ?? "—"})`,
+          `distance     ${r ? Math.round(r.distance) : "—"}  (down≤${MAGNET_DOWN_RANGE} / up≤${MAGNET_UP_RANGE})`,
           `last         ${lastTriggerReason || "—"}`,
         ].join("\n");
       }

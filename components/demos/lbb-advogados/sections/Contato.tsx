@@ -7,7 +7,7 @@ export function Contato() {
   const { contato } = LBB_DATA;
 
   return (
-    <section id="contato" className="w-full" style={{ backgroundColor: "var(--c-pedra)" }}>
+    <section id="contato" data-snap-section className="w-full" style={{ backgroundColor: "var(--c-pedra)" }}>
       <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[80px] pt-24 lg:pt-[140px] pb-24 lg:pb-[160px] text-center">
         <FadeUp>
           <p

@@ -55,6 +55,7 @@ export function HeroCarousel() {
   return (
     <section
       id="top"
+      data-snap-section
       className="relative w-full h-screen min-h-[640px] overflow-hidden"
       style={{ backgroundColor: "var(--c-accent-deep)" }}
     >

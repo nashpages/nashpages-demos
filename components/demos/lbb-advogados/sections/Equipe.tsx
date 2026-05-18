@@ -7,7 +7,7 @@ export function Equipe() {
   const { equipe } = LBB_DATA;
 
   return (
-    <section id="equipe" className="w-full" style={{ backgroundColor: "var(--c-papel)" }}>
+    <section id="equipe" data-snap-section className="w-full" style={{ backgroundColor: "var(--c-papel)" }}>
       <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[80px] pt-24 lg:pt-[120px] pb-24 lg:pb-[120px]">
         <FadeUp>
           <p

@@ -7,7 +7,7 @@ export function Historia() {
   const { historia } = LBB_DATA;
 
   return (
-    <section id="historia" className="w-full" style={{ backgroundColor: "var(--c-pedra)" }}>
+    <section id="historia" data-snap-section className="w-full" style={{ backgroundColor: "var(--c-pedra)" }}>
       <div className="mx-auto w-full max-w-[1440px] px-6 lg:px-[80px] pt-24 lg:pt-[120px] pb-24 lg:pb-[120px]">
         <FadeUp>
           <p

@@ -15,8 +15,9 @@ import Lenis from "lenis";
  */
 
 const HERO_LOCK_TOLERANCE = 10;
-const SOBRE_TOP_RETURN_ZONE = 80;
+const SOBRE_TOP_RETURN_ZONE = 200;
 const SNAP_DURATION = 1.2;
+const SNAP_RELEASE_BUFFER_MS = 200;
 const WHEEL_MIN_DELTA = 4;
 
 const EASE_IN_OUT_CUBIC = (t: number) =>
@@ -54,7 +55,20 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
 
     let rafId: number;
     let isSnapping = false;
-    let snapReleaseTime = 0;
+    let releaseTimer: number | null = null;
+
+    const beginSnap = (target: HTMLElement) => {
+      isSnapping = true;
+      if (releaseTimer) clearTimeout(releaseTimer);
+      releaseTimer = window.setTimeout(() => {
+        isSnapping = false;
+        releaseTimer = null;
+      }, SNAP_DURATION * 1000 + SNAP_RELEASE_BUFFER_MS);
+      lenis.scrollTo(target, {
+        duration: SNAP_DURATION,
+        easing: EASE_IN_OUT_CUBIC,
+      });
+    };
 
     if (isTouch) {
       const rafTouch = (time: number) => {
@@ -96,14 +110,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       if (inHero) {
         e.preventDefault();
         e.stopPropagation();
-        if (e.deltaY > 0) {
-          isSnapping = true;
-          snapReleaseTime = performance.now() + SNAP_DURATION * 1000 + 200;
-          lenis.scrollTo(sobre, {
-            duration: SNAP_DURATION,
-            easing: EASE_IN_OUT_CUBIC,
-          });
-        }
+        if (e.deltaY > 0) beginSnap(sobre);
         return;
       }
 
@@ -113,12 +120,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       if (justBelowSobreTop && e.deltaY < 0) {
         e.preventDefault();
         e.stopPropagation();
-        isSnapping = true;
-        snapReleaseTime = performance.now() + SNAP_DURATION * 1000 + 200;
-        lenis.scrollTo(hero, {
-          duration: SNAP_DURATION,
-          easing: EASE_IN_OUT_CUBIC,
-        });
+        beginSnap(hero);
       }
     };
 
@@ -126,7 +128,6 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
 
     const raf = (time: number) => {
       lenis.raf(time);
-      if (isSnapping && time >= snapReleaseTime) isSnapping = false;
       rafId = requestAnimationFrame(raf);
     };
     rafId = requestAnimationFrame(raf);
@@ -134,6 +135,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("wheel", onWheel, { capture: true });
+      if (releaseTimer) clearTimeout(releaseTimer);
       lenis.destroy();
     };
   }, [reduce, isTouch]);

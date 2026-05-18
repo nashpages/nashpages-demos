@@ -77,16 +77,18 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       );
       if (sections.length === 0) return null;
       const scrollY = window.scrollY;
-      let closest = sections[0];
-      let minDist = Math.abs(closest.offsetTop - scrollY);
-      for (const s of sections) {
-        const d = Math.abs(s.offsetTop - scrollY);
+      // Posição absoluta no document via bounding rect (offsetTop é relativo ao offsetParent)
+      const tops = sections.map((s) => s.getBoundingClientRect().top + scrollY);
+      let closestIdx = 0;
+      let minDist = Math.abs(tops[0] - scrollY);
+      for (let i = 1; i < tops.length; i++) {
+        const d = Math.abs(tops[i] - scrollY);
         if (d < minDist) {
           minDist = d;
-          closest = s;
+          closestIdx = i;
         }
       }
-      return { target: closest, distance: minDist };
+      return { target: sections[closestIdx], distance: minDist };
     };
 
     const raf = (time: number) => {
@@ -107,7 +109,8 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       lastY = y;
 
       // User estabilizou + não está em snap ativo → check magnet
-      if (!isSnapping && stableFrames === STABLE_FRAMES) {
+      if (!isSnapping && stableFrames >= STABLE_FRAMES) {
+        stableFrames = 0; // reset imediato pra não disparar de novo no próximo frame
         const result = findClosestSection();
         if (result) {
           const { target, distance } = result;

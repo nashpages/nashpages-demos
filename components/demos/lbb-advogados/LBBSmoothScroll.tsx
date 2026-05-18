@@ -5,18 +5,18 @@ import Lenis from "lenis";
 
 /**
  * Scroll híbrido:
- * 1. Hero (§01) → Sobre (§02): LOCK MAGNÉTICO. Qualquer wheel down dispara
- *    snap suave pra Sobre. Wheel up dentro de Sobre (perto do topo) volta
- *    pra Hero. Scroll natural BLOQUEADO nessa zona (preventDefault).
- * 2. Sobre em diante: scroll natural via Lenis smooth (sem magnet, sem snap).
+ * 1. Hero (§01) → Sobre (§02): wheel down dentro do Hero dispara snap suave
+ *    pra Sobre. Wheel up dentro do Hero snapa pro topo do Hero (scrollY=0).
+ * 2. Sobre primeiros 200px: wheel up volta magnético pro Hero.
+ * 3. Lenis 'scroll' listener: se Lenis natural cruzou pra dentro do Hero
+ *    indo pra cima (flick rápido que escapou da return zone), força snap
+ *    pro topo automaticamente — fecha o caminho silencioso.
+ * 4. Resto: scroll natural via Lenis smooth.
  *
  * Captura ANTES do Lenis (capture:true + stopPropagation) pra interceptar
  * wheel apenas na zona de transição.
  *
- * Debug overlay: ativável via querystring ?debug=1 — captura zonas,
- * contadores de wheels (swallowed vs processed) e tempo na "janela morta"
- * entre Lenis-landed e releaseTimer-fired. Só pra diagnóstico do bug
- * residual scroll Sobre→Hero. Não muda a lógica do scroll.
+ * Debug overlay: ativável via querystring ?debug=1.
  */
 
 const HERO_LOCK_TOLERANCE = 10;
@@ -24,6 +24,8 @@ const SOBRE_TOP_RETURN_ZONE = 200;
 const SNAP_DURATION = 1.2;
 const SNAP_RELEASE_BUFFER_MS = 200;
 const WHEEL_MIN_DELTA = 4;
+const HERO_TOP_EPSILON = 1;
+const AUTO_SNAP_VELOCITY_THRESHOLD = -0.5;
 
 const EASE_IN_OUT_CUBIC = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -66,7 +68,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     let isSnapping = false;
     let releaseTimer: number | null = null;
 
-    // ── Debug instrumentation (read-only — não muda comportamento) ──
+    // Debug instrumentation
     let snapTarget = 0;
     let snapLandedAt = 0;
     let lastBeginSnapAt = 0;
@@ -78,6 +80,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     let passed = 0;
     let snapUps = 0;
     let snapDowns = 0;
+    let autoSnaps = 0;
     let swallowSnap = 0;
     let swallowUp = 0;
     let filtered = 0;
@@ -155,9 +158,14 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
           lastDecision = "snap ↓";
           snapDowns += 1;
           beginSnap(sobre);
+        } else if (scrollY > HERO_TOP_EPSILON) {
+          // Fix A: wheel up dentro do Hero — snapa pro topo (em vez de swallow silencioso)
+          lastDecision = "snap ↑ (Hero)";
+          snapUps += 1;
+          beginSnap(hero);
         } else {
-          lastDecision = "swallow ↑ ⚠";
-          swallowUp += 1;
+          // Já no topo (scrollY≈0). Wheel up = noop sem trancar isSnapping.
+          lastDecision = "noop (top)";
         }
         return;
       }
@@ -180,19 +188,35 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       passed += 1;
     };
 
+    // Fix B: Lenis natural cruzou boundary indo pra cima sem disparar wheel
+    // listener (acontece em flick rápido onde a return zone é "pulada" entre
+    // pulses). Força snap pro topo automaticamente.
+    const onLenisScroll = () => {
+      if (isSnapping) return;
+      const refs = getHeroSobre();
+      if (!refs) return;
+      const { hero, sobreTop } = refs;
+      if (
+        lenis.scroll < sobreTop - HERO_LOCK_TOLERANCE &&
+        lenis.velocity < AUTO_SNAP_VELOCITY_THRESHOLD
+      ) {
+        autoSnaps += 1;
+        beginSnap(hero);
+      }
+    };
+
     window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    lenis.on("scroll", onLenisScroll);
 
     const raf = (time: number) => {
       lenis.raf(time);
 
-      // Detecta quando Lenis chegou no destino do snap (lenis.scroll ≈ target)
       if (isSnapping && snapLandedAt === 0) {
         if (Math.abs(lenis.scroll - snapTarget) < 1) {
           snapLandedAt = performance.now();
         }
       }
 
-      // Atualiza overlay (só se debug ligado)
       if (debugRef.current) {
         const refs = getHeroSobre();
         const sobreTop = refs?.sobreTop ?? 0;
@@ -215,6 +239,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
           `scrollY        ${Math.round(scrollY)}`,
           `sobreTop       ${Math.round(sobreTop)}`,
           `gap            ${gap >= 0 ? "+" : ""}${Math.round(gap)}  (${gapZone})`,
+          `lenis vel      ${lenis.velocity.toFixed(2)}`,
           ``,
           `isSnapping     ${isSnapping ? "YES" : "no"}`,
           `landed ago     ${deadWindow}ms${deadWindow > 0 ? "  ⚠ dead window" : ""}`,
@@ -229,6 +254,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
           `  → lenis      ${passed}`,
           `  snap ↑       ${snapUps}`,
           `  snap ↓       ${snapDowns}`,
+          `  auto snap    ${autoSnaps}`,
           `  swallow ↻    ${swallowSnap}`,
           `  swallow ↑ ⚠  ${swallowUp}`,
           `  filtered     ${filtered}`,
@@ -242,6 +268,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("wheel", onWheel, { capture: true });
+      lenis.off("scroll", onLenisScroll);
       if (releaseTimer) clearTimeout(releaseTimer);
       lenis.destroy();
     };

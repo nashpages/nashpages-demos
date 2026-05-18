@@ -4,20 +4,23 @@ import { useEffect, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 
 /**
- * Smart wheel-based section snap:
- * - Smooth Lenis scroll baseline (sempre ativo)
- * - Ao tocar borda de uma section (top ou bottom), próximo wheel SNAP forte
- * - Dentro da section (entre top e bottom), scroll natural via Lenis
- * - Mobile/touch: respeita UX nativa, sem hijack
+ * Magnetic section snap (gentle):
+ * - Lenis smooth scroll baseline sempre ativo
+ * - Wheel NÃO é hijack-ado — user scrolla naturalmente
+ * - Após user PARAR de scrollar 220ms, calcula se está perto de uma section start
+ * - Se estiver na "zona magnética" (8-130px), puxa suavemente pra section
+ * - Se estiver longe (>130px), não interfere — scroll natural permanece
+ * - Touch device: sem snap, UX nativa
  *
- * Pattern William Fry: sensação de "scroll automático" entre sections
- * mas permite ler sections longas internamente.
+ * Sensação: scroll normal funciona em todas as velocidades, mas há um
+ * "puxão" magnético sutil que termina o movimento na próxima section.
  */
 
-const EDGE_TOLERANCE = 24;       // px de tolerância pras bordas
-const SNAP_DURATION = 1.05;       // segundos do scroll animado
-const SNAP_COOLDOWN_MS = 80;      // espera após snap completar
-const WHEEL_MIN_DELTA = 8;        // ignora wheel events muito pequenos
+const MAGNET_INNER = 8;      // < 8px: já está alinhado, não puxar
+const MAGNET_OUTER = 140;    // > 140px: longe da borda, não puxar
+const SETTLE_DELAY_MS = 220; // espera após user parar de scrollar
+const SNAP_DURATION = 0.75;  // segundos do magnetic pull
+const SNAP_COOLDOWN_MS = 60; // espera após snap completar
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 
 export function LBBSmoothScroll({ children }: { children: ReactNode }) {
@@ -57,7 +60,6 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     };
     rafId = requestAnimationFrame(raf);
 
-    // Touch device: somente Lenis suave, sem hijack
     if (isTouch) {
       return () => {
         cancelAnimationFrame(rafId);
@@ -66,80 +68,59 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     }
 
     let isSnapping = false;
-    let cooldownTimeout: number | null = null;
+    let settleTimer: number | null = null;
+    let cooldownTimer: number | null = null;
 
-    const getSections = () =>
-      Array.from(document.querySelectorAll<HTMLElement>("[data-snap-section]"));
-
-    const findCurrentIdx = (sections: HTMLElement[], scrollY: number) => {
-      const winH = window.innerHeight;
-      const center = scrollY + winH / 2;
-      let currentIdx = 0;
-      for (let i = 0; i < sections.length; i++) {
-        if (sections[i].offsetTop <= center) currentIdx = i;
-      }
-      return currentIdx;
-    };
-
-    const snapTo = (target: HTMLElement) => {
-      isSnapping = true;
-      lenis.scrollTo(target, {
-        duration: SNAP_DURATION,
-        easing: EASE_OUT_QUART,
-        lock: true,
-        onComplete: () => {
-          if (cooldownTimeout) clearTimeout(cooldownTimeout);
-          cooldownTimeout = window.setTimeout(() => {
-            isSnapping = false;
-            cooldownTimeout = null;
-          }, SNAP_COOLDOWN_MS);
-        },
-      });
-    };
-
-    const onWheel = (e: WheelEvent) => {
-      if (isSnapping) {
-        e.preventDefault();
-        return;
-      }
-      if (Math.abs(e.deltaY) < WHEEL_MIN_DELTA) return;
-
-      const sections = getSections();
-      if (sections.length < 2) return;
-
-      const direction = e.deltaY > 0 ? 1 : -1;
+    const findClosestSection = () => {
+      const sections = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-snap-section]")
+      );
+      if (sections.length === 0) return null;
       const scrollY = window.scrollY;
-      const winH = window.innerHeight;
-      const currentIdx = findCurrentIdx(sections, scrollY);
-      const current = sections[currentIdx];
-
-      const sectionTop = current.offsetTop;
-      const sectionBottom = sectionTop + current.offsetHeight;
-
-      if (direction > 0) {
-        // Scroll DOWN: snap apenas se já estamos no final da section atual
-        const isNearBottom = scrollY + winH >= sectionBottom - EDGE_TOLERANCE;
-        if (isNearBottom && currentIdx < sections.length - 1) {
-          e.preventDefault();
-          snapTo(sections[currentIdx + 1]);
-        }
-      } else {
-        // Scroll UP: snap apenas se já estamos no topo da section atual
-        const isNearTop = scrollY <= sectionTop + EDGE_TOLERANCE;
-        if (isNearTop && currentIdx > 0) {
-          e.preventDefault();
-          snapTo(sections[currentIdx - 1]);
+      let closest = sections[0];
+      let minDist = Math.abs(closest.offsetTop - scrollY);
+      for (const s of sections) {
+        const d = Math.abs(s.offsetTop - scrollY);
+        if (d < minDist) {
+          minDist = d;
+          closest = s;
         }
       }
+      return { target: closest, distance: minDist };
     };
 
-    // passive: false necessário pra usar e.preventDefault()
-    window.addEventListener("wheel", onWheel, { passive: false });
+    const onScroll = () => {
+      if (isSnapping) return;
+      if (settleTimer) clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => {
+        if (isSnapping) return;
+        const result = findClosestSection();
+        if (!result) return;
+        const { target, distance } = result;
+        if (distance > MAGNET_INNER && distance < MAGNET_OUTER) {
+          isSnapping = true;
+          lenis.scrollTo(target, {
+            duration: SNAP_DURATION,
+            easing: EASE_OUT_QUART,
+            onComplete: () => {
+              if (cooldownTimer) clearTimeout(cooldownTimer);
+              cooldownTimer = window.setTimeout(() => {
+                isSnapping = false;
+                cooldownTimer = null;
+              }, SNAP_COOLDOWN_MS);
+            },
+          });
+        }
+      }, SETTLE_DELAY_MS);
+    };
+
+    lenis.on("scroll", onScroll);
 
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener("wheel", onWheel);
-      if (cooldownTimeout) clearTimeout(cooldownTimeout);
+      lenis.off("scroll", onScroll);
+      if (settleTimer) clearTimeout(settleTimer);
+      if (cooldownTimer) clearTimeout(cooldownTimer);
       lenis.destroy();
     };
   }, [reduce, isTouch]);

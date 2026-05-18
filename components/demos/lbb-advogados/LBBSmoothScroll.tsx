@@ -2,14 +2,23 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Lenis from "lenis";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+/**
+ * Smart wheel-based section snap:
+ * - Smooth Lenis scroll baseline (sempre ativo)
+ * - Ao tocar borda de uma section (top ou bottom), próximo wheel SNAP forte
+ * - Dentro da section (entre top e bottom), scroll natural via Lenis
+ * - Mobile/touch: respeita UX nativa, sem hijack
+ *
+ * Pattern William Fry: sensação de "scroll automático" entre sections
+ * mas permite ler sections longas internamente.
+ */
 
-const EASE_SNAP = "power2.inOut";
+const EDGE_TOLERANCE = 24;       // px de tolerância pras bordas
+const SNAP_DURATION = 1.05;       // segundos do scroll animado
+const SNAP_COOLDOWN_MS = 80;      // espera após snap completar
+const WHEEL_MIN_DELTA = 8;        // ignora wheel events muito pequenos
+const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 
 export function LBBSmoothScroll({ children }: { children: ReactNode }) {
   const [reduce, setReduce] = useState(false);
@@ -34,61 +43,103 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     if (reduce) return;
 
     const lenis = new Lenis({
-      duration: 1.5,
+      duration: 1.4,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 0.9,
       touchMultiplier: 1.5,
     });
 
-    // Integrate Lenis with GSAP ticker (canonical pattern)
-    lenis.on("scroll", () => ScrollTrigger.update());
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
+    let rafId: number;
+    const raf = (time: number) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
 
-    let snapTrigger: ScrollTrigger | null = null;
+    // Touch device: somente Lenis suave, sem hijack
+    if (isTouch) {
+      return () => {
+        cancelAnimationFrame(rafId);
+        lenis.destroy();
+      };
+    }
 
-    // Setup snap: pular se touch device (UX nativo respeitado em mobile)
-    const setupSnap = () => {
-      if (isTouch) return;
+    let isSnapping = false;
+    let cooldownTimeout: number | null = null;
 
-      const sections = gsap.utils.toArray<HTMLElement>("[data-snap-section]");
-      if (sections.length < 2) return;
+    const getSections = () =>
+      Array.from(document.querySelectorAll<HTMLElement>("[data-snap-section]"));
 
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      if (maxScroll <= 0) return;
+    const findCurrentIdx = (sections: HTMLElement[], scrollY: number) => {
+      const winH = window.innerHeight;
+      const center = scrollY + winH / 2;
+      let currentIdx = 0;
+      for (let i = 0; i < sections.length; i++) {
+        if (sections[i].offsetTop <= center) currentIdx = i;
+      }
+      return currentIdx;
+    };
 
-      const fractions = sections
-        .map((s) => s.offsetTop / maxScroll)
-        .filter((p) => p >= 0 && p <= 1)
-        .sort((a, b) => a - b);
-
-      snapTrigger = ScrollTrigger.create({
-        snap: {
-          snapTo: fractions,
-          duration: { min: 0.5, max: 1.1 },
-          delay: 0.12,
-          ease: EASE_SNAP,
-          inertia: false,
+    const snapTo = (target: HTMLElement) => {
+      isSnapping = true;
+      lenis.scrollTo(target, {
+        duration: SNAP_DURATION,
+        easing: EASE_OUT_QUART,
+        lock: true,
+        onComplete: () => {
+          if (cooldownTimeout) clearTimeout(cooldownTimeout);
+          cooldownTimeout = window.setTimeout(() => {
+            isSnapping = false;
+            cooldownTimeout = null;
+          }, SNAP_COOLDOWN_MS);
         },
       });
     };
 
-    // Aguarda layout estabilizar antes de calcular positions
-    const t = window.setTimeout(setupSnap, 250);
+    const onWheel = (e: WheelEvent) => {
+      if (isSnapping) {
+        e.preventDefault();
+        return;
+      }
+      if (Math.abs(e.deltaY) < WHEEL_MIN_DELTA) return;
 
-    // Re-setup on resize (positions mudam)
-    const onResize = () => {
-      if (snapTrigger) snapTrigger.kill();
-      setupSnap();
+      const sections = getSections();
+      if (sections.length < 2) return;
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const scrollY = window.scrollY;
+      const winH = window.innerHeight;
+      const currentIdx = findCurrentIdx(sections, scrollY);
+      const current = sections[currentIdx];
+
+      const sectionTop = current.offsetTop;
+      const sectionBottom = sectionTop + current.offsetHeight;
+
+      if (direction > 0) {
+        // Scroll DOWN: snap apenas se já estamos no final da section atual
+        const isNearBottom = scrollY + winH >= sectionBottom - EDGE_TOLERANCE;
+        if (isNearBottom && currentIdx < sections.length - 1) {
+          e.preventDefault();
+          snapTo(sections[currentIdx + 1]);
+        }
+      } else {
+        // Scroll UP: snap apenas se já estamos no topo da section atual
+        const isNearTop = scrollY <= sectionTop + EDGE_TOLERANCE;
+        if (isNearTop && currentIdx > 0) {
+          e.preventDefault();
+          snapTo(sections[currentIdx - 1]);
+        }
+      }
     };
-    window.addEventListener("resize", onResize);
+
+    // passive: false necessário pra usar e.preventDefault()
+    window.addEventListener("wheel", onWheel, { passive: false });
 
     return () => {
-      clearTimeout(t);
-      window.removeEventListener("resize", onResize);
-      if (snapTrigger) snapTrigger.kill();
-      ScrollTrigger.getAll().forEach((s) => s.kill());
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("wheel", onWheel);
+      if (cooldownTimeout) clearTimeout(cooldownTimeout);
       lenis.destroy();
     };
   }, [reduce, isTouch]);

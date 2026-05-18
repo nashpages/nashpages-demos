@@ -99,7 +99,7 @@ export function Hero() {
           <div
             aria-hidden
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "linear-gradient(to right, rgba(244,244,238,0.22) 0%, rgba(244,244,238,0) 18%)" }}
+            style={{ background: "linear-gradient(to right, rgba(244,244,238,0.10) 0%, rgba(244,244,238,0) 12%)" }}
           />
         </motion.div>
 
@@ -166,10 +166,10 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* Linha hair — top 600 (acima da marginalia) */}
+          {/* Linha hair — top 600 (acima da marginalia, com margem 48px da foto pra não sobrepor) */}
           <div
             className="absolute left-[80px] top-[600px]"
-            style={{ right: "calc(clamp(500px, 43vw, 620px) + 0px - max(0px, (100vw - 1440px) / 2))", height: "1px", backgroundColor: "var(--c-linha)" }}
+            style={{ right: "calc(clamp(500px, 43vw, 620px) + 48px - max(0px, (100vw - 1440px) / 2))", height: "1px", backgroundColor: "var(--c-linha)" }}
           />
 
           {/* Marginalia — top 620 (Figma) */}

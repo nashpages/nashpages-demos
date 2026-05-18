@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { LBB_DATA } from "../data";
 import { FadeUp, Stagger, StaggerItem } from "../motion";
 
@@ -50,15 +51,16 @@ export function Equipe() {
           {equipe.partners.map((p) => (
             <StaggerItem key={p.oab}>
               <div className="grid grid-cols-[100px_1fr] lg:grid-cols-[180px_1fr] gap-x-6 lg:gap-x-10">
-                {/* Photo placeholder — substituir por foto real depois */}
-                <div
-                  className="w-full aspect-[4/5]"
-                  style={{
-                    backgroundColor: "var(--c-pedra)",
-                    border: "1px solid var(--c-linha)",
-                  }}
-                  aria-label={`Foto ${p.name}`}
-                />
+                <div className="relative w-full aspect-[4/5] overflow-hidden" style={{ backgroundColor: "var(--c-pedra)" }}>
+                  <Image
+                    src={p.photo}
+                    alt={p.name}
+                    fill
+                    quality={92}
+                    sizes="(min-width: 1024px) 180px, 100px"
+                    className="object-cover object-top"
+                  />
+                </div>
                 <div className="flex flex-col">
                   <p
                     style={{

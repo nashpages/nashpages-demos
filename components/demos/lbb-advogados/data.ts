@@ -83,10 +83,10 @@ export const LBB_DATA = {
     eyebrow: "EQUIPE",
     headline: "Os sócios.",
     partners: [
-      { name: "Armando Lins Júnior", oab: "OAB/SC 6.162", form: "UNIVALI · 1987 · advoga desde 1988", spec: "Direito Empresarial · Conselheiro OAB/SC 2010-2012 · Presidente Subseção BC 2007-2009" },
-      { name: "Charles Bittencourt Vieira", oab: "OAB/SC 11.753", form: "UNIVALI · 1996 · advoga desde 1996", spec: "Direito Tributário · Tribunal de Ética OAB/SC 2010-2012" },
-      { name: "Pedro Henrique Bellaver", oab: "OAB/SC 29.567", form: "UNIVALI · 2009 · sócio desde 2011", spec: "Direito Público · participações em congressos OAB" },
-      { name: "Maria Luyhza Becker Lins", oab: "OAB/SC 43.175", form: "UNIVALI · 2015 · sócia desde 2018", spec: "Direito Civil · intercâmbio Université Lille 1 (França, 2010-2011)" },
+      { name: "Armando Lins Júnior", oab: "OAB/SC 6.162", form: "UNIVALI · 1987 · advoga desde 1988", spec: "Direito Empresarial · Conselheiro OAB/SC 2010-2012 · Presidente Subseção BC 2007-2009", photo: "/demos/lbb-advogados/socio-armando.jpg" },
+      { name: "Charles Bittencourt Vieira", oab: "OAB/SC 11.753", form: "UNIVALI · 1996 · advoga desde 1996", spec: "Direito Tributário · Tribunal de Ética OAB/SC 2010-2012", photo: "/demos/lbb-advogados/socio-charles.jpg" },
+      { name: "Pedro Henrique Bellaver", oab: "OAB/SC 29.567", form: "UNIVALI · 2009 · sócio desde 2011", spec: "Direito Público · participações em congressos OAB", photo: "/demos/lbb-advogados/socio-pedro.jpg" },
+      { name: "Maria Luyhza Becker Lins", oab: "OAB/SC 43.175", form: "UNIVALI · 2015 · sócia desde 2018", spec: "Direito Civil · intercâmbio Université Lille 1 (França, 2010-2011)", photo: "/demos/lbb-advogados/socio-luyhza.jpg" },
     ],
   },
 

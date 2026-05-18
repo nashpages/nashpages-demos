@@ -105,15 +105,15 @@ export function Hero() {
 
         {/* CONTAINER 1440 — textos ancorados em left:80 */}
         <div className="relative h-full max-w-[1440px] mx-auto">
-          {/* Eyebrow — top 232 (Figma) */}
+          {/* Eyebrow — top 232 (Figma) — escala com viewport */}
           <div className="absolute left-[80px] top-[232px]">
             <FadeUp delay={0.3} duration={0.8}>
               <p
                 style={{
                   fontFamily: "var(--font-ibm-plex-mono)",
                   fontWeight: 500,
-                  fontSize: "11px",
-                  letterSpacing: "2px",
+                  fontSize: "clamp(11px, 0.82vw, 13px)",
+                  letterSpacing: "clamp(2px, 0.15vw, 2.4px)",
                   color: "var(--c-accent)",
                 }}
               >
@@ -122,16 +122,16 @@ export function Hero() {
             </FadeUp>
           </div>
 
-          {/* Headline — top 270, 72px Cormorant Italic / leading 82 (Figma) */}
+          {/* Headline — top 270, em 1440 = 72px (= Figma 5vw), escala até 88 em viewports maiores */}
           <div className="absolute left-[80px] top-[270px]">
             <h1
               style={{
                 fontFamily: "var(--font-cormorant-garamond)",
                 fontStyle: "italic",
                 fontWeight: 400,
-                fontSize: "72px",
-                lineHeight: "82px",
-                letterSpacing: "-1.5px",
+                fontSize: "clamp(64px, 5vw, 88px)",
+                lineHeight: 1.14,
+                letterSpacing: "clamp(-1.2px, -0.1vw, -1.9px)",
                 color: "var(--c-tinta)",
                 margin: 0,
               }}
@@ -145,38 +145,38 @@ export function Hero() {
             </h1>
           </div>
 
-          {/* Divider verde-jade — top 470 */}
+          {/* Divider verde-jade — top absorve crescimento headline */}
           <motion.div
-            className="absolute left-[80px] top-[470px]"
-            style={{ height: "1px", width: "80px", backgroundColor: "var(--c-accent)", transformOrigin: "left center" }}
+            className="absolute left-[80px]"
+            style={{ top: "clamp(454px, 32.8vw, 510px)", height: "1px", width: "80px", backgroundColor: "var(--c-accent)", transformOrigin: "left center" }}
             initial={reduce ? false : { scaleX: 0 }}
             animate={reduce ? undefined : { scaleX: 1 }}
             transition={{ duration: 1, ease: EASE_SMOOTH, delay: 1.4 }}
           />
 
-          {/* Subline — top 500, 16/26 Inter Light (Figma) — limitado pra não invadir foto */}
+          {/* Subline — Inter Light escala junto */}
           <div
-            className="absolute left-[80px] top-[500px]"
-            style={{ right: "calc(clamp(500px, 43vw, 620px) + 48px - max(0px, (100vw - 1440px) / 2))" }}
+            className="absolute left-[80px]"
+            style={{ top: "clamp(484px, 34.7vw, 542px)", right: "calc(clamp(500px, 43vw, 620px) + 48px - max(0px, (100vw - 1440px) / 2))" }}
           >
             <FadeUp delay={1.55} y={20} duration={0.9}>
-              <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: "16px", lineHeight: "26px", color: "var(--c-neblina)", maxWidth: "560px", margin: 0 }}>
+              <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: "clamp(15px, 1.15vw, 18px)", lineHeight: 1.62, color: "var(--c-neblina)", maxWidth: "560px", margin: 0 }}>
                 {hero.subline}
               </p>
             </FadeUp>
           </div>
 
-          {/* Linha hair — top 600 (acima da marginalia, com margem 48px da foto pra não sobrepor) */}
+          {/* Linha hair — top absorve crescimento, 48px de margem da foto */}
           <div
-            className="absolute left-[80px] top-[600px]"
-            style={{ right: "calc(clamp(500px, 43vw, 620px) + 48px - max(0px, (100vw - 1440px) / 2))", height: "1px", backgroundColor: "var(--c-linha)" }}
+            className="absolute left-[80px]"
+            style={{ top: "clamp(584px, 41.7vw, 644px)", right: "calc(clamp(500px, 43vw, 620px) + 48px - max(0px, (100vw - 1440px) / 2))", height: "1px", backgroundColor: "var(--c-linha)" }}
           />
 
-          {/* Marginalia — top 620 (Figma) */}
+          {/* Marginalia — escala com viewport */}
           <FadeUp delay={1.75} duration={0.8}>
             <p
               className="absolute whitespace-nowrap"
-              style={{ left: "80px", top: "620px", fontFamily: "var(--font-ibm-plex-mono)", fontWeight: 500, fontSize: "10px", letterSpacing: "1.8px", color: "var(--c-neblina)" }}
+              style={{ left: "80px", top: "clamp(604px, 43.1vw, 664px)", fontFamily: "var(--font-ibm-plex-mono)", fontWeight: 500, fontSize: "clamp(10px, 0.75vw, 12px)", letterSpacing: "clamp(1.8px, 0.14vw, 2.2px)", color: "var(--c-neblina)" }}
             >
               {hero.marginalia}
             </p>

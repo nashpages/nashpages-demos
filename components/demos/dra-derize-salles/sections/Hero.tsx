@@ -5,7 +5,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { DERIZE_DATA } from "../data";
 import { FadeUp } from "../motion";
 
-const EASE = [0.32, 0.72, 0, 1] as const;
+const EASE = [0.16, 1, 0.3, 1] as const;
+const EASE_SMOOTH = [0.22, 0.61, 0.36, 1] as const;
 
 export function Hero() {
   const { hero } = DERIZE_DATA;
@@ -18,15 +19,15 @@ export function Hero() {
         <motion.div
           className="absolute right-0 top-0 bottom-0 overflow-hidden"
           style={{ width: "clamp(440px, 34vw, 540px)" }}
-          initial={reduce ? false : { opacity: 0 }}
-          animate={reduce ? undefined : { opacity: 1 }}
-          transition={{ duration: 1.2, ease: EASE }}
+          initial={reduce ? false : { opacity: 0, y: 24 }}
+          animate={reduce ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 1.8, ease: EASE_SMOOTH, delay: 0.15 }}
         >
           <motion.div
             className="absolute inset-0"
-            initial={reduce ? false : { scale: 1.06 }}
+            initial={reduce ? false : { scale: 1.08 }}
             animate={reduce ? undefined : { scale: 1 }}
-            transition={{ duration: 2, ease: EASE }}
+            transition={{ duration: 2.6, ease: EASE_SMOOTH }}
           >
             <Image
               src={hero.photo}
@@ -103,8 +104,8 @@ export function Hero() {
 
       {/* MOBILE */}
       <div className="lg:hidden relative w-full" style={{ backgroundColor: "var(--c-papel)" }}>
-        <motion.div className="relative w-full h-[460px] overflow-hidden" initial={reduce ? false : { opacity: 0 }} animate={reduce ? undefined : { opacity: 1 }} transition={{ duration: 1, ease: EASE }}>
-          <motion.div className="absolute inset-0" initial={reduce ? false : { scale: 1.06 }} animate={reduce ? undefined : { scale: 1 }} transition={{ duration: 1.8, ease: EASE }}>
+        <motion.div className="relative w-full h-[460px] overflow-hidden" initial={reduce ? false : { opacity: 0, y: 16 }} animate={reduce ? undefined : { opacity: 1, y: 0 }} transition={{ duration: 1.4, ease: EASE_SMOOTH, delay: 0.1 }}>
+          <motion.div className="absolute inset-0" initial={reduce ? false : { scale: 1.08 }} animate={reduce ? undefined : { scale: 1 }} transition={{ duration: 2.4, ease: EASE_SMOOTH }}>
             <Image src={hero.photo} alt="Dra. Derize Salles" fill priority quality={100} sizes="100vw" className="object-cover object-center" />
           </motion.div>
           <div aria-hidden className="absolute inset-x-0 top-0 h-[140px] pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(42,37,32,0.40) 0%, rgba(42,37,32,0) 100%)" }} />

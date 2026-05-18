@@ -50,12 +50,12 @@ export function Hero() {
         <h1
           style={{
             fontFamily: "var(--font-fraunces)",
-            fontWeight: 400,
             fontSize: "clamp(80px, 14vw, 240px)",
             lineHeight: 1,
             letterSpacing: "clamp(-3px, -0.55vw, -8px)",
             color: "var(--c-papel)",
             margin: 0,
+            fontVariationSettings: '"opsz" 144, "SOFT" 30, "wght" 300, "WONK" 0',
           }}
         >
           {hero.logoMain}

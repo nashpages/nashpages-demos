@@ -18,11 +18,13 @@ import Lenis from "lenis";
  */
 
 const MAGNET_INNER = 8;
-const MAGNET_DOWN_RANGE = 500;
-const MAGNET_UP_RANGE = 80;
-const WHEEL_END_DELAY = 100;
-const SNAP_DURATION = 0.7;
-const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
+const MAGNET_DOWN_RANGE = 750;  // mais forte (era 500)
+const MAGNET_UP_RANGE = 120;    // mais permissivo (era 80)
+const WHEEL_END_DELAY = 60;     // mais responsivo (era 100)
+const SNAP_DURATION = 1.15;     // mais suave (era 0.7)
+// easeInOutCubic — começa devagar, acelera no meio, desacelera no fim (mais suave que outQuart)
+const EASE_IN_OUT_CUBIC = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 export function LBBSmoothScroll({ children }: { children: ReactNode }) {
   const [reduce, setReduce] = useState(false);
@@ -133,7 +135,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
         lastTrigger = `SNAP ${result.reason} → ${result.target.id || "?"} (dist ${Math.round(result.distance)})`;
         lenis.scrollTo(result.target, {
           duration: SNAP_DURATION,
-          easing: EASE_OUT_QUART,
+          easing: EASE_IN_OUT_CUBIC,
         });
       } else {
         lastTrigger = `no-snap (finalY=${Math.round(finalY)}, dist ${Math.round(result.distance)})`;

@@ -1,29 +1,18 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 
-/**
- * Magnetic section snap — rAF-based stability detection.
- *
- * Bug anterior: lenis.on('scroll', ...) dispara a 60fps DURANTE a animação
- * smooth do Lenis. settleTimer era resetado cada frame → nunca chegava aos
- * 220ms → magnetic check nunca rodava.
- *
- * Fix: dentro do mesmo rAF do Lenis, conta frames estáveis (scrollY sem
- * mudança > 0.5px). Após ~14 frames estáveis (~230ms a 60fps), considera
- * user parado e dispara magnetic check.
- */
-
-const MAGNET_INNER = 8;       // < 8px: já alinhado, não puxa
-const MAGNET_OUTER = 160;     // > 160px: longe da borda, não puxa
-const STABLE_FRAMES = 14;     // ~230ms @ 60fps
-const SNAP_DURATION = 0.7;    // segundos
+const MAGNET_INNER = 8;
+const MAGNET_OUTER = 160;
+const STABLE_FRAMES = 14;
+const SNAP_DURATION = 0.7;
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 
 export function LBBSmoothScroll({ children }: { children: ReactNode }) {
   const [reduce, setReduce] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
+  const debugRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
     const mReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -41,7 +30,10 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (reduce) return;
+    if (reduce) {
+      if (debugRef.current) debugRef.current.textContent = "reduce-motion ON (snap desativado)";
+      return;
+    }
 
     const lenis = new Lenis({
       duration: 1.4,
@@ -53,13 +45,13 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
 
     let rafId: number;
 
-    // Touch device: somente Lenis suave, sem magnet
     if (isTouch) {
       const rafTouch = (time: number) => {
         lenis.raf(time);
         rafId = requestAnimationFrame(rafTouch);
       };
       rafId = requestAnimationFrame(rafTouch);
+      if (debugRef.current) debugRef.current.textContent = "touch device (snap desativado em mobile)";
       return () => {
         cancelAnimationFrame(rafId);
         lenis.destroy();
@@ -70,6 +62,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     let stableFrames = 0;
     let isSnapping = false;
     let snapReleaseTime = 0;
+    let lastTriggerReason = "";
 
     const findClosestSection = () => {
       const sections = Array.from(
@@ -77,7 +70,6 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       );
       if (sections.length === 0) return null;
       const scrollY = window.scrollY;
-      // Posição absoluta no document via bounding rect (offsetTop é relativo ao offsetParent)
       const tops = sections.map((s) => s.getBoundingClientRect().top + scrollY);
       let closestIdx = 0;
       let minDist = Math.abs(tops[0] - scrollY);
@@ -88,16 +80,15 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
           closestIdx = i;
         }
       }
-      return { target: sections[closestIdx], distance: minDist };
+      return { target: sections[closestIdx], distance: minDist, total: sections.length };
     };
 
     const raf = (time: number) => {
       lenis.raf(time);
 
-      // Libera flag isSnapping com base no tempo (não em callback do Lenis)
       if (isSnapping && time >= snapReleaseTime) {
         isSnapping = false;
-        stableFrames = 0; // reseta contador após snap completar
+        stableFrames = 0;
       }
 
       const y = window.scrollY;
@@ -108,21 +99,41 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       }
       lastY = y;
 
-      // User estabilizou + não está em snap ativo → check magnet
       if (!isSnapping && stableFrames >= STABLE_FRAMES) {
-        stableFrames = 0; // reset imediato pra não disparar de novo no próximo frame
+        stableFrames = 0;
         const result = findClosestSection();
         if (result) {
           const { target, distance } = result;
           if (distance > MAGNET_INNER && distance < MAGNET_OUTER) {
             isSnapping = true;
             snapReleaseTime = time + SNAP_DURATION * 1000 + 200;
+            lastTriggerReason = `SNAP → ${target.id || "?"} (dist ${Math.round(distance)})`;
             lenis.scrollTo(target, {
               duration: SNAP_DURATION,
               easing: EASE_OUT_QUART,
             });
+          } else if (distance <= MAGNET_INNER) {
+            lastTriggerReason = `aligned (dist ${Math.round(distance)} ≤ ${MAGNET_INNER})`;
+          } else {
+            lastTriggerReason = `too far (dist ${Math.round(distance)} ≥ ${MAGNET_OUTER})`;
           }
         }
+      }
+
+      if (debugRef.current) {
+        const r = findClosestSection();
+        const sectionsList = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-snap-section]")
+        ).map((s) => s.id || "?").join(", ");
+        debugRef.current.textContent = [
+          `scrollY      ${Math.round(y)}`,
+          `stable       ${stableFrames}/${STABLE_FRAMES}`,
+          `snapping     ${isSnapping}`,
+          `sections     ${r?.total ?? 0}  [${sectionsList}]`,
+          `closest      ${r?.target.id ?? "—"}`,
+          `distance     ${r ? Math.round(r.distance) : "—"}  (zone ${MAGNET_INNER}–${MAGNET_OUTER})`,
+          `last         ${lastTriggerReason || "—"}`,
+        ].join("\n");
       }
 
       rafId = requestAnimationFrame(raf);
@@ -135,5 +146,31 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     };
   }, [reduce, isTouch]);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <pre
+        ref={debugRef}
+        style={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          zIndex: 9999,
+          background: "rgba(10, 22, 38, 0.92)",
+          color: "#7CFFB6",
+          fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+          fontSize: 11,
+          lineHeight: 1.5,
+          padding: "10px 12px",
+          borderRadius: 6,
+          pointerEvents: "none",
+          margin: 0,
+          minWidth: 280,
+          whiteSpace: "pre",
+        }}
+      >
+        loading…
+      </pre>
+    </>
+  );
 }

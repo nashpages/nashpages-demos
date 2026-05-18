@@ -4,23 +4,21 @@ import { useEffect, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 
 /**
- * Magnetic section snap (gentle):
+ * Magnetic section snap (gentle) — fixed:
  * - Lenis smooth scroll baseline sempre ativo
- * - Wheel NÃO é hijack-ado — user scrolla naturalmente
- * - Após user PARAR de scrollar 220ms, calcula se está perto de uma section start
- * - Se estiver na "zona magnética" (8-130px), puxa suavemente pra section
- * - Se estiver longe (>130px), não interfere — scroll natural permanece
- * - Touch device: sem snap, UX nativa
- *
- * Sensação: scroll normal funciona em todas as velocidades, mas há um
- * "puxão" magnético sutil que termina o movimento na próxima section.
+ * - Não hijack: user scrolla naturalmente
+ * - Após user PARAR de scrollar 220ms, checa distância pra section start mais próxima
+ * - Se 8-140px de uma section: magnetic pull suave (0.75s)
+ * - >140px: scroll natural, sem interferência
+ * - Fallback timer reseta isSnapping mesmo se onComplete não disparar
+ * - Touch device: sem snap
  */
 
-const MAGNET_INNER = 8;      // < 8px: já está alinhado, não puxar
-const MAGNET_OUTER = 140;    // > 140px: longe da borda, não puxar
-const SETTLE_DELAY_MS = 220; // espera após user parar de scrollar
-const SNAP_DURATION = 0.75;  // segundos do magnetic pull
-const SNAP_COOLDOWN_MS = 60; // espera após snap completar
+const MAGNET_INNER = 8;
+const MAGNET_OUTER = 140;
+const SETTLE_DELAY_MS = 220;
+const SNAP_DURATION = 0.75;
+const SNAP_FALLBACK_MS = SNAP_DURATION * 1000 + 250;
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 
 export function LBBSmoothScroll({ children }: { children: ReactNode }) {
@@ -69,7 +67,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
 
     let isSnapping = false;
     let settleTimer: number | null = null;
-    let cooldownTimer: number | null = null;
+    let resetTimer: number | null = null;
 
     const findClosestSection = () => {
       const sections = Array.from(
@@ -91,26 +89,32 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
 
     const onScroll = () => {
       if (isSnapping) return;
-      if (settleTimer) clearTimeout(settleTimer);
+      if (settleTimer) {
+        clearTimeout(settleTimer);
+        settleTimer = null;
+      }
       settleTimer = window.setTimeout(() => {
+        settleTimer = null;
         if (isSnapping) return;
+
         const result = findClosestSection();
         if (!result) return;
+
         const { target, distance } = result;
-        if (distance > MAGNET_INNER && distance < MAGNET_OUTER) {
-          isSnapping = true;
-          lenis.scrollTo(target, {
-            duration: SNAP_DURATION,
-            easing: EASE_OUT_QUART,
-            onComplete: () => {
-              if (cooldownTimer) clearTimeout(cooldownTimer);
-              cooldownTimer = window.setTimeout(() => {
-                isSnapping = false;
-                cooldownTimer = null;
-              }, SNAP_COOLDOWN_MS);
-            },
-          });
-        }
+        if (distance <= MAGNET_INNER || distance >= MAGNET_OUTER) return;
+
+        isSnapping = true;
+        // Hard fallback: garante que isSnapping reseta mesmo se onComplete falhar
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(() => {
+          isSnapping = false;
+          resetTimer = null;
+        }, SNAP_FALLBACK_MS);
+
+        lenis.scrollTo(target, {
+          duration: SNAP_DURATION,
+          easing: EASE_OUT_QUART,
+        });
       }, SETTLE_DELAY_MS);
     };
 
@@ -120,7 +124,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       cancelAnimationFrame(rafId);
       lenis.off("scroll", onScroll);
       if (settleTimer) clearTimeout(settleTimer);
-      if (cooldownTimer) clearTimeout(cooldownTimer);
+      if (resetTimer) clearTimeout(resetTimer);
       lenis.destroy();
     };
   }, [reduce, isTouch]);

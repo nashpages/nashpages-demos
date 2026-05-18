@@ -153,7 +153,7 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
         ref={debugRef}
         style={{
           position: "fixed",
-          bottom: 16,
+          bottom: 120,
           right: 16,
           zIndex: 9999,
           background: "rgba(10, 22, 38, 0.92)",

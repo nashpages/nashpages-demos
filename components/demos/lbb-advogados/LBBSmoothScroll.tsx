@@ -4,21 +4,21 @@ import { useEffect, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 
 /**
- * Magnetic section snap (gentle) — fixed:
- * - Lenis smooth scroll baseline sempre ativo
- * - Não hijack: user scrolla naturalmente
- * - Após user PARAR de scrollar 220ms, checa distância pra section start mais próxima
- * - Se 8-140px de uma section: magnetic pull suave (0.75s)
- * - >140px: scroll natural, sem interferência
- * - Fallback timer reseta isSnapping mesmo se onComplete não disparar
- * - Touch device: sem snap
+ * Magnetic section snap — rAF-based stability detection.
+ *
+ * Bug anterior: lenis.on('scroll', ...) dispara a 60fps DURANTE a animação
+ * smooth do Lenis. settleTimer era resetado cada frame → nunca chegava aos
+ * 220ms → magnetic check nunca rodava.
+ *
+ * Fix: dentro do mesmo rAF do Lenis, conta frames estáveis (scrollY sem
+ * mudança > 0.5px). Após ~14 frames estáveis (~230ms a 60fps), considera
+ * user parado e dispara magnetic check.
  */
 
-const MAGNET_INNER = 8;
-const MAGNET_OUTER = 140;
-const SETTLE_DELAY_MS = 220;
-const SNAP_DURATION = 0.75;
-const SNAP_FALLBACK_MS = SNAP_DURATION * 1000 + 250;
+const MAGNET_INNER = 8;       // < 8px: já alinhado, não puxa
+const MAGNET_OUTER = 160;     // > 160px: longe da borda, não puxa
+const STABLE_FRAMES = 14;     // ~230ms @ 60fps
+const SNAP_DURATION = 0.7;    // segundos
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 
 export function LBBSmoothScroll({ children }: { children: ReactNode }) {
@@ -52,22 +52,24 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
     });
 
     let rafId: number;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
 
+    // Touch device: somente Lenis suave, sem magnet
     if (isTouch) {
+      const rafTouch = (time: number) => {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(rafTouch);
+      };
+      rafId = requestAnimationFrame(rafTouch);
       return () => {
         cancelAnimationFrame(rafId);
         lenis.destroy();
       };
     }
 
+    let lastY = window.scrollY;
+    let stableFrames = 0;
     let isSnapping = false;
-    let settleTimer: number | null = null;
-    let resetTimer: number | null = null;
+    let snapReleaseTime = 0;
 
     const findClosestSection = () => {
       const sections = Array.from(
@@ -87,44 +89,45 @@ export function LBBSmoothScroll({ children }: { children: ReactNode }) {
       return { target: closest, distance: minDist };
     };
 
-    const onScroll = () => {
-      if (isSnapping) return;
-      if (settleTimer) {
-        clearTimeout(settleTimer);
-        settleTimer = null;
+    const raf = (time: number) => {
+      lenis.raf(time);
+
+      // Libera flag isSnapping com base no tempo (não em callback do Lenis)
+      if (isSnapping && time >= snapReleaseTime) {
+        isSnapping = false;
+        stableFrames = 0; // reseta contador após snap completar
       }
-      settleTimer = window.setTimeout(() => {
-        settleTimer = null;
-        if (isSnapping) return;
 
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 0.5) {
+        stableFrames++;
+      } else {
+        stableFrames = 0;
+      }
+      lastY = y;
+
+      // User estabilizou + não está em snap ativo → check magnet
+      if (!isSnapping && stableFrames === STABLE_FRAMES) {
         const result = findClosestSection();
-        if (!result) return;
+        if (result) {
+          const { target, distance } = result;
+          if (distance > MAGNET_INNER && distance < MAGNET_OUTER) {
+            isSnapping = true;
+            snapReleaseTime = time + SNAP_DURATION * 1000 + 200;
+            lenis.scrollTo(target, {
+              duration: SNAP_DURATION,
+              easing: EASE_OUT_QUART,
+            });
+          }
+        }
+      }
 
-        const { target, distance } = result;
-        if (distance <= MAGNET_INNER || distance >= MAGNET_OUTER) return;
-
-        isSnapping = true;
-        // Hard fallback: garante que isSnapping reseta mesmo se onComplete falhar
-        if (resetTimer) clearTimeout(resetTimer);
-        resetTimer = window.setTimeout(() => {
-          isSnapping = false;
-          resetTimer = null;
-        }, SNAP_FALLBACK_MS);
-
-        lenis.scrollTo(target, {
-          duration: SNAP_DURATION,
-          easing: EASE_OUT_QUART,
-        });
-      }, SETTLE_DELAY_MS);
+      rafId = requestAnimationFrame(raf);
     };
-
-    lenis.on("scroll", onScroll);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
       cancelAnimationFrame(rafId);
-      lenis.off("scroll", onScroll);
-      if (settleTimer) clearTimeout(settleTimer);
-      if (resetTimer) clearTimeout(resetTimer);
       lenis.destroy();
     };
   }, [reduce, isTouch]);

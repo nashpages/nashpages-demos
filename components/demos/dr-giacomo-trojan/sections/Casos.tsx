@@ -11,7 +11,7 @@ export function Casos() {
     <section
       id="casos"
       className="relative w-full"
-      style={{ backgroundColor: "var(--c-papel)" }}
+      style={{ backgroundColor: "var(--c-pedra)" }}
     >
       <div className="max-w-[1440px] mx-auto px-6 lg:px-[80px] py-20 lg:py-28">
         <FadeUp y={12}>

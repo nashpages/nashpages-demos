@@ -199,11 +199,15 @@ export const TROJAN_DATA = {
       label: "Ver no mapa",
       href: "https://maps.google.com/?q=R.+Arthur+Max+Doose,+153,+Balneário+Camboriú",
     },
-    map: {
-      label: "INSTITUTO IOVI",
-      sub: "Balneário Camboriú · SC",
-      coords: "27° 00' S · 48° 38' W",
-      building: "EDIFÍCIO PIONEIROS",
+    place: {
+      eyebrow: "O LUGAR",
+      headline: ["Edifício", "Pioneiros."],
+      floor: "SALA 1901 · 19º ANDAR",
+      italicLines: [
+        "No centro de Balneário Camboriú,",
+        "a poucos minutos da orla.",
+      ],
+      coords: "27° 00' S · 48° 38' W · BC/SC",
     },
   },
   contato: {

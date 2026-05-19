@@ -12,7 +12,7 @@ export function Filosofia() {
       id="sobre"
       data-snap-section
       className="relative w-full"
-      style={{ backgroundColor: "var(--c-pedra)" }}
+      style={{ backgroundColor: "var(--c-papel)" }}
     >
       <div className="flex flex-col lg:flex-row">
         {/* Photo LEFT (desktop) / top (mobile) */}
@@ -32,7 +32,7 @@ export function Filosofia() {
             style={{
               width: "80px",
               background:
-                "linear-gradient(to left, rgba(238,238,236,0.35) 0%, rgba(238,238,236,0) 100%)",
+                "linear-gradient(to left, rgba(250,250,251,0.35) 0%, rgba(250,250,251,0) 100%)",
             }}
           />
         </div>

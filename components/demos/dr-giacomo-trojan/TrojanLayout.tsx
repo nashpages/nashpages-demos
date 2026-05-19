@@ -38,8 +38,8 @@ export function TrojanLayout() {
       >
         <TrojanNav />
         <Hero />
-        <Filosofia />
         <Casos />
+        <Filosofia />
         <Protocolo />
         <Imersao />
         <Tecnologia />

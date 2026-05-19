@@ -12,9 +12,9 @@ export function InstitutoIovi() {
       className="relative w-full"
       style={{ backgroundColor: "var(--c-pedra)" }}
     >
-      <div className="flex flex-col lg:flex-row min-h-[640px]">
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row min-h-[640px]">
         {/* Text LEFT */}
-        <div className="flex-1 px-6 lg:px-[80px] py-16 lg:py-20 lg:max-w-[680px]">
+        <div className="flex-1 px-6 lg:px-[80px] py-16 lg:py-20 lg:max-w-[720px]">
           <FadeUp y={12}>
             <p
               style={{
@@ -162,75 +162,54 @@ export function InstitutoIovi() {
           </FadeUp>
         </div>
 
-        {/* Map RIGHT — editorial abstract */}
+        {/* Sculptural typography RIGHT */}
         <div
-          className="relative w-full lg:w-[720px] flex-shrink-0 overflow-hidden"
-          style={{ backgroundColor: "var(--c-azul-deep)", minHeight: "420px" }}
+          className="relative flex-1 px-6 lg:pl-[60px] lg:pr-[80px] py-16 lg:py-20 hidden lg:flex flex-col justify-center"
+          style={{ borderLeft: "1px solid var(--c-linha)" }}
         >
-          {/* Grid pattern */}
-          <div className="absolute inset-0 pointer-events-none">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={`h${i}`}
-                style={{
-                  position: "absolute",
-                  top: `${(i * 100) / 6}%`,
-                  left: 0,
-                  right: 0,
-                  height: "1px",
-                  backgroundColor: "rgba(250,250,251,0.06)",
-                }}
-              />
-            ))}
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div
-                key={`v${i}`}
-                style={{
-                  position: "absolute",
-                  left: `${(i * 100) / 7}%`,
-                  top: 0,
-                  bottom: 0,
-                  width: "1px",
-                  backgroundColor: "rgba(250,250,251,0.06)",
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Pin center */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-            <div
+          <FadeUp y={12}>
+            <p
               style={{
-                width: "60px",
-                height: "60px",
-                borderRadius: "9999px",
-                border: "2px solid var(--c-cinabrio)",
-                position: "relative",
+                fontFamily: "var(--font-jetbrains-mono)",
+                fontWeight: 500,
+                fontSize: "11px",
+                letterSpacing: "1.8px",
+                color: "var(--c-cinabrio)",
               }}
             >
-              <span
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: "12px",
-                  height: "12px",
-                  borderRadius: "9999px",
-                  backgroundColor: "var(--c-cinabrio)",
-                }}
-              />
-            </div>
-            <span
-              aria-hidden
+              {iovi.place.eyebrow}
+            </p>
+          </FadeUp>
+
+          <FadeUp delay={0.15}>
+            <h3
+              className="mt-8"
               style={{
-                width: "2px",
-                height: "30px",
-                backgroundColor: "var(--c-cinabrio)",
-                marginTop: "-2px",
+                fontFamily: "var(--font-newsreader)",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "clamp(60px, 7vw, 96px)",
+                lineHeight: 1.05,
+                letterSpacing: "clamp(-1.5px, -0.3vw, -3px)",
+                color: "var(--c-tinta)",
+                margin: 0,
               }}
-            />
+            >
+              {iovi.place.headline.map((l) => (
+                <span key={l} className="block">
+                  {l}
+                </span>
+              ))}
+            </h3>
+          </FadeUp>
+
+          <FadeUp delay={0.3}>
+            <div className="mt-10">
+              <SignatureDual widthPx={56} />
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.4}>
             <p
               className="mt-6"
               style={{
@@ -238,50 +217,42 @@ export function InstitutoIovi() {
                 fontWeight: 500,
                 fontSize: "11px",
                 letterSpacing: "1.8px",
-                color: "var(--c-papel)",
+                color: "var(--c-tinta)",
               }}
             >
-              {iovi.map.label}
+              {iovi.place.floor}
             </p>
+            <div className="mt-3">
+              {iovi.place.italicLines.map((l) => (
+                <p
+                  key={l}
+                  style={{
+                    fontFamily: "var(--font-newsreader)",
+                    fontStyle: "italic",
+                    fontWeight: 400,
+                    fontSize: "clamp(15px, 1.35vw, 18px)",
+                    lineHeight: 1.4,
+                    letterSpacing: "-0.2px",
+                    color: "var(--c-neblina)",
+                  }}
+                >
+                  {l}
+                </p>
+              ))}
+            </div>
             <p
-              className="mt-2"
+              className="mt-10"
               style={{
-                fontFamily: "var(--font-newsreader)",
-                fontStyle: "italic",
-                fontWeight: 400,
-                fontSize: "18px",
-                letterSpacing: "-0.2px",
-                color: "rgba(250,250,251,0.75)",
+                fontFamily: "var(--font-jetbrains-mono)",
+                fontWeight: 500,
+                fontSize: "9px",
+                letterSpacing: "1.4px",
+                color: "var(--c-neblina)",
               }}
             >
-              {iovi.map.sub}
+              {iovi.place.coords}
             </p>
-          </div>
-
-          <p
-            className="absolute left-5 lg:left-8 bottom-5 lg:bottom-6"
-            style={{
-              fontFamily: "var(--font-jetbrains-mono)",
-              fontWeight: 500,
-              fontSize: "9px",
-              letterSpacing: "1.4px",
-              color: "rgba(250,250,251,0.5)",
-            }}
-          >
-            {iovi.map.coords}
-          </p>
-          <p
-            className="absolute right-5 lg:right-8 bottom-5 lg:bottom-6"
-            style={{
-              fontFamily: "var(--font-jetbrains-mono)",
-              fontWeight: 500,
-              fontSize: "9px",
-              letterSpacing: "1.4px",
-              color: "rgba(250,250,251,0.5)",
-            }}
-          >
-            {iovi.map.building}
-          </p>
+          </FadeUp>
         </div>
       </div>
     </section>

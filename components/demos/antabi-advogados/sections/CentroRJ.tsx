@@ -1,11 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { ANTABI_DATA } from "../data";
 import { FadeUp } from "../motion";
 
+const EASE = [0.32, 0.72, 0, 1] as const;
+
 export function CentroRJ() {
   const { centroRJ } = ANTABI_DATA;
+  const [hovered, setHovered] = useState(false);
 
   return (
     <section
@@ -33,24 +38,37 @@ export function CentroRJ() {
         </FadeUp>
       </div>
 
-      {/* Foto Rio full-bleed */}
-      <div className="relative w-full h-[260px] md:h-[320px] mt-12 lg:mt-16 overflow-hidden">
-        <Image
-          src={centroRJ.photo}
-          alt=""
-          fill
-          loading="eager"
-          quality={90}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        <div
+      {/* Foto Rio full-bleed com hover animation */}
+      <a
+        href={centroRJ.telHref}
+        className="relative block w-full h-[260px] md:h-[320px] mt-12 lg:mt-16 overflow-hidden cursor-pointer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <motion.div
+          className="absolute inset-0"
+          animate={{ scale: hovered ? 1.05 : 1 }}
+          transition={{ duration: 0.6, ease: EASE }}
+        >
+          <Image
+            src={centroRJ.photo}
+            alt=""
+            fill
+            loading="eager"
+            quality={90}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
+        <motion.div
           aria-hidden
           className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to right, rgba(15,13,9,0.78) 0%, rgba(15,13,9,0.18) 45%, rgba(27,68,133,0.22) 100%)",
+          animate={{
+            background: hovered
+              ? "linear-gradient(to right, rgba(15,13,9,0.65) 0%, rgba(15,13,9,0.10) 45%, rgba(27,68,133,0.18) 100%)"
+              : "linear-gradient(to right, rgba(15,13,9,0.78) 0%, rgba(15,13,9,0.18) 45%, rgba(27,68,133,0.22) 100%)",
           }}
+          transition={{ duration: 0.4, ease: EASE }}
         />
 
         <div className="relative max-w-[1440px] mx-auto h-full px-6 lg:px-[80px] flex items-center justify-between gap-6">
@@ -94,9 +112,8 @@ export function CentroRJ() {
             </p>
           </div>
           <div className="flex items-center gap-4 lg:gap-6">
-            <a
-              href={centroRJ.telHref}
-              className="hidden md:block hover:opacity-80"
+            <span
+              className="hidden md:block"
               style={{
                 fontFamily: "var(--font-lora)",
                 fontStyle: "italic",
@@ -106,9 +123,11 @@ export function CentroRJ() {
               }}
             >
               {centroRJ.tel}
-            </a>
-            <span
+            </span>
+            <motion.span
               aria-hidden
+              animate={{ x: hovered ? 8 : 0, opacity: hovered ? 1 : 0.5 }}
+              transition={{ duration: 0.3, ease: EASE }}
               style={{
                 fontFamily: "var(--font-lora)",
                 fontWeight: 400,
@@ -117,10 +136,10 @@ export function CentroRJ() {
               }}
             >
               →
-            </span>
+            </motion.span>
           </div>
         </div>
-      </div>
+      </a>
     </section>
   );
 }

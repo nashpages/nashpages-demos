@@ -1,0 +1,203 @@
+export const ANTABI_PALETTE = {
+  papel: "#F2EFE9",
+  pedra: "#E8E3D6",
+  linha: "#D6CFBE",
+  neblina: "#5E5A52",
+  accent: "#1B4485",
+  accentLight: "#C8D2E5",
+  tinta: "#181612",
+  tintaDeep: "#0F0D09",
+  footerLinha: "#34291F",
+  footerMuted: "#8C7E68",
+} as const;
+
+const BASE_PHOTO = "/demos/antabi-advogados";
+
+export const ANTABI_DATA = {
+  nav: {
+    logo: "Antabi",
+    links: [
+      { label: "ESCRITÓRIO", href: "#sobre" },
+      { label: "TRIBUTÁRIO", href: "#atelier" },
+      { label: "ÁREAS", href: "#areas" },
+      { label: "EQUIPE", href: "#equipe" },
+      { label: "CONTATO", href: "#contato" },
+    ],
+    ctaShort: { label: "AGENDAR", href: "#contato" },
+  },
+  hero: {
+    eyebrow: "BOUTIQUE TRIBUTÁRIA · DESDE 2014",
+    logoMain: "Antabi",
+    logoFull: "Rangel & Sousa Advogados",
+    meta: [
+      "RIO DE JANEIRO",
+      "CONTENCIOSO TRIBUTÁRIO",
+      "CONSULTORIA · INCENTIVOS",
+      "12 ANOS · DEDICAÇÃO DIRETA",
+    ],
+    explore: "EXPLORE ↓",
+    photos: [
+      `${BASE_PHOTO}/hero-03-library.jpg`,
+      `${BASE_PHOTO}/hero-01-columns.jpg`,
+      `${BASE_PHOTO}/hero-04-boardroom.jpg`,
+      `${BASE_PHOTO}/hero-02-pillars.jpg`,
+      `${BASE_PHOTO}/hero-05-signing.jpg`,
+    ],
+  },
+  sobre: {
+    eyebrow: "ESCRITÓRIO · §02",
+    headline: "Dedicação direta.",
+    body: "Doze anos representando pessoas e empresas em causas tributárias complexas. Boutique multidisciplinar fundada em 2014 com filosofia clara: uma nova política para o exercício da advocacia, com soluções práticas, ágeis e personalizadas por caso.",
+    stats: [
+      { num: "12", label: "ANOS DE TRABALHO", sub: "FUNDADO EM 2014" },
+      { num: "738", label: "PROCESSOS", sub: "NA TRAJETÓRIA DE DANIEL ANTABI" },
+      { num: "12", label: "ÁREAS DE ATUAÇÃO", sub: "BOUTIQUE MULTIDISCIPLINAR" },
+    ],
+    pullQuote:
+      "Atendimento prático, ágil e eficiente — atendimento dedicado e soluções personalizadas por caso, com equipe multidisciplinar.",
+  },
+  daniel: {
+    eyebrow: "SÓCIO PRINCIPAL · §03",
+    nameLine1: "Daniel Padula",
+    nameLine2: "Antabi",
+    body: "Mestre em Direito Tributário e Contabilidade pelo IBMEC/RJ. Graduado em Direito pela PUC-Rio. Mais de dez anos em contencioso tributário judicial e administrativo, consultoria tributária e direito processual civil.",
+    creds: [
+      { a: "738", b: "PROCESSOS" },
+      { a: "10+", b: "ANOS TRIBUTÁRIO" },
+      { a: "PUC-RIO", b: "GRADUAÇÃO" },
+      { a: "IBMEC/RJ", b: "MESTRADO" },
+    ],
+    credsFooter: "CLIENTES NOTÁVEIS · TRANSMAGNO TRANSPORTES · CLEARTECH",
+  },
+  atelier: {
+    eyebrow: "ATELIER · §04",
+    headlineA: "Tributário em foco.",
+    headlineB: "Em números.",
+    body: "Quatro frentes-âncora, doze anos de prática, uma filosofia: cada caso construído no ritmo do escritório boutique — sem volume artificial, sem terceirização da estratégia.",
+    cards: [
+      {
+        code: "TRIB-001",
+        label: "CONTENCIOSO TRIBUTÁRIO",
+        body: "Defesa em execuções fiscais, embargos e ações anulatórias. Atuação judicial e administrativa.",
+        meta: "SÓCIO ÂNCORA · DANIEL ANTABI",
+      },
+      {
+        code: "TRIB-002",
+        label: "CONSULTORIA TRIBUTÁRIA",
+        body: "Planejamento fiscal preventivo, pareceres e revisões para empresas e pessoas físicas.",
+        meta: "PREVENTIVO · ESTRATÉGICO",
+      },
+      {
+        code: "TRIB-003",
+        label: "INCENTIVO FISCAL",
+        body: "Aproveitamento de benefícios fiscais federais, estaduais e municipais. Programas de regularização.",
+        meta: "EMPRESAS · PF · LEI DO BEM",
+      },
+      {
+        code: "TRIB-004",
+        label: "INCENTIVOS À P&D",
+        body: "Lei do Bem e demais incentivos à inovação. Diferencial real em pesquisa e desenvolvimento.",
+        meta: "INOVAÇÃO · DIFERENCIAL",
+      },
+    ],
+  },
+  areas: {
+    eyebrow: "ÁREAS DE ATUAÇÃO · §05",
+    headlineA: "Tributário primeiro.",
+    headlineB: "Multidisciplinar sempre.",
+    pilares: [
+      {
+        num: "01",
+        title: "Tributário",
+        body: "Contencioso judicial e administrativo, consultoria preventiva, planejamento fiscal estratégico — força original do escritório.",
+      },
+      {
+        num: "02",
+        title: "Incentivo Fiscal & P&D",
+        body: "Lei do Bem, incentivos à inovação tecnológica, programas de regularização. Diferencial pouco explorado no mercado.",
+      },
+      {
+        num: "03",
+        title: "Empresarial & Societário",
+        body: "Estruturação societária, contratos comerciais, recuperação de crédito, mercado de capitais.",
+      },
+      {
+        num: "04",
+        title: "Cível, Trabalhista & Família",
+        body: "Frentes secundárias multidisciplinares — atendimento integral ao cliente boutique.",
+      },
+    ],
+    industrias: [
+      "TRIBUTÁRIO",
+      "CONSULTORIA TRIBUTÁRIA",
+      "INCENTIVO FISCAL",
+      "INCENTIVOS À P&D",
+      "EMPRESARIAL",
+      "CÍVEL",
+      "TRABALHISTA",
+      "FAMÍLIA",
+      "IMOBILIÁRIO",
+      "SOCIETÁRIO",
+      "MERCADO DE CAPITAIS",
+      "ARBITRAGEM",
+    ],
+  },
+  centroRJ: {
+    eyebrow: "ESCRITÓRIO · §06",
+    label: "SEDE · ÚNICA",
+    nome: "Praça Mahatma Gandhi",
+    endereco: "AV. ALMIRANTE BARROSO, 139 · 4º · CENTRO · CEP 20031-005",
+    enderecoFull: "PRAÇA MAHATMA GANDHI, 2 · CONJ. 403 · CENTRO · CEP 20021-280",
+    tel: "+55 21 2544 8220",
+    telHref: "tel:+552125448220",
+    photo: `${BASE_PHOTO}/city-rio.jpg`,
+  },
+  equipe: {
+    eyebrow: "EQUIPE · §07",
+    headlineA: "Quatro sócios.",
+    headlineB: "Equipe multidisciplinar.",
+    body: "Boutique pequena por escolha. Cada caso conduzido com dedicação direta dos sócios, sem terceirização da estratégia tributária. A seguir, os quatro sócios que assinam cada caso.",
+    socios: [
+      {
+        name: "Daniel Padula",
+        surname: "Antabi",
+        role: "SÓCIO PRINCIPAL",
+        detail: "PUC-Rio + Mestrado IBMEC/RJ · Contencioso e Consultoria Tributária · 738 processos",
+      },
+      { name: "Pedro Rangel Lourenço", surname: "da Fonseca", role: "SÓCIO", detail: "" },
+      { name: "Gustavo Edmundo Costa", surname: "de Sousa", role: "SÓCIO", detail: "" },
+      { name: "Phillipe Rodrigues", surname: "Arrais", role: "SÓCIO", detail: "" },
+    ],
+    signature: "EQUIPE 11-50 PROFISSIONAIS · BOUTIQUE MULTIDISCIPLINAR",
+  },
+  contato: {
+    eyebrow: "CONTATO · §08",
+    headlineA: "Vamos",
+    headlineB: "conversar.",
+    cidade: {
+      label: "RIO DE JANEIRO · SEDE",
+      tel: "+55 21 2544 8220",
+      telHref: "tel:+552125448220",
+      endereco: "PRAÇA MAHATMA GANDHI, 2 · CONJ. 403 · CENTRO · 20021-280",
+    },
+    email: "push@arsg.com.br",
+    emailHref: "mailto:push@arsg.com.br",
+    signature: [
+      "ANTABI, RANGEL & SOUSA ADVOGADOS · DESDE 2014",
+      "ATENDIMENTO POR AGENDAMENTO",
+    ],
+  },
+  footer: {
+    logo: "Antabi",
+    sub: "Rangel & Sousa Advogados",
+    cols: [
+      { header: "ESCRITÓRIO", items: ["Centro · Rio de Janeiro"] },
+      { header: "ÁREAS", items: ["Tributário", "Consultoria Fiscal", "Incentivos à P&D"] },
+      { header: "CONTATO", items: ["+55 21 2544 8220", "push@arsg.com.br"] },
+      { header: "SEGUIR", items: ["LinkedIn · ARSG Advogados", "Instagram · @arsgadvogados"] },
+    ],
+    marquee: "Antabi · Antabi · Antabi · Antabi",
+    copyright: "© 2026 ANTABI ADVOGADOS · DESDE 2014",
+    credit: "SITE POR NASHPAGES",
+  },
+} as const;

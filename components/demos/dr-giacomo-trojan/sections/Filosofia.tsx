@@ -14,7 +14,7 @@ export function Filosofia() {
       className="relative w-full"
       style={{ backgroundColor: "var(--c-papel)" }}
     >
-      <div className="flex flex-col lg:flex-row-reverse">
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row-reverse">
         {/* Photo RIGHT (desktop) / top (mobile) */}
         <div className="relative w-full lg:w-[540px] h-[420px] lg:h-[920px] flex-shrink-0">
           <Image

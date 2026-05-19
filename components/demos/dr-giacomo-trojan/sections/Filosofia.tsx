@@ -14,31 +14,53 @@ export function Filosofia() {
       className="relative w-full"
       style={{ backgroundColor: "var(--c-papel)" }}
     >
-      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row-reverse">
-        {/* Photo RIGHT (desktop) / top (mobile) */}
-        <div className="relative w-full lg:w-[540px] h-[420px] lg:h-[920px] flex-shrink-0">
-          <Image
-            src={filosofia.photo}
-            alt="Dr. Giácomo Trojan com paciente"
-            fill
-            loading="eager"
-            quality={92}
-            sizes="(min-width: 1024px) 540px, 100vw"
-            className="object-cover object-center"
-          />
-          <div
-            aria-hidden
-            className="hidden lg:block absolute inset-y-0 left-0 pointer-events-none"
-            style={{
-              width: "80px",
-              background:
-                "linear-gradient(to right, rgba(250,250,251,0.22) 0%, rgba(250,250,251,0) 100%)",
-            }}
-          />
-        </div>
+      {/* Mobile photo (top, full bleed) */}
+      <div className="lg:hidden relative w-full h-[420px]">
+        <Image
+          src={filosofia.photo}
+          alt="Dr. Giácomo Trojan com paciente"
+          fill
+          loading="eager"
+          quality={92}
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </div>
 
-        {/* Text LEFT */}
-        <div className="flex-1 px-6 lg:px-[80px] py-16 lg:py-24">
+      {/* Desktop photo — absolute right=0, full bleed to viewport edge */}
+      <div
+        className="hidden lg:block absolute top-0 bottom-0 overflow-hidden"
+        style={{
+          right: 0,
+          width: "clamp(440px, 38vw, 540px)",
+        }}
+      >
+        <Image
+          src={filosofia.photo}
+          alt="Dr. Giácomo Trojan com paciente"
+          fill
+          loading="eager"
+          quality={92}
+          sizes="(min-width: 1024px) 540px, 100vw"
+          className="object-cover object-center"
+        />
+        {/* Feather left edge — fade bg → photo */}
+        <div
+          aria-hidden
+          className="absolute inset-y-0 left-0 pointer-events-none"
+          style={{
+            width: "80px",
+            background:
+              "linear-gradient(to right, rgba(250,250,251,0.22) 0%, rgba(250,250,251,0) 100%)",
+          }}
+        />
+      </div>
+
+      {/* Text container 1440 — aligned with other sections */}
+      <div className="max-w-[1440px] mx-auto relative">
+        <div
+          className="px-6 py-16 lg:py-24 lg:pl-[80px] lg:pr-[calc(clamp(440px,_38vw,_540px)+48px-max(0px,_(100vw-1440px)/2))]"
+        >
           <FadeUp y={12}>
             <p
               style={{
@@ -106,7 +128,7 @@ export function Filosofia() {
             >
               {filosofia.bodyEyebrow}
             </p>
-            <div className="mt-6 space-y-5 max-w-[760px]">
+            <div className="mt-6 space-y-5">
               {filosofia.body.map((p) => (
                 <p
                   key={p}
@@ -125,7 +147,7 @@ export function Filosofia() {
           </FadeUp>
 
           <Stagger
-            className="mt-14 lg:mt-16 grid grid-cols-3 gap-6 lg:gap-12 max-w-[760px]"
+            className="mt-14 lg:mt-16 grid grid-cols-3 gap-6 lg:gap-12"
             staggerChildren={0.12}
           >
             {filosofia.stats.map((s) => (

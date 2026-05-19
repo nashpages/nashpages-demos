@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader, Spectral, Cormorant_Garamond, Source_Serif_4 } from "next/font/google";
+import { Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader, Spectral, Cormorant_Garamond, Source_Serif_4, Cinzel } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -95,6 +95,12 @@ const sourceSerif = Source_Serif_4({
   style: ["normal", "italic"],
 });
 
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "Nashpages — demos",
   description: "Demos de site para profissionais.",
@@ -112,7 +118,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable} ${spectral.variable} ${cormorantGaramond.variable} ${sourceSerif.variable}`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable} ${spectral.variable} ${cormorantGaramond.variable} ${sourceSerif.variable} ${cinzel.variable}`}
     >
       <body className="min-h-screen antialiased">{children}</body>
     </html>

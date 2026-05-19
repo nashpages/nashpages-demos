@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { PVBT_DATA } from "../data";
+import { HeroCarousel } from "../HeroCarousel";
 
 const EASE = [0.32, 0.72, 0, 1] as const;
 
@@ -17,14 +17,7 @@ export function Hero() {
       className="relative w-full h-screen min-h-[640px] overflow-hidden"
       style={{ backgroundColor: "var(--c-tinta-deep)" }}
     >
-      <Image
-        src="/demos/pvbt-advogados/hero-stadium-aerial.jpg"
-        alt="Estádio aerial noturno"
-        fill
-        priority
-        sizes="100vw"
-        style={{ objectFit: "cover", objectPosition: "center" }}
-      />
+      <HeroCarousel />
 
       {/* Vertical gradient — top dark for nav legibility, transparent center, bottom dark for marginalia */}
       <div

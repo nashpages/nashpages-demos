@@ -1,0 +1,53 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { PVBT_DATA } from "./data";
+
+const SLIDE_DURATION_MS = 7000;
+const CROSSFADE_DURATION = 1.6;
+const EASE = [0.32, 0.72, 0, 1] as const;
+
+export function HeroCarousel() {
+  const { hero } = PVBT_DATA;
+  const reduce = useReducedMotion();
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (reduce) return;
+    const id = setInterval(() => {
+      setIdx((i) => (i + 1) % hero.photos.length);
+    }, SLIDE_DURATION_MS);
+    return () => clearInterval(id);
+  }, [hero.photos.length, reduce]);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <AnimatePresence mode="popLayout">
+        <motion.div
+          key={idx}
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            opacity: { duration: CROSSFADE_DURATION, ease: EASE },
+            scale: { duration: SLIDE_DURATION_MS / 1000 + CROSSFADE_DURATION, ease: "linear" },
+          }}
+        >
+          <Image
+            src={hero.photos[idx]}
+            alt=""
+            fill
+            priority={idx === 0}
+            loading="eager"
+            quality={95}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}

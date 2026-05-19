@@ -30,6 +30,14 @@ export const PVBT_DATA = {
     wordmark: "PVBT",
     razao: "Pássaro, Vieira, Botelho & Torres",
     tagline: "Boutique jurídica do mercado do futebol.",
+    photos: [
+      "/demos/pvbt-advogados/hero-01-stadium-aerial.jpg",
+      "/demos/pvbt-advogados/hero-03-bernabeu.jpg",
+      "/demos/pvbt-advogados/hero-02-stadium-sunset.jpg",
+      "/demos/pvbt-advogados/hero-05-night-floodlight.jpg",
+      "/demos/pvbt-advogados/hero-04-ball-sunset.jpg",
+      "/demos/pvbt-advogados/hero-06-balls-golden.jpg",
+    ],
     meta: [
       { label: "ESPECIALIDADE", value: "DIREITO DESPORTIVO" },
       { label: "FUNDAÇÃO", value: "2016 · 10 ANOS" },

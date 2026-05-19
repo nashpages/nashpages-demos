@@ -14,8 +14,8 @@ export function Filosofia() {
       className="relative w-full"
       style={{ backgroundColor: "var(--c-papel)" }}
     >
-      <div className="flex flex-col lg:flex-row">
-        {/* Photo LEFT (desktop) / top (mobile) */}
+      <div className="flex flex-col lg:flex-row-reverse">
+        {/* Photo RIGHT (desktop) / top (mobile) */}
         <div className="relative w-full lg:w-[540px] h-[420px] lg:h-[920px] flex-shrink-0">
           <Image
             src={filosofia.photo}
@@ -28,16 +28,16 @@ export function Filosofia() {
           />
           <div
             aria-hidden
-            className="hidden lg:block absolute inset-y-0 right-0 pointer-events-none"
+            className="hidden lg:block absolute inset-y-0 left-0 pointer-events-none"
             style={{
               width: "80px",
               background:
-                "linear-gradient(to left, rgba(250,250,251,0.35) 0%, rgba(250,250,251,0) 100%)",
+                "linear-gradient(to right, rgba(250,250,251,0.22) 0%, rgba(250,250,251,0) 100%)",
             }}
           />
         </div>
 
-        {/* Text RIGHT */}
+        {/* Text LEFT */}
         <div className="flex-1 px-6 lg:px-[80px] py-16 lg:py-24">
           <FadeUp y={12}>
             <p

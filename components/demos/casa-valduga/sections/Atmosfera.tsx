@@ -18,7 +18,7 @@ export function Atmosfera() {
     <section id="atmosfera" className="relative w-full py-20 lg:py-[100px]" style={{ backgroundColor: "var(--c-pergaminho)" }}>
       <div className="max-w-[1440px] mx-auto px-6 lg:px-[80px]">
         <FadeUp>
-          <div className="flex items-end justify-between gap-6 mb-10 lg:mb-12">
+          <div className="flex items-start justify-between gap-6 mb-10 lg:mb-12">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <span style={{ width: "30px", height: "2px", backgroundColor: "var(--c-vinho)" }} />

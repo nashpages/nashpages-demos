@@ -15,7 +15,7 @@ export function Manifesto() {
       style={{ backgroundColor: "var(--c-pergaminho)" }}
     >
       <div className="max-w-[1440px] mx-auto px-6 lg:px-[80px]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-12 lg:gap-20 items-start">
           <div>
             <FadeUp>
               <div className="flex items-center gap-3 mb-7">

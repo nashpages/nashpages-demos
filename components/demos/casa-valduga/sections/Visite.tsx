@@ -9,7 +9,7 @@ export function Visite() {
   return (
     <section id="visite" className="relative w-full py-20 lg:py-[100px]" style={{ backgroundColor: "var(--c-pedra)" }}>
       <div className="max-w-[1440px] mx-auto px-6 lg:px-[80px]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_520px] gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_520px] gap-12 lg:gap-20 items-start">
           <div>
             <FadeUp>
               <div className="flex items-center gap-3 mb-5">

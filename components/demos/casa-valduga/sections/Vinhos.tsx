@@ -9,7 +9,7 @@ export function Vinhos() {
   return (
     <section id="vinhos" className="relative w-full py-20 lg:py-[100px]" style={{ backgroundColor: "var(--c-pedra)" }}>
       <div className="max-w-[1440px] mx-auto px-6 lg:px-[80px]">
-        <div className="grid grid-cols-1 lg:grid-cols-[460px_1fr] gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[460px_1fr] gap-12 lg:gap-20 items-start">
           <FadeUp className="relative h-[420px] lg:h-[600px] w-full overflow-hidden order-2 lg:order-1">
             <Image src={v.photo} alt="Corredor de garrafas da Casa Valduga" fill loading="eager" quality={90} sizes="(max-width: 1024px) 100vw, 460px" className="object-cover object-center" />
           </FadeUp>

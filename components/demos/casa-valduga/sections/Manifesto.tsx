@@ -47,7 +47,7 @@ export function Manifesto() {
   return (
     <section id="manifesto" data-snap-section className="relative w-full overflow-hidden" style={{ backgroundColor: "var(--c-pergaminho)" }}>
       {/* DESKTOP — foto full-bleed à direita + texto à esquerda */}
-      <div className="hidden lg:block relative w-full" style={{ height: "760px" }}>
+      <div className="hidden lg:block relative w-full" style={{ height: "780px" }}>
         <div className="absolute right-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
           <Image src={m.photo} alt="Parreirais do Vale dos Vinhedos" fill loading="eager" quality={90} sizes="600px" className="object-cover object-center" />
         </div>

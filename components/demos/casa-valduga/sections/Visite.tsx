@@ -48,7 +48,7 @@ export function Visite() {
   return (
     <section id="visite" className="relative w-full overflow-hidden" style={{ backgroundColor: "var(--c-pedra)" }}>
       {/* DESKTOP — foto full-bleed à direita + texto à esquerda */}
-      <div className="hidden lg:block relative w-full" style={{ height: "740px" }}>
+      <div className="hidden lg:block relative w-full" style={{ height: "720px" }}>
         <div className="absolute right-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
           <Image src={v.photo} alt="Fachada da Casa Valduga" fill loading="eager" quality={90} sizes="580px" className="object-cover object-center" />
         </div>

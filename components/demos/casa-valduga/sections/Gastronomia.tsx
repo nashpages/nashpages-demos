@@ -66,7 +66,7 @@ export function Gastronomia() {
   return (
     <section id="gastronomia" className="relative w-full overflow-hidden" style={{ backgroundColor: "var(--c-vinho-deep)" }}>
       {/* DESKTOP — cluster de fotos full-bleed à direita */}
-      <div className="hidden lg:block relative w-full" style={{ height: "720px" }}>
+      <div className="hidden lg:block relative w-full" style={{ height: "820px" }}>
         <div className="absolute right-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
           <Cluster />
         </div>

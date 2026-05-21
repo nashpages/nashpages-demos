@@ -42,7 +42,7 @@ export function Vinhos() {
   return (
     <section id="vinhos" className="relative w-full overflow-hidden" style={{ backgroundColor: "var(--c-pedra)" }}>
       {/* DESKTOP — foto full-bleed à esquerda + lista à direita */}
-      <div className="hidden lg:block relative w-full" style={{ height: "760px" }}>
+      <div className="hidden lg:block relative w-full" style={{ height: "820px" }}>
         <div className="absolute left-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
           <Image src={v.photo} alt="Corredor de garrafas da Casa Valduga" fill loading="eager" quality={90} sizes="540px" className="object-cover object-center" />
         </div>

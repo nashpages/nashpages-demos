@@ -76,7 +76,7 @@ export function Acomodacoes() {
               alt={a.casaPiscina.alt}
               fill
               loading="eager"
-              quality={90}
+              quality={95}
               sizes="(min-width: 1024px) 1240px, 100vw"
               className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
             />
@@ -92,7 +92,7 @@ export function Acomodacoes() {
                 alt={a.bangalo.alt}
                 fill
                 loading="eager"
-                quality={90}
+                quality={95}
                 sizes="(min-width: 1024px) 500px, 100vw"
                 className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
               />
@@ -105,7 +105,7 @@ export function Acomodacoes() {
                 alt={a.sala.alt}
                 fill
                 loading="eager"
-                quality={90}
+                quality={95}
                 sizes="(min-width: 1024px) 716px, 100vw"
                 className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
               />

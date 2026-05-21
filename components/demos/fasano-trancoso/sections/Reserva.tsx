@@ -31,7 +31,7 @@ export function Reserva() {
           alt={r.photo.alt}
           fill
           loading="eager"
-          quality={90}
+          quality={95}
           sizes="100vw"
           className="object-cover object-center"
         />

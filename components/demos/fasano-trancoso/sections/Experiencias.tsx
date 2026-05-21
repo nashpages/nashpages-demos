@@ -73,7 +73,7 @@ export function Experiencias() {
                   alt={c.name}
                   fill
                   loading="eager"
-                  quality={90}
+                  quality={95}
                   sizes="(min-width: 1024px) 289px, 50vw"
                   className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
                 />

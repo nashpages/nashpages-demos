@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { FadeUp } from "../motion";
+import { ParallaxImage } from "../ParallaxImage";
 import { FASANO_DATA } from "../data";
 
 const g = FASANO_DATA.gastronomia;
@@ -62,23 +62,15 @@ export function Gastronomia() {
         </div>
       </div>
 
-      {/* 2 fotos HQ full-bleed empilhadas */}
+      {/* 2 fotos HQ full-bleed empilhadas — parallax */}
       <div className="mt-14 lg:mt-[90px] flex flex-col gap-5">
         {g.photos.map((p) => (
           <FadeUp key={p.src} y={40}>
             <div
-              className="group relative w-full overflow-hidden"
+              className="relative w-full overflow-hidden"
               style={{ height: "clamp(440px, 54vw, 780px)" }}
             >
-              <Image
-                src={p.src}
-                alt={p.alt}
-                fill
-                loading="eager"
-                quality={95}
-                sizes="100vw"
-                className="object-cover object-center transition-transform duration-[1100ms] ease-out group-hover:scale-[1.03]"
-              />
+              <ParallaxImage src={p.src} alt={p.alt} sizes="100vw" amount={8} />
             </div>
           </FadeUp>
         ))}

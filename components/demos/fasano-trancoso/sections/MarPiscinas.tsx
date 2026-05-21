@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { FadeUp } from "../motion";
+import { ParallaxImage } from "../ParallaxImage";
 import { FASANO_DATA } from "../data";
 
 const m = FASANO_DATA.mar;
@@ -13,17 +14,9 @@ export function MarPiscinas() {
       className="relative w-full overflow-hidden"
       style={{ backgroundColor: "var(--c-noite)" }}
     >
-      {/* Foto grande full-bleed + texto sobreposto */}
+      {/* Foto grande full-bleed + parallax + texto sobreposto */}
       <div className="relative w-full overflow-hidden" style={{ height: "clamp(560px, 56vw, 800px)" }}>
-        <Image
-          src={m.photoBig.src}
-          alt={m.photoBig.alt}
-          fill
-          loading="eager"
-          quality={95}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+        <ParallaxImage src={m.photoBig.src} alt={m.photoBig.alt} sizes="100vw" amount={8} />
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -89,7 +82,7 @@ export function MarPiscinas() {
         </div>
       </div>
 
-      {/* 2 fotos lado a lado full-bleed */}
+      {/* 2 fotos lado a lado full-bleed (hover, sem parallax) */}
       <div className="grid grid-cols-2 gap-1 mt-1">
         {m.photos.map((p) => (
           <div

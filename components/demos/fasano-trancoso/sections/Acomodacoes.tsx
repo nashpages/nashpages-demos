@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { FadeUp } from "../motion";
+import { ParallaxImage } from "../ParallaxImage";
 import { FASANO_DATA } from "../data";
 
 const a = FASANO_DATA.acomodacoes;
@@ -68,22 +69,19 @@ export function Acomodacoes() {
           </FadeUp>
         </div>
 
-        {/* Foto grande casa com piscina */}
+        {/* Foto grande casa com piscina — parallax */}
         <FadeUp delay={0.05} y={36}>
-          <div className="group relative overflow-hidden w-full aspect-[1240/660] mt-14 lg:mt-[120px]">
-            <Image
+          <div className="relative overflow-hidden w-full aspect-[1240/660] mt-14 lg:mt-[120px]">
+            <ParallaxImage
               src={a.casaPiscina.src}
               alt={a.casaPiscina.alt}
-              fill
-              loading="eager"
-              quality={95}
               sizes="(min-width: 1024px) 1240px, 100vw"
-              className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+              amount={7}
             />
           </div>
         </FadeUp>
 
-        {/* Bangalô (retrato) + Sala */}
+        {/* Bangalô (retrato) + Sala — hover, sem parallax */}
         <div className="grid grid-cols-1 sm:grid-cols-[500fr_716fr] gap-4 lg:gap-6 mt-4 lg:mt-6 sm:h-[clamp(440px,43vw,620px)]">
           <FadeUp delay={0.05} y={36} className="sm:h-full">
             <div className="group relative overflow-hidden aspect-[500/620] sm:aspect-auto sm:h-full">

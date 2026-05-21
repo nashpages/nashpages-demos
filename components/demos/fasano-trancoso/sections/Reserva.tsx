@@ -1,41 +1,19 @@
 "use client";
 
-import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
 import { FadeUp } from "../motion";
+import { ParallaxImage } from "../ParallaxImage";
 import { FASANO_DATA } from "../data";
 
 const r = FASANO_DATA.reserva;
 
 export function Reserva() {
-  const reduce = useReducedMotion();
-
   return (
     <section
       id="reserva"
       className="relative w-full overflow-hidden"
       style={{ height: "clamp(600px, 57vw, 820px)", backgroundColor: "var(--c-noite)" }}
     >
-      <motion.div
-        className="absolute inset-0"
-        initial={false}
-        animate={reduce ? undefined : { scale: [1, 1.08] }}
-        transition={
-          reduce
-            ? undefined
-            : { duration: 24, ease: "linear", repeat: Infinity, repeatType: "reverse" }
-        }
-      >
-        <Image
-          src={r.photo.src}
-          alt={r.photo.alt}
-          fill
-          loading="eager"
-          quality={95}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </motion.div>
+      <ParallaxImage src={r.photo.src} alt={r.photo.alt} sizes="100vw" amount={8} />
 
       <div
         aria-hidden

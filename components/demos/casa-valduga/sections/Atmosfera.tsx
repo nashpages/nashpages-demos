@@ -6,12 +6,14 @@ import { FadeUp } from "../motion";
 
 const a = VALDUGA_DATA.atmosfera;
 
+// Mobile: altura fixa. Desktop (lg): aspect-ratio casado com a foto pra mostrar cada uma
+// quase inteira (paisagem 7/5 ≈ 1.4 · retrato 7/10 = 0.7). As duas linhas ficam alinhadas.
 const SPANS = [
-  "col-span-2 lg:col-span-6 h-[260px] lg:h-[440px]",
-  "col-span-1 lg:col-span-3 h-[260px] lg:h-[440px]",
-  "col-span-1 lg:col-span-3 h-[260px] lg:h-[440px]",
-  "col-span-1 lg:col-span-6 h-[220px] lg:h-[300px]",
-  "col-span-1 lg:col-span-6 h-[220px] lg:h-[300px]",
+  "col-span-2 lg:col-span-6 h-[280px] lg:h-auto lg:aspect-[7/5]",   // 0 corredor-cave (paisagem)
+  "col-span-1 lg:col-span-3 h-[280px] lg:h-auto lg:aspect-[7/10]",  // 1 vinhedo (retrato)
+  "col-span-1 lg:col-span-3 h-[280px] lg:h-auto lg:aspect-[7/10]",  // 2 vista-fora (retrato)
+  "col-span-1 lg:col-span-6 h-[220px] lg:h-auto lg:aspect-[7/5]",   // 3 barris-gigantes (paisagem)
+  "col-span-1 lg:col-span-6 h-[220px] lg:h-auto lg:aspect-[7/5]",   // 4 mesa-degustacao (paisagem)
 ];
 
 export function Atmosfera() {
@@ -33,9 +35,9 @@ export function Atmosfera() {
           </div>
         </FadeUp>
       </div>
-      {/* Mosaico full-bleed (edge-to-edge) */}
+      {/* Mosaico full-bleed (edge-to-edge) — aspect-ratio por foto pra mostrar cada uma quase inteira */}
       <FadeUp delay={0.05}>
-        <div className="grid grid-cols-2 lg:grid-cols-12 gap-2.5 px-2.5">
+        <div className="grid grid-cols-2 lg:grid-cols-12 items-start gap-2.5 px-2.5">
           {a.photos.map((p, i) => (
             <div key={p.src} className={`group relative overflow-hidden ${SPANS[i]}`}>
               <Image src={p.src} alt={p.alt} fill loading="eager" quality={95} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]" />

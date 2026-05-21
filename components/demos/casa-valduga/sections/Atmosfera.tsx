@@ -38,7 +38,7 @@ export function Atmosfera() {
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-2.5 px-2.5">
           {a.photos.map((p, i) => (
             <div key={p.src} className={`group relative overflow-hidden ${SPANS[i]}`}>
-              <Image src={p.src} alt={p.alt} fill loading="eager" quality={90} sizes="(max-width: 1024px) 50vw, 720px" className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]" />
+              <Image src={p.src} alt={p.alt} fill loading="eager" quality={95} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]" />
             </div>
           ))}
         </div>

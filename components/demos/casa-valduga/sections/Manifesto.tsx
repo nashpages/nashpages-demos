@@ -40,7 +40,7 @@ export function Manifesto() {
       {/* DESKTOP — tela inteira; foto full-height à direita; textos espalhados (topo/meio/base) como no Figma */}
       <div className="hidden lg:block relative w-full">
         <div className="absolute right-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
-          <Image src={m.photo} alt="Parreirais do Vale dos Vinhedos" fill loading="eager" quality={90} sizes="600px" className="object-cover object-center" />
+          <Image src={m.photo} alt="Parreirais do Vale dos Vinhedos" fill loading="eager" quality={95} sizes="(min-width: 1024px) 820px, 100vw" className="object-cover object-center" />
         </div>
         <div className="max-w-[1440px] mx-auto relative min-h-screen">
           <div className="absolute left-[80px]" style={{ top: "15vh", right: TEXT_RIGHT }}>
@@ -63,7 +63,7 @@ export function Manifesto() {
         <div className="mt-12"><Stats /></div>
       </div>
       <div className="lg:hidden relative w-full h-[440px] overflow-hidden">
-        <Image src={m.photo} alt="" fill loading="eager" quality={90} sizes="100vw" className="object-cover object-center" />
+        <Image src={m.photo} alt="" fill loading="eager" quality={95} sizes="100vw" className="object-cover object-center" />
       </div>
     </section>
   );

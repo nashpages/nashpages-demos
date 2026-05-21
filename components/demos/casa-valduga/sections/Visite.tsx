@@ -50,7 +50,7 @@ export function Visite() {
       {/* DESKTOP — foto full-bleed à direita + texto à esquerda */}
       <div className="hidden lg:block relative w-full" style={{ height: "720px" }}>
         <div className="absolute right-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
-          <Image src={v.photo} alt="Fachada da Casa Valduga" fill loading="eager" quality={90} sizes="580px" className="object-cover object-center" />
+          <Image src={v.photo} alt="Fachada da Casa Valduga" fill loading="eager" quality={95} sizes="(min-width: 1024px) 720px, 100vw" className="object-cover object-center" />
         </div>
         <div className="max-w-[1440px] mx-auto relative h-full">
           <div className="absolute flex flex-col justify-center" style={{ left: "80px", top: "0", bottom: "0", right: TEXT_RIGHT }}>
@@ -63,7 +63,7 @@ export function Visite() {
         <Corpo />
       </div>
       <div className="lg:hidden relative w-full h-[420px] overflow-hidden">
-        <Image src={v.photo} alt="" fill loading="eager" quality={90} sizes="100vw" className="object-cover object-center" />
+        <Image src={v.photo} alt="" fill loading="eager" quality={95} sizes="100vw" className="object-cover object-center" />
       </div>
     </section>
   );

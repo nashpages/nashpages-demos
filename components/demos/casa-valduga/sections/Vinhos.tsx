@@ -44,7 +44,7 @@ export function Vinhos() {
       {/* DESKTOP — foto full-bleed à esquerda + lista à direita */}
       <div className="hidden lg:block relative w-full" style={{ height: "820px" }}>
         <div className="absolute left-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
-          <Image src={v.photo} alt="Corredor de garrafas da Casa Valduga" fill loading="eager" quality={90} sizes="540px" className="object-cover object-center" />
+          <Image src={v.photo} alt="Corredor de garrafas da Casa Valduga" fill loading="eager" quality={95} sizes="(min-width: 1024px) 960px, 100vw" className="object-cover object-center" />
         </div>
         <div className="max-w-[1440px] mx-auto relative h-full">
           <div className="absolute flex flex-col justify-center" style={{ right: "80px", top: "0", bottom: "0", left: TEXT_LEFT }}>
@@ -54,7 +54,7 @@ export function Vinhos() {
       </div>
       {/* MOBILE */}
       <div className="lg:hidden relative w-full h-[420px] overflow-hidden">
-        <Image src={v.photo} alt="" fill loading="eager" quality={90} sizes="100vw" className="object-cover object-center" />
+        <Image src={v.photo} alt="" fill loading="eager" quality={95} sizes="100vw" className="object-cover object-center" />
       </div>
       <div className="lg:hidden px-6 pt-14 pb-16">
         <Lista />

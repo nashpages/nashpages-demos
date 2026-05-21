@@ -118,7 +118,7 @@ export const VALDUGA_DATA = {
       { label: "EXPERIÊNCIAS", value: "Visitas guiadas diárias, com reserva" },
     ],
     cta: "PLANEJE SUA VISITA",
-    photo: `${P}/exterior-vista.jpg`,
+    photo: `${P}/vista-fora.jpg`,
   },
   contato: {
     eyebrow: "ATÉ BREVE",

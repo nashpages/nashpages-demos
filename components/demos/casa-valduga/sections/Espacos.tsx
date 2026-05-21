@@ -73,8 +73,8 @@ export function Espacos() {
               alt={card.name}
               fill
               loading="eager"
-              quality={90}
-              sizes="420px"
+              quality={95}
+              sizes="(min-width: 1024px) 720px, 520px"
               draggable={false}
               className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]"
             />

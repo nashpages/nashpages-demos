@@ -5,8 +5,8 @@ import { VALDUGA_DATA } from "../data";
 import { FadeUp } from "../motion";
 
 const g = VALDUGA_DATA.gastronomia;
-const PHOTO_W = "clamp(500px, 48vw, 740px)";
-const TEXT_RIGHT = "calc(clamp(500px, 48vw, 740px) + 64px - max(0px, (100vw - 1440px) / 2))";
+const PHOTO_W = "clamp(540px, 47vw, 900px)";
+const TEXT_RIGHT = "calc(clamp(540px, 47vw, 900px) + 64px - max(0px, (100vw - 1440px) / 2))";
 
 const Eyebrow = () => (
   <div className="flex items-center gap-3 mb-6">
@@ -44,16 +44,16 @@ const Cta = () => (
 
 function Cluster() {
   return (
-    <div className="grid grid-cols-[1.05fr_0.95fr] gap-2.5 h-full w-full">
+    <div className="grid grid-cols-[1.25fr_1fr] gap-3 h-full w-full">
       <div className="relative overflow-hidden h-full">
-        <Image src={g.photos.pour} alt="Vinho sendo servido" fill loading="eager" quality={90} sizes="380px" className="object-cover object-center" />
+        <Image src={g.photos.pour} alt="Vinho sendo servido" fill loading="eager" quality={95} sizes="(min-width: 1024px) 480px, 100vw" className="object-cover object-center" />
       </div>
-      <div className="grid grid-rows-2 gap-2.5 h-full">
+      <div className="grid grid-rows-2 gap-3 h-full">
         <div className="relative overflow-hidden">
-          <Image src={g.photos.mesa} alt="Mesa de especiarias e vinhos" fill loading="eager" quality={90} sizes="340px" className="object-cover object-center" />
+          <Image src={g.photos.mesa} alt="Mesa de especiarias e vinhos" fill loading="eager" quality={95} sizes="(min-width: 1024px) 420px, 100vw" className="object-cover object-center" />
         </div>
         <div className="relative overflow-hidden">
-          <Image src={g.photos.barril} alt="Barril de carvalho" fill loading="eager" quality={90} sizes="340px" className="object-cover object-center" />
+          <Image src={g.photos.barril} alt="Barril de carvalho" fill loading="eager" quality={95} sizes="(min-width: 1024px) 420px, 100vw" className="object-cover object-center" />
         </div>
       </div>
     </div>

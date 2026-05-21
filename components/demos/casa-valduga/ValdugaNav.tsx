@@ -1,0 +1,67 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { VALDUGA_DATA, VALDUGA_PALETTE } from "./data";
+
+export function ValdugaNav() {
+  const [scrolled, setScrolled] = useState(false);
+  const { nav } = VALDUGA_DATA;
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.72);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const textColor = scrolled ? VALDUGA_PALETTE.tinta : VALDUGA_PALETTE.pergaminho;
+
+  return (
+    <header
+      className="fixed top-0 left-0 right-0 z-50"
+      style={{
+        backgroundColor: scrolled ? "rgba(244,238,227,0.92)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+        borderBottom: `1px solid ${scrolled ? VALDUGA_PALETTE.linha : "transparent"}`,
+        transition: "background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease",
+      }}
+    >
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-[80px] h-[68px] lg:h-[74px] flex items-center justify-between">
+        <a
+          href="#top"
+          style={{
+            fontFamily: "var(--font-playfair)",
+            fontWeight: 500,
+            fontSize: "22px",
+            letterSpacing: "0.2px",
+            color: textColor,
+            transition: "color 0.4s ease",
+          }}
+        >
+          {nav.wordmark}
+        </a>
+        <nav className="hidden md:flex items-center gap-7 lg:gap-9">
+          {nav.links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              style={{
+                fontFamily: "var(--font-inter)",
+                fontWeight: 400,
+                fontSize: "14px",
+                letterSpacing: "0.2px",
+                color: textColor,
+                opacity: 0.92,
+                transition: "color 0.4s ease, opacity 0.2s ease",
+              }}
+              className="hover:opacity-100"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+  );
+}

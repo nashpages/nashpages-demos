@@ -6,7 +6,7 @@ import { FadeUp } from "../motion";
 
 const m = VALDUGA_DATA.manifesto;
 const PHOTO_W = "clamp(440px, 40vw, 600px)";
-const TEXT_RIGHT = "calc(clamp(440px, 40vw, 600px) + 64px - max(0px, (100vw - 1440px) / 2))";
+const TEXT_RIGHT = "calc(clamp(440px, 40vw, 600px) + 72px - max(0px, (100vw - 1440px) / 2))";
 
 function Intro() {
   return (
@@ -46,22 +46,22 @@ function Stats() {
 export function Manifesto() {
   return (
     <section id="manifesto" data-snap-section className="relative w-full overflow-hidden" style={{ backgroundColor: "var(--c-pergaminho)" }}>
-      {/* DESKTOP — foto full-bleed à direita + texto à esquerda */}
-      <div className="hidden lg:block relative w-full" style={{ height: "780px" }}>
+      {/* DESKTOP — tela inteira: foto full-bleed à direita (altura total) + texto centralizado à esquerda */}
+      <div className="hidden lg:block relative w-full">
         <div className="absolute right-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
           <Image src={m.photo} alt="Parreirais do Vale dos Vinhedos" fill loading="eager" quality={90} sizes="600px" className="object-cover object-center" />
         </div>
-        <div className="max-w-[1440px] mx-auto relative h-full">
-          <div className="absolute flex flex-col" style={{ left: "80px", top: "108px", bottom: "96px", right: TEXT_RIGHT }}>
+        <div className="max-w-[1440px] mx-auto relative min-h-screen">
+          <div className="absolute left-[80px] inset-y-0 flex flex-col justify-center" style={{ right: TEXT_RIGHT }}>
             <Intro />
-            <div className="mt-auto pt-12">
+            <div className="mt-12">
               <Stats />
             </div>
           </div>
         </div>
       </div>
       {/* MOBILE — empilhado */}
-      <div className="lg:hidden px-6 pt-16">
+      <div className="lg:hidden px-6 pt-24 pb-12">
         <Intro />
         <div className="mt-12 mb-14">
           <Stats />

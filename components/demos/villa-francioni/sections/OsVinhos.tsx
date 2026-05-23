@@ -44,7 +44,7 @@ export function OsVinhos() {
       {/* DESKTOP — split: garrafa full-height esquerda + conteúdo direita */}
       <div className="hidden lg:block relative w-full">
         <div className="absolute left-0 top-0 bottom-0 overflow-hidden" style={{ width: PHOTO_W }}>
-          <Image src={v.photo.src} alt={v.photo.alt} fill loading="eager" quality={95} sizes="(min-width:1024px) 600px, 100vw" className="object-cover object-center" />
+          <Image src={v.photo.src} alt={v.photo.alt} fill loading="eager" quality={95} sizes="(min-width:1024px) 720px, 100vw" className="object-cover object-center" />
           <span className="absolute bottom-7 left-7 z-10" style={{ fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: "11px", letterSpacing: "2.2px", color: "var(--c-giz)", opacity: 0.9, textShadow: "0 1px 12px rgba(0,0,0,0.5)" }}>
             {v.photo.caption}
           </span>

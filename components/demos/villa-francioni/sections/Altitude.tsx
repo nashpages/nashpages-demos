@@ -55,7 +55,7 @@ export function Altitude() {
               }}
             >
               <span className="block">{a.headline[0]}</span>
-              <span className="block" style={{ fontStyle: "italic" }}>
+              <span className="block" style={{ fontStyle: "italic", fontWeight: 300 }}>
                 {a.headline[1]}
               </span>
             </h2>

@@ -19,7 +19,7 @@ export function Rodape() {
             <p style={{ fontFamily: "var(--font-inter)", fontWeight: 400, fontSize: "14px", color: "var(--c-giz)", opacity: 0.6, margin: "18px 0 0" }}>
               {f.tagline}
             </p>
-            <p style={{ fontFamily: "var(--font-fraunces)", fontStyle: "italic", fontWeight: 400, fontSize: "17px", color: "var(--c-giz)", opacity: 0.72, margin: "8px 0 0" }}>
+            <p style={{ fontFamily: "var(--font-fraunces)", fontStyle: "italic", fontWeight: 300, fontSize: "17px", color: "var(--c-giz)", opacity: 0.72, margin: "8px 0 0" }}>
               {f.lema}
             </p>
           </div>

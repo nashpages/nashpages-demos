@@ -29,7 +29,7 @@ function Header() {
       </p>
       <h2 style={{ fontFamily: "var(--font-fraunces)", fontWeight: 400, fontSize: "clamp(34px, 4.2vw, 50px)", lineHeight: 1.06, letterSpacing: "-0.5px", color: "var(--c-giz)", margin: 0 }}>
         <span className="block">{v.headline[0]}</span>
-        <span className="block" style={{ fontStyle: "italic" }}>{v.headline[1]}</span>
+        <span className="block" style={{ fontStyle: "italic", fontWeight: 300 }}>{v.headline[1]}</span>
       </h2>
       <p style={{ fontFamily: "var(--font-inter)", fontWeight: 400, fontSize: "15px", lineHeight: 1.72, color: "var(--c-giz)", opacity: 0.82, margin: "26px 0 0", maxWidth: "560px" }}>
         {v.body}

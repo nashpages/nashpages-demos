@@ -74,7 +74,7 @@ export function Hero() {
           style={{
             fontFamily: "var(--font-fraunces)",
             fontStyle: "italic",
-            fontWeight: 400,
+            fontWeight: 300,
             fontSize: "clamp(20px, 3vw, 28px)",
             lineHeight: 1.2,
             color: "var(--c-giz)",

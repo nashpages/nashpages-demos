@@ -24,7 +24,7 @@ export function OSonho() {
               }}
             >
               <span className="block">{s.headline[0]}</span>
-              <span className="block" style={{ fontStyle: "italic" }}>
+              <span className="block" style={{ fontStyle: "italic", fontWeight: 300 }}>
                 {s.headline[1]}
               </span>
             </h2>

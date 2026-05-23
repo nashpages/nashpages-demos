@@ -34,7 +34,7 @@ export function Visite() {
               <FadeUp delay={0.08}>
                 <h2 style={{ fontFamily: "var(--font-fraunces)", fontWeight: 400, fontSize: "clamp(32px, 4.2vw, 52px)", lineHeight: 1.04, letterSpacing: "-0.5px", color: "var(--c-giz)", margin: 0, textShadow: "0 2px 22px rgba(0,0,0,0.4)" }}>
                   <span className="block">{v.headline[0]}</span>
-                  <span className="block" style={{ fontStyle: "italic" }}>{v.headline[1]}</span>
+                  <span className="block" style={{ fontStyle: "italic", fontWeight: 300 }}>{v.headline[1]}</span>
                 </h2>
               </FadeUp>
             </div>

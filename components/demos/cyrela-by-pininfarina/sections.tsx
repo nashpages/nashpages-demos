@@ -92,12 +92,17 @@ export function Hero() {
     offset: ["start start", "end end"],
   });
 
-  // Crossfade de opacidade por frame, com "hold" em cada imagem.
-  const o0 = useTransform(scrollYProgress, [0, 0.22, 0.33], [1, 1, 0]);
-  const o1 = useTransform(scrollYProgress, [0.22, 0.33, 0.55, 0.66], [0, 1, 1, 0]);
-  const o2 = useTransform(scrollYProgress, [0.55, 0.66, 0.78, 0.89], [0, 1, 1, 0]);
-  const o3 = useTransform(scrollYProgress, [0.78, 0.89, 1], [0, 1, 1]);
-  const ops = [o0, o1, o2, o3];
+  // Cada imagem (da 2ª em diante) SOBE e cobre a anterior — slide reveal vertical.
+  const y1 = useTransform(scrollYProgress, [0.06, 0.3], ["100%", "0%"]);
+  const y2 = useTransform(scrollYProgress, [0.4, 0.62], ["100%", "0%"]);
+  const y3 = useTransform(scrollYProgress, [0.72, 0.94], ["100%", "0%"]);
+  const ys = [null, y1, y2, y3];
+  // Caption acompanha a imagem ativa (crossfade curto só do texto).
+  const cap0 = useTransform(scrollYProgress, [0, 0.18, 0.3], [1, 1, 0]);
+  const cap1 = useTransform(scrollYProgress, [0.18, 0.3, 0.52, 0.62], [0, 1, 1, 0]);
+  const cap2 = useTransform(scrollYProgress, [0.52, 0.62, 0.84, 0.94], [0, 1, 1, 0]);
+  const cap3 = useTransform(scrollYProgress, [0.84, 0.94, 1], [0, 1, 1]);
+  const caps = [cap0, cap1, cap2, cap3];
 
   const title = (
     <h1 className="text-[40px] leading-none sm:text-[56px] lg:text-[76px]" style={headSt}>
@@ -137,21 +142,26 @@ export function Hero() {
   }
 
   return (
-    <section id="top" ref={ref} className="relative" style={{ height: "380vh" }}>
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <div
-          className={`${SHELL} flex h-full flex-col items-center pt-24 pb-9 text-center md:pt-28`}
-        >
+    <section id="top" ref={ref} className="relative" style={{ height: "300vh" }}>
+      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
+        <div className={`${SHELL} flex w-full flex-col items-center text-center`}>
           <span style={eyebrowSt}>{d.eyebrow}</span>
-          <div className="mt-5">{title}</div>
-          <p className="mx-auto mt-5 hidden max-w-[600px] sm:block" style={bodySt}>
+          <div className="mt-4">{title}</div>
+          <p className="mx-auto mt-4 hidden max-w-[600px] sm:block" style={bodySt}>
             {d.subtitle}
           </p>
 
-          {/* Stack de imagens contidas — crossfade dirigido pelo scroll */}
-          <div className="relative mt-7 min-h-0 w-full max-w-[1140px] flex-1 overflow-hidden">
+          {/* Imagens contidas (altura definida) — cada uma SOBE e cobre a anterior */}
+          <div
+            className="relative mt-7 w-full max-w-[1040px] overflow-hidden"
+            style={{ height: "min(58vh, 600px)" }}
+          >
             {frames.map((f, i) => (
-              <motion.div key={f.src} className="absolute inset-0" style={{ opacity: ops[i] }}>
+              <motion.div
+                key={f.src}
+                className={`absolute inset-0${ys[i] ? " will-change-transform" : ""}`}
+                style={ys[i] ? { y: ys[i] } : undefined}
+              >
                 <Image
                   src={f.src}
                   alt={f.alt}
@@ -159,21 +169,21 @@ export function Hero() {
                   priority={i === 0}
                   loading={i === 0 ? undefined : "eager"}
                   quality={95}
-                  sizes="(max-width: 768px) 92vw, 1140px"
+                  sizes="(max-width: 768px) 92vw, 1040px"
                   className="object-cover"
                 />
               </motion.div>
             ))}
           </div>
 
-          {/* Caption (crossfade) + barra de progresso do scroll */}
-          <div className="relative mt-3 flex w-full max-w-[1140px] items-center gap-6">
+          {/* Caption (acompanha a imagem) + barra de progresso do scroll */}
+          <div className="relative mt-3 flex w-full max-w-[1040px] items-center gap-6">
             <div className="relative h-[14px] flex-1">
               {frames.map((f, i) => (
                 <motion.span
                   key={f.src}
                   className="absolute left-0 top-0 whitespace-nowrap"
-                  style={{ ...labelSt, opacity: ops[i] }}
+                  style={{ ...labelSt, opacity: caps[i] }}
                 >
                   {f.caption}
                 </motion.span>

@@ -37,7 +37,7 @@ export function CyrelaLayout() {
             color: "var(--c-tinta)",
             fontFamily: "var(--font-inter)",
           }}
-          className="min-h-screen overflow-x-hidden"
+          className="min-h-screen overflow-x-clip"
         >
           <CyrelaNav />
           <Hero />

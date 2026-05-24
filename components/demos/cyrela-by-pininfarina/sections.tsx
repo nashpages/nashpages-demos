@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { RevealFadeUp } from "@/components/motion/RevealFadeUp";
 import { RevealLines } from "./motion";
 import { MaskReveal } from "./MaskReveal";
@@ -80,48 +81,111 @@ function CtaButton({ href, children }: { href: string; children: ReactNode }) {
   );
 }
 
-/* ── 01 · HERO ──────────────────────────────────────────────────────────── */
+/* ── 01 · HERO (pinned · crossfade de imagens dirigido pelo scroll) ──────── */
 export function Hero() {
   const d = CYRELA_DATA.hero;
-  return (
-    <section id="top" className="relative">
-      <div className={`${SHELL} pt-36 pb-20 text-center md:pt-44 md:pb-28`}>
-        <RevealFadeUp>
+  const frames = d.frames;
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  });
+
+  // Crossfade de opacidade por frame, com "hold" em cada imagem.
+  const o0 = useTransform(scrollYProgress, [0, 0.22, 0.33], [1, 1, 0]);
+  const o1 = useTransform(scrollYProgress, [0.22, 0.33, 0.55, 0.66], [0, 1, 1, 0]);
+  const o2 = useTransform(scrollYProgress, [0.55, 0.66, 0.78, 0.89], [0, 1, 1, 0]);
+  const o3 = useTransform(scrollYProgress, [0.78, 0.89, 1], [0, 1, 1]);
+  const ops = [o0, o1, o2, o3];
+
+  const title = (
+    <h1 className="text-[40px] leading-none sm:text-[56px] lg:text-[76px]" style={headSt}>
+      Esculpido pelo vento
+      <Dot />
+    </h1>
+  );
+
+  // Reduced motion → hero estático com a primeira imagem (sem pin/crossfade).
+  if (reduce) {
+    return (
+      <section id="top" className="relative">
+        <div className={`${SHELL} pt-36 pb-20 text-center md:pt-44 md:pb-28`}>
           <span style={eyebrowSt}>{d.eyebrow}</span>
-        </RevealFadeUp>
-        <RevealLines
-          className="mt-6 text-[44px] leading-none sm:text-[64px] lg:text-[84px]"
-          style={headSt}
-          delay={0.05}
-          lines={[
-            <>
-              Esculpido pelo vento
-              <Dot />
-            </>,
-          ]}
-        />
-        <RevealFadeUp delay={0.15}>
+          <div className="mt-6">{title}</div>
           <p className="mx-auto mt-7 max-w-[640px]" style={bodySt}>
             {d.subtitle}
           </p>
-        </RevealFadeUp>
-        <MaskReveal
-          delay={0.1}
-          className="relative mx-auto mt-12 aspect-[3/2] w-full max-w-[1110px] overflow-hidden md:mt-16"
+          <div className="relative mx-auto mt-12 aspect-[3/2] w-full max-w-[1110px] overflow-hidden md:mt-16">
+            <Image
+              src={frames[0].src}
+              alt={frames[0].alt}
+              fill
+              priority
+              quality={95}
+              sizes="(max-width: 768px) 92vw, 1110px"
+              className="object-cover"
+            />
+          </div>
+          <div className="mx-auto mt-3 flex max-w-[1110px] items-center justify-between">
+            <span style={labelSt}>{frames[0].caption}</span>
+            <span style={labelSt}>VILA OLÍMPIA · 2018</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id="top" ref={ref} className="relative" style={{ height: "380vh" }}>
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <div
+          className={`${SHELL} flex h-full flex-col items-center pt-24 pb-9 text-center md:pt-28`}
         >
-          <Image
-            src={d.photo}
-            alt={d.alt}
-            fill
-            priority
-            quality={95}
-            sizes="(max-width: 768px) 92vw, 1110px"
-            className="object-cover"
-          />
-        </MaskReveal>
-        <div className="mx-auto mt-3 flex max-w-[1110px] items-center justify-between">
-          <span style={labelSt}>{d.captionL}</span>
-          <span style={labelSt}>{d.captionR}</span>
+          <span style={eyebrowSt}>{d.eyebrow}</span>
+          <div className="mt-5">{title}</div>
+          <p className="mx-auto mt-5 hidden max-w-[600px] sm:block" style={bodySt}>
+            {d.subtitle}
+          </p>
+
+          {/* Stack de imagens contidas — crossfade dirigido pelo scroll */}
+          <div className="relative mt-7 min-h-0 w-full max-w-[1140px] flex-1 overflow-hidden">
+            {frames.map((f, i) => (
+              <motion.div key={f.src} className="absolute inset-0" style={{ opacity: ops[i] }}>
+                <Image
+                  src={f.src}
+                  alt={f.alt}
+                  fill
+                  priority={i === 0}
+                  loading={i === 0 ? undefined : "eager"}
+                  quality={95}
+                  sizes="(max-width: 768px) 92vw, 1140px"
+                  className="object-cover"
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Caption (crossfade) + barra de progresso do scroll */}
+          <div className="relative mt-3 flex w-full max-w-[1140px] items-center gap-6">
+            <div className="relative h-[14px] flex-1">
+              {frames.map((f, i) => (
+                <motion.span
+                  key={f.src}
+                  className="absolute left-0 top-0 whitespace-nowrap"
+                  style={{ ...labelSt, opacity: ops[i] }}
+                >
+                  {f.caption}
+                </motion.span>
+              ))}
+            </div>
+            <div className="h-px w-[120px] shrink-0" style={{ backgroundColor: "var(--c-linha)" }}>
+              <motion.div
+                className="h-full origin-left"
+                style={{ backgroundColor: "var(--c-rosso)", scaleX: scrollYProgress }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

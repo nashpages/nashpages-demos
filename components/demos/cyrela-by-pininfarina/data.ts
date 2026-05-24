@@ -23,10 +23,28 @@ export const CYRELA_DATA = {
     eyebrow: "VILA OLÍMPIA · SÃO PAULO",
     subtitle:
       "Branded residence assinada pela Pininfarina — o estúdio italiano que desenha a Ferrari desde 1930.",
-    photo: `${P}/fachada.jpg`,
-    alt: "Fachada curva do Cyrela by Pininfarina vista de baixo, contra o céu azul",
-    captionL: "A FORMA — FACHADA EM CURVAS",
-    captionR: "VILA OLÍMPIA · 2018",
+    frames: [
+      {
+        src: `${P}/fachada.jpg`,
+        alt: "Fachada curva do Cyrela by Pininfarina vista de baixo, contra o céu azul",
+        caption: "A FORMA — FACHADA EM CURVAS",
+      },
+      {
+        src: `${P}/hero-aerea.jpg`,
+        alt: "O conjunto visto de cima — piscina, deck e jardins",
+        caption: "IMPLANTAÇÃO — VISTA DE CIMA",
+      },
+      {
+        src: `${P}/hero-piscina-dia.jpg`,
+        alt: "Piscina com raia e jardins à luz do dia",
+        caption: "PISCINA & JARDINS — À LUZ DO DIA",
+      },
+      {
+        src: `${P}/hero-hall.jpg`,
+        alt: "Lobby — coluna escultural e teto curvo em madeira",
+        caption: "O LOBBY — A CURVA POR DENTRO",
+      },
+    ],
   },
   dna: {
     eyebrow: "02 — A ASSINATURA",

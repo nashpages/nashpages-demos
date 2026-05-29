@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader, Spectral, Cormorant_Garamond, Source_Serif_4, Cinzel, Bodoni_Moda } from "next/font/google";
+import { Archivo, Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader, Spectral, Cormorant_Garamond, Source_Serif_4, Cinzel, Bodoni_Moda } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,6 +7,12 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
+});
+
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -125,7 +131,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable} ${spectral.variable} ${cormorantGaramond.variable} ${sourceSerif.variable} ${cinzel.variable} ${bodoniModa.variable}`}
+      className={`${archivo.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable} ${spectral.variable} ${cormorantGaramond.variable} ${sourceSerif.variable} ${cinzel.variable} ${bodoniModa.variable}`}
     >
       <body className="min-h-screen antialiased">{children}</body>
     </html>

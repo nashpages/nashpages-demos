@@ -170,23 +170,53 @@ export function Degustacao() {
   const dish = DISHES[active];
 
   return (
-    <section ref={outerRef} style={{ backgroundColor: C.espresso, color: C.linho }} className={`relative ${reduce ? "" : "md:h-[520vh]"}`}>
-      <div className={`flex flex-col py-[clamp(60px,9vw,92px)] md:py-0 ${reduce ? "" : "md:sticky md:top-0 md:h-screen md:justify-center md:overflow-hidden"}`}>
+    <>
+      {/* ===== MOBILE: cardápio visual — cada prato com a sua foto, scroll natural ===== */}
+      <section className="md:hidden py-[80px]" style={{ backgroundColor: C.espresso, color: C.linho }}>
         <Container>
-          <div className="flex items-center gap-6">
-            <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
+          <div className="flex items-center gap-5">
+            <span className="whitespace-nowrap"><Eyebrow size={12}>A Carta — Degustação</Eyebrow></span>
             <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
           </div>
-          <h2 className="mt-5" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3vw,42px)", lineHeight: 1.06 }}>
+          <h2 className="mt-5" style={{ fontFamily: F, fontWeight: 600, fontSize: 30, lineHeight: 1.08 }}>
             Os clássicos da casa, <em>prato a prato</em>.
           </h2>
 
-          <div className="mt-[clamp(24px,3vh,40px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[clamp(40px,5vw,72px)]">
-            <div className="md:shrink-0">
-              <div className="md:static">
-                {/* Mobile: PAISAGEM 334×300 (Figma 74:5), largura cheia.
-                    Desktop: RETRATO — altura manda (clamp vh) + largura deriva de 56/70. */}
-                <div className="relative w-full overflow-hidden rounded-[3px] aspect-[334/300] md:aspect-[56/70] md:h-[clamp(320px,54vh,560px)] md:w-auto" style={{ boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+          <div className="mt-10 flex flex-col gap-[44px]">
+            {DISHES.map((d, i) => (
+              <article key={d.name}>
+                <div className="relative w-full overflow-hidden rounded-[3px] aspect-[3/2]" style={{ boxShadow: "0 24px 60px -34px rgba(0,0,0,0.8)" }}>
+                  <Image src={d.img} alt={d.name} fill quality={95} sizes="calc(100vw - 56px)" className="object-cover" loading="eager" />
+                </div>
+                <div className="mt-4 flex items-center gap-3" style={{ fontFamily: M, textTransform: "uppercase" }}>
+                  <span style={{ fontSize: 12, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
+                  <span style={{ fontSize: 11, letterSpacing: "2.2px", color: C.camel }}>{d.course}</span>
+                </div>
+                <h3 className="mt-[7px]" style={{ fontFamily: F, fontWeight: 600, fontSize: 23, lineHeight: 1.1 }}>{d.name}</h3>
+                <div className="mt-[5px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 16, color: C.camel }}>{d.it}</div>
+                <p className="mt-[9px]" style={{ fontFamily: IN, fontSize: 15, lineHeight: 1.58, color: C.creme }}>{d.desc}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ===== DESKTOP: a tela TRAVA e o scroll percorre os pratos ===== */}
+      <section ref={outerRef} style={{ backgroundColor: C.espresso, color: C.linho }} className={`relative hidden md:block ${reduce ? "" : "md:h-[520vh]"}`}>
+        <div className={`flex flex-col py-0 ${reduce ? "" : "md:sticky md:top-0 md:h-screen md:justify-center md:overflow-hidden"}`}>
+          <Container>
+            <div className="flex items-center gap-6">
+              <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
+              <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
+            </div>
+            <h2 className="mt-5" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3vw,42px)", lineHeight: 1.06 }}>
+              Os clássicos da casa, <em>prato a prato</em>.
+            </h2>
+
+            <div className="mt-[clamp(24px,3vh,40px)] flex flex-row items-start gap-[clamp(40px,5vw,72px)]">
+              <div className="shrink-0">
+                {/* RETRATO — altura manda (clamp vh) + largura deriva de 56/70. */}
+                <div className="relative overflow-hidden rounded-[3px]" style={{ height: "clamp(320px,54vh,560px)", aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
                   {DISHES.map((d, i) => (
                     <Image
                       key={d.img}
@@ -194,7 +224,7 @@ export function Degustacao() {
                       alt={d.name}
                       fill
                       quality={95}
-                      sizes="(max-width:880px) 334px, 560px"
+                      sizes="448px"
                       className="object-cover transition-opacity duration-[800ms] ease-out"
                       style={{ opacity: i === active ? 1 : 0 }}
                       priority={i === 0}
@@ -207,34 +237,32 @@ export function Degustacao() {
                   <span style={{ color: C.camel }}>· {String(active + 1).padStart(2, "0")} / 0{DISHES.length}</span>
                 </div>
               </div>
-            </div>
 
-            <div className="md:flex-1">
-              {DISHES.map((d, i) => (
-                <div
-                  key={d.name}
-                  ref={(el) => { itemRefs.current[i] = el; }}
-                  data-i={i}
-                  className="relative border-t py-[clamp(8px,1.15vh,13px)] pl-[22px]"
-                  style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
-                >
-                  <span className="absolute bottom-[12px] left-0 top-[12px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
-                  <div className="flex items-center gap-3" style={{ fontFamily: M, textTransform: "uppercase" }}>
-                    <span style={{ fontSize: 12, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
-                    <span style={{ fontSize: 11, letterSpacing: "2.2px", color: C.camel }}>{d.course}</span>
+              <div className="flex-1">
+                {DISHES.map((d, i) => (
+                  <div
+                    key={d.name}
+                    className="relative border-t py-[clamp(8px,1.15vh,13px)] pl-[22px]"
+                    style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
+                  >
+                    <span className="absolute bottom-[12px] left-0 top-[12px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
+                    <div className="flex items-center gap-3" style={{ fontFamily: M, textTransform: "uppercase" }}>
+                      <span style={{ fontSize: 12, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
+                      <span style={{ fontSize: 11, letterSpacing: "2.2px", color: C.camel }}>{d.course}</span>
+                    </div>
+                    <h3 className="mt-[6px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(19px,1.7vw,23px)", lineHeight: 1.1, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
+                    <div className="mt-[4px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 16, color: C.camel }}>{d.it}</div>
+                    <div className="overflow-hidden" style={{ maxHeight: i === active ? 76 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.5s ease" }}>
+                      <p className="pt-[8px]" style={{ fontFamily: IN, fontSize: 15, lineHeight: 1.55, color: C.creme, maxWidth: 520 }}>{d.desc}</p>
+                    </div>
                   </div>
-                  <h3 className="mt-[6px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(19px,1.7vw,23px)", lineHeight: 1.1, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
-                  <div className="mt-[4px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 16, color: C.camel }}>{d.it}</div>
-                  <div className="overflow-hidden" style={{ maxHeight: i === active ? 76 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.5s ease" }}>
-                    <p className="pt-[8px]" style={{ fontFamily: IN, fontSize: 15, lineHeight: 1.55, color: C.creme, maxWidth: 520 }}>{d.desc}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </Container>
-      </div>
-    </section>
+          </Container>
+        </div>
+      </section>
+    </>
   );
 }
 

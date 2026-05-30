@@ -321,7 +321,7 @@ export function OEspaco() {
           </div>
         </div>
         <div
-          className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[28px] pb-2 [-webkit-overflow-scrolling:touch] [scrollbar-width:none]"
+          className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[28px] pb-2 scroll-px-[28px] [-webkit-overflow-scrolling:touch] [scrollbar-width:none]"
         >
           {ESPACO.map((e) => (
             <figure key={e.img} className="shrink-0 snap-start" style={{ width: "82vw", maxWidth: 360 }}>

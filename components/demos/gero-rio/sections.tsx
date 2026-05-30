@@ -166,11 +166,11 @@ export function Degustacao() {
           </h2>
 
           <div className="mt-[clamp(24px,3vh,40px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[clamp(40px,5vw,72px)]">
-            <div className="shrink-0">
-              <div className="sticky top-[10vh] md:static">
-                {/* foto RETRATO como no Figma (560×700): a ALTURA manda (escala com a tela travada)
-                    e a largura é derivada da proporção 56/70 — fica retrato em QUALQUER tela. */}
-                <div className="relative overflow-hidden rounded-[3px]" style={{ height: "clamp(320px,54vh,560px)", aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+            <div className="md:shrink-0">
+              <div className="md:static">
+                {/* Mobile: PAISAGEM 334×300 (Figma 74:5), largura cheia.
+                    Desktop: RETRATO — altura manda (clamp vh) + largura deriva de 56/70. */}
+                <div className="relative w-full overflow-hidden rounded-[3px] aspect-[334/300] md:aspect-[56/70] md:h-[clamp(320px,54vh,560px)] md:w-auto" style={{ boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
                   {DISHES.map((d, i) => (
                     <Image
                       key={d.img}
@@ -178,7 +178,7 @@ export function Degustacao() {
                       alt={d.name}
                       fill
                       quality={95}
-                      sizes="(max-width:880px) 90vw, 560px"
+                      sizes="(max-width:880px) 334px, 560px"
                       className="object-cover transition-opacity duration-[800ms] ease-out"
                       style={{ opacity: i === active ? 1 : 0 }}
                       priority={i === 0}
@@ -267,30 +267,54 @@ export function OEspaco() {
 
   return (
     <section ref={outerRef} className="relative overflow-x-clip" style={{ backgroundColor: C.linho, color: C.espresso, height: outerH ? `${outerH}px` : undefined }}>
-      <div className={innerCls} style={{ scrollbarWidth: "none" }}>
-        <motion.div ref={trackRef} style={reduce ? undefined : { x }} className="flex h-full w-max items-center gap-[clamp(26px,3vw,46px)] px-[clamp(28px,6vw,80px)] py-20 md:py-0">
-          <div className="flex shrink-0 flex-col gap-[22px]" style={{ width: "min(82vw,430px)" }}>
-            <Eyebrow>O Espaço</Eyebrow>
-            <h2 style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(36px,3.6vw,48px)", lineHeight: 1.04, letterSpacing: "-0.01em", color: C.espresso }}>
-              Um passeio pela casa.
-            </h2>
-            <div style={{ fontFamily: M, fontSize: 12, letterSpacing: "1.8px", textTransform: "uppercase", color: C.camel }}>
-              Role para o lado →
-            </div>
-          </div>
-
-          {ESPACO.map((e) => (
-            <figure key={e.img} className="shrink-0">
-              <div className="relative overflow-hidden rounded-[3px]" style={{ height: "clamp(320px,58vh,470px)", aspectRatio: `${e.w} / ${e.h}`, boxShadow: "0 30px 70px -34px rgba(0,0,0,0.55)" }}>
-                <Image src={e.img} alt={e.name} fill quality={95} sizes="(max-width:880px) 72vw, 700px" className="object-cover" loading="eager" />
+      {/* MOBILE: 5 fotos EMPILHADAS verticais full-width (Figma 75:2) */}
+      <div className="px-[28px] py-[80px] md:hidden">
+        <div className="flex flex-col gap-2">
+          <Eyebrow>O Espaço</Eyebrow>
+          <h2 style={{ fontFamily: F, fontWeight: 600, fontSize: 30, lineHeight: 1.06, color: C.espresso }}>Um passeio pela casa.</h2>
+        </div>
+        <div className="mt-10 flex flex-col gap-[clamp(40px,9vw,56px)]">
+          {ESPACO.map((e, i) => (
+            <figure key={e.img}>
+              <div className="relative w-full overflow-hidden rounded-[3px]" style={{ aspectRatio: i === 0 ? "334 / 300" : "334 / 230", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.4)" }}>
+                <Image src={e.img} alt={e.name} fill quality={95} sizes="334px" className="object-cover" loading="eager" />
               </div>
-              <figcaption className="mt-[18px]">
+              <figcaption className="mt-[14px]">
                 <Eyebrow size={12} tracking="2.2px">{e.label}</Eyebrow>
-                <div style={{ fontFamily: F, fontWeight: 600, fontSize: 23, marginTop: 7 }}>{e.name}</div>
+                <div style={{ fontFamily: F, fontWeight: 600, fontSize: 23, marginTop: 6 }}>{e.name}</div>
               </figcaption>
             </figure>
           ))}
-        </motion.div>
+        </div>
+      </div>
+
+      {/* DESKTOP: galeria HORIZONTAL pinada (sticky nativo) */}
+      <div className="hidden md:block">
+        <div className={innerCls} style={{ scrollbarWidth: "none" }}>
+          <motion.div ref={trackRef} style={reduce ? undefined : { x }} className="flex h-full w-max items-center gap-[clamp(26px,3vw,46px)] px-[clamp(28px,6vw,80px)] py-20 md:py-0">
+            <div className="flex shrink-0 flex-col gap-[22px]" style={{ width: "min(82vw,430px)" }}>
+              <Eyebrow>O Espaço</Eyebrow>
+              <h2 style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(36px,3.6vw,48px)", lineHeight: 1.04, letterSpacing: "-0.01em", color: C.espresso }}>
+                Um passeio pela casa.
+              </h2>
+              <div style={{ fontFamily: M, fontSize: 12, letterSpacing: "1.8px", textTransform: "uppercase", color: C.camel }}>
+                Role para o lado →
+              </div>
+            </div>
+
+            {ESPACO.map((e) => (
+              <figure key={e.img} className="shrink-0">
+                <div className="relative overflow-hidden rounded-[3px]" style={{ height: "clamp(320px,58vh,470px)", aspectRatio: `${e.w} / ${e.h}`, boxShadow: "0 30px 70px -34px rgba(0,0,0,0.55)" }}>
+                  <Image src={e.img} alt={e.name} fill quality={95} sizes="700px" className="object-cover" loading="eager" />
+                </div>
+                <figcaption className="mt-[18px]">
+                  <Eyebrow size={12} tracking="2.2px">{e.label}</Eyebrow>
+                  <div style={{ fontFamily: F, fontWeight: 600, fontSize: 23, marginTop: 7 }}>{e.name}</div>
+                </figcaption>
+              </figure>
+            ))}
+          </motion.div>
+        </div>
         {!reduce && (
           <div className="absolute inset-x-0 bottom-[6vh] z-10 hidden items-center gap-[18px] px-[clamp(28px,6vw,80px)] md:flex" style={{ fontFamily: M }}>
             <span style={{ fontSize: 12, letterSpacing: "1.5px", color: C.para }}>{String(idx + 1).padStart(2, "0")} / 0{ESPACO.length}</span>

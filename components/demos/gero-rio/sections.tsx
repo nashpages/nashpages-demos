@@ -165,10 +165,10 @@ export function Degustacao() {
             Os clássicos da casa, <em>prato a prato</em>.
           </h2>
 
-          <div className="mt-[clamp(24px,3vw,40px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[56px]">
-            <div className="md:w-[36%]">
+          <div className="mt-[clamp(24px,3vw,40px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[64px]">
+            <div className="md:w-[44%]">
               <div className="sticky top-[10vh] md:static">
-                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ height: "clamp(300px,50vh,520px)", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
                   {DISHES.map((d, i) => (
                     <Image
                       key={d.img}
@@ -176,7 +176,7 @@ export function Degustacao() {
                       alt={d.name}
                       fill
                       quality={95}
-                      sizes="(max-width:880px) 90vw, 480px"
+                      sizes="(max-width:880px) 90vw, 560px"
                       className="object-cover transition-opacity duration-[800ms] ease-out"
                       style={{ opacity: i === active ? 1 : 0 }}
                       priority={i === 0}

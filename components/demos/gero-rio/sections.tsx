@@ -114,85 +114,108 @@ export function Gastronomia() {
   );
 }
 
-/* ----------------------------------------------------------- DEGUSTAÇÃO (foto sticky + lista rola; troca por scroll) */
+/* ----------------------------------------------------------- DEGUSTAÇÃO (a tela TRAVA e o scroll percorre os pratos) */
 export function Degustacao() {
+  const reduce = useReducedMotion();
+  const outerRef = useRef<HTMLElement | null>(null);
+  const activeRef = useRef(0);
   const [active, setActive] = useState(0);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  // A foto fica presa (position:sticky nativo, sem tranco) enquanto a lista rola ao lado;
-  // o prato ativo (foto + descrição) muda conforme cada item entra no centro da tela.
+  // Desktop: a seção TRAVA (position:sticky nativo, sem tranco) e o scroll percorre os 7 pratos.
+  const { scrollYProgress } = useScroll({ target: outerRef, offset: ["start start", "end end"] });
+
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i)); }),
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    );
-    itemRefs.current.forEach((el) => el && io.observe(el));
-    return () => io.disconnect();
-  }, []);
+    if (reduce) return;
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const unsub = scrollYProgress.on("change", (p) => {
+      if (!desktop.matches) return;
+      const i = Math.min(DISHES.length - 1, Math.floor(p * DISHES.length));
+      if (i !== activeRef.current) {
+        activeRef.current = i;
+        setActive(i);
+      }
+    });
+    // Mobile: foto sticky no topo + lista rola; troca por IntersectionObserver.
+    let io: IntersectionObserver | null = null;
+    if (!desktop.matches) {
+      io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i)); }),
+        { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+      );
+      itemRefs.current.forEach((el) => el && io!.observe(el));
+    }
+    return () => {
+      unsub();
+      io?.disconnect();
+    };
+  }, [reduce, scrollYProgress]);
 
   const dish = DISHES[active];
 
   return (
-    <section style={{ backgroundColor: C.espresso, color: C.linho }} className="py-[clamp(72px,10vw,110px)]">
-      <Container>
-        <div className="flex items-center gap-6">
-          <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
-          <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
-        </div>
-        <h2 className="mt-[22px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3.4vw,46px)", lineHeight: 1.06 }}>
-          Os clássicos da casa, <em>prato a prato</em>.
-        </h2>
+    <section ref={outerRef} style={{ backgroundColor: C.espresso, color: C.linho }} className={`relative ${reduce ? "" : "md:h-[520vh]"}`}>
+      <div className={`flex flex-col py-[clamp(64px,9vw,96px)] md:py-0 ${reduce ? "" : "md:sticky md:top-0 md:flex md:h-screen md:justify-center"}`}>
+        <Container>
+          <div className="flex items-center gap-6">
+            <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
+            <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
+          </div>
+          <h2 className="mt-[16px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3vw,42px)", lineHeight: 1.06 }}>
+            Os clássicos da casa, <em>prato a prato</em>.
+          </h2>
 
-        <div className="mt-[clamp(32px,4vw,56px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[72px]">
-          <div className="md:w-[44%]">
-            <div className="sticky top-[10vh] md:top-[12vh]">
-              <div className="relative w-full overflow-hidden rounded-[3px]" style={{ aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
-                {DISHES.map((d, i) => (
-                  <Image
-                    key={d.img}
-                    src={d.img}
-                    alt={d.name}
-                    fill
-                    quality={95}
-                    sizes="(max-width:880px) 90vw, 560px"
-                    className="object-cover transition-opacity duration-[800ms] ease-out"
-                    style={{ opacity: i === active ? 1 : 0 }}
-                    priority={i === 0}
-                    loading={i === 0 ? "eager" : undefined}
-                  />
-                ))}
-              </div>
-              <div className="mt-4 flex items-center gap-2" style={{ fontFamily: M, fontSize: 12, letterSpacing: "2px", textTransform: "uppercase" }}>
-                <span style={{ color: C.bronze }}>{dish.course}</span>
-                <span style={{ color: C.camel }}>· {String(active + 1).padStart(2, "0")} / 0{DISHES.length}</span>
+          <div className="mt-[clamp(24px,3vw,40px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[56px]">
+            <div className="md:w-[36%]">
+              <div className="sticky top-[10vh] md:static">
+                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ height: "clamp(300px,50vh,520px)", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+                  {DISHES.map((d, i) => (
+                    <Image
+                      key={d.img}
+                      src={d.img}
+                      alt={d.name}
+                      fill
+                      quality={95}
+                      sizes="(max-width:880px) 90vw, 480px"
+                      className="object-cover transition-opacity duration-[800ms] ease-out"
+                      style={{ opacity: i === active ? 1 : 0 }}
+                      priority={i === 0}
+                      loading={i === 0 ? "eager" : undefined}
+                    />
+                  ))}
+                </div>
+                <div className="mt-4 flex items-center gap-2" style={{ fontFamily: M, fontSize: 12, letterSpacing: "2px", textTransform: "uppercase" }}>
+                  <span style={{ color: C.bronze }}>{dish.course}</span>
+                  <span style={{ color: C.camel }}>· {String(active + 1).padStart(2, "0")} / 0{DISHES.length}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="md:flex-1">
-            {DISHES.map((d, i) => (
-              <div
-                key={d.name}
-                ref={(el) => { itemRefs.current[i] = el; }}
-                data-i={i}
-                className="relative border-t py-[clamp(16px,1.8vw,24px)] pl-[24px]"
-                style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
-              >
-                <span className="absolute bottom-[16px] left-0 top-[16px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
-                <div className="flex items-center gap-3" style={{ fontFamily: M, textTransform: "uppercase" }}>
-                  <span style={{ fontSize: 12, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
-                  <span style={{ fontSize: 11, letterSpacing: "2.2px", color: C.camel }}>{d.course}</span>
+            <div className="md:flex-1">
+              {DISHES.map((d, i) => (
+                <div
+                  key={d.name}
+                  ref={(el) => { itemRefs.current[i] = el; }}
+                  data-i={i}
+                  className="relative border-t py-[clamp(10px,1.3vw,15px)] pl-[22px]"
+                  style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
+                >
+                  <span className="absolute bottom-[12px] left-0 top-[12px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
+                  <div className="flex items-center gap-3" style={{ fontFamily: M, textTransform: "uppercase" }}>
+                    <span style={{ fontSize: 12, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
+                    <span style={{ fontSize: 11, letterSpacing: "2.2px", color: C.camel }}>{d.course}</span>
+                  </div>
+                  <h3 className="mt-[6px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(19px,1.7vw,23px)", lineHeight: 1.1, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
+                  <div className="mt-[4px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 16, color: C.camel }}>{d.it}</div>
+                  <div className="overflow-hidden" style={{ maxHeight: i === active ? 80 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.5s ease" }}>
+                    <p className="pt-[8px]" style={{ fontFamily: IN, fontSize: 15, lineHeight: 1.55, color: C.creme, maxWidth: 520 }}>{d.desc}</p>
+                  </div>
                 </div>
-                <h3 className="mt-[9px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(21px,2vw,26px)", lineHeight: 1.1, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
-                <div className="mt-[6px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 17, color: C.camel }}>{d.it}</div>
-                <div className="overflow-hidden" style={{ maxHeight: i === active ? 100 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.55s ease, opacity 0.55s ease" }}>
-                  <p className="pt-[10px]" style={{ fontFamily: IN, fontSize: 16, lineHeight: 1.58, color: C.creme, maxWidth: 540 }}>{d.desc}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </div>
     </section>
   );
 }

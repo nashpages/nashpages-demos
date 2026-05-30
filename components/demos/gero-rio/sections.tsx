@@ -114,108 +114,85 @@ export function Gastronomia() {
   );
 }
 
-/* ----------------------------------------------------------- DEGUSTAÇÃO (pin + scroll troca os pratos) */
+/* ----------------------------------------------------------- DEGUSTAÇÃO (foto sticky + lista rola; troca por scroll) */
 export function Degustacao() {
-  const reduce = useReducedMotion();
-  const outerRef = useRef<HTMLElement | null>(null);
-  const activeRef = useRef(0);
   const [active, setActive] = useState(0);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  // Sem "pin" do GSAP: o conteúdo fica preso pelo position:sticky nativo do browser
-  // (não há tranco/puxada ao grudar). O scroll só decide qual prato está ativo.
-  const { scrollYProgress } = useScroll({ target: outerRef, offset: ["start start", "end end"] });
-
+  // A foto fica presa (position:sticky nativo, sem tranco) enquanto a lista rola ao lado;
+  // o prato ativo (foto + descrição) muda conforme cada item entra no centro da tela.
   useEffect(() => {
-    if (reduce) return;
-    const desktop = window.matchMedia("(min-width: 768px)");
-    // Desktop: o progresso do scroll na seção alta escolhe o prato.
-    const unsub = scrollYProgress.on("change", (p) => {
-      if (!desktop.matches) return;
-      const i = Math.min(DISHES.length - 1, Math.floor(p * DISHES.length));
-      if (i !== activeRef.current) {
-        activeRef.current = i;
-        setActive(i);
-      }
-    });
-    // Mobile: troca por IntersectionObserver na lista (foto sticky no topo).
-    let io: IntersectionObserver | null = null;
-    if (!desktop.matches) {
-      io = new IntersectionObserver(
-        (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i)); }),
-        { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-      );
-      itemRefs.current.forEach((el) => el && io!.observe(el));
-    }
-    return () => {
-      unsub();
-      io?.disconnect();
-    };
-  }, [reduce, scrollYProgress]);
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i)); }),
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    itemRefs.current.forEach((el) => el && io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const dish = DISHES[active];
 
   return (
-    <section ref={outerRef} style={{ backgroundColor: C.espresso, color: C.linho }} className={`relative ${reduce ? "" : "md:h-[520vh]"}`}>
-      <div className={`flex flex-col py-[clamp(72px,10vw,110px)] md:justify-center md:py-0 ${reduce ? "" : "md:sticky md:top-0 md:h-screen"}`}>
-        <Container>
-          <div className="flex items-center gap-6">
-            <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
-            <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
-          </div>
-          <h2 className="mt-[22px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3.4vw,46px)", lineHeight: 1.06 }}>
-            Os clássicos da casa, <em>prato a prato</em>.
-          </h2>
+    <section style={{ backgroundColor: C.espresso, color: C.linho }} className="py-[clamp(72px,10vw,110px)]">
+      <Container>
+        <div className="flex items-center gap-6">
+          <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
+          <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
+        </div>
+        <h2 className="mt-[22px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3.4vw,46px)", lineHeight: 1.06 }}>
+          Os clássicos da casa, <em>prato a prato</em>.
+        </h2>
 
-          <div className="mt-[clamp(28px,3vw,44px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[72px]">
-            <div className="md:w-[46%]">
-              <div className="sticky top-[12vh] md:static">
-                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ height: "clamp(320px,56vh,560px)", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
-                  {DISHES.map((d, i) => (
-                    <Image
-                      key={d.img}
-                      src={d.img}
-                      alt={d.name}
-                      fill
-                      quality={95}
-                      sizes="(max-width:880px) 90vw, 600px"
-                      className="object-cover transition-opacity duration-[900ms] ease-out"
-                      style={{ opacity: i === active ? 1 : 0 }}
-                      priority={i === 0}
-                      loading={i === 0 ? "eager" : undefined}
-                    />
-                  ))}
-                </div>
-                {/* trilha de progresso contínua — move-se com o scroll (desktop) */}
-                <div className="mt-5 hidden h-px w-full md:block" style={{ backgroundColor: "rgba(201,187,166,0.16)" }}>
-                  <motion.span className="block h-full origin-left will-change-transform" style={{ backgroundColor: C.bronze, scaleX: reduce ? 1 : scrollYProgress }} />
-                </div>
+        <div className="mt-[clamp(32px,4vw,56px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[72px]">
+          <div className="md:w-[44%]">
+            <div className="sticky top-[10vh] md:top-[12vh]">
+              <div className="relative w-full overflow-hidden rounded-[3px]" style={{ aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+                {DISHES.map((d, i) => (
+                  <Image
+                    key={d.img}
+                    src={d.img}
+                    alt={d.name}
+                    fill
+                    quality={95}
+                    sizes="(max-width:880px) 90vw, 560px"
+                    className="object-cover transition-opacity duration-[800ms] ease-out"
+                    style={{ opacity: i === active ? 1 : 0 }}
+                    priority={i === 0}
+                    loading={i === 0 ? "eager" : undefined}
+                  />
+                ))}
+              </div>
+              <div className="mt-4 flex items-center gap-2" style={{ fontFamily: M, fontSize: 12, letterSpacing: "2px", textTransform: "uppercase" }}>
+                <span style={{ color: C.bronze }}>{dish.course}</span>
+                <span style={{ color: C.camel }}>· {String(active + 1).padStart(2, "0")} / 0{DISHES.length}</span>
               </div>
             </div>
-
-            <div className="md:w-[54%]">
-              {DISHES.map((d, i) => (
-                <div
-                  key={d.name}
-                  ref={(el) => { itemRefs.current[i] = el; }}
-                  data-i={i}
-                  className="relative border-t py-[clamp(14px,1.5vw,20px)] pl-[22px]"
-                  style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.42, transition: "opacity 0.5s ease" }}
-                >
-                  <span className="absolute bottom-[14px] left-0 top-[14px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
-                  <div className="flex items-center gap-3" style={{ fontFamily: M, textTransform: "uppercase" }}>
-                    <span style={{ fontSize: 12, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
-                    <span style={{ fontSize: 11, letterSpacing: "2.2px", color: C.camel }}>{d.course}</span>
-                  </div>
-                  <h3 className="mt-[9px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(20px,2vw,26px)", lineHeight: 1.08, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
-                  <div className="mt-[7px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 17, color: C.camel }}>{d.it}</div>
-                  <div className="overflow-hidden" style={{ maxHeight: i === active ? 96 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.5s ease" }}>
-                    <p className="pt-[10px]" style={{ fontFamily: IN, fontSize: 16, lineHeight: 1.58, color: C.creme, maxWidth: 540 }}>{d.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
-        </Container>
-      </div>
+
+          <div className="md:flex-1">
+            {DISHES.map((d, i) => (
+              <div
+                key={d.name}
+                ref={(el) => { itemRefs.current[i] = el; }}
+                data-i={i}
+                className="relative border-t py-[clamp(16px,1.8vw,24px)] pl-[24px]"
+                style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
+              >
+                <span className="absolute bottom-[16px] left-0 top-[16px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
+                <div className="flex items-center gap-3" style={{ fontFamily: M, textTransform: "uppercase" }}>
+                  <span style={{ fontSize: 12, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
+                  <span style={{ fontSize: 11, letterSpacing: "2.2px", color: C.camel }}>{d.course}</span>
+                </div>
+                <h3 className="mt-[9px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(21px,2vw,26px)", lineHeight: 1.1, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
+                <div className="mt-[6px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 17, color: C.camel }}>{d.it}</div>
+                <div className="overflow-hidden" style={{ maxHeight: i === active ? 100 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.55s ease, opacity 0.55s ease" }}>
+                  <p className="pt-[10px]" style={{ fontFamily: IN, fontSize: 16, lineHeight: 1.58, color: C.creme, maxWidth: 540 }}>{d.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Container>
     </section>
   );
 }

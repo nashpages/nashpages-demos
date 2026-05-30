@@ -3,12 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FadeUp, RevealLines } from "./motion";
 import { HERO, GASTRONOMIA, DISHES, ESPACO, BAR, LOCAL, RESERVA, NAV } from "./data";
-
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 const F = "var(--font-fraunces)";
 const M = "var(--font-ibm-plex-mono)";
@@ -115,48 +111,47 @@ export function Gastronomia() {
 /* ----------------------------------------------------------- DEGUSTAÇÃO (pin + scroll troca os pratos) */
 export function Degustacao() {
   const reduce = useReducedMotion();
-  const pinRef = useRef<HTMLElement | null>(null);
+  const outerRef = useRef<HTMLElement | null>(null);
+  const activeRef = useRef(0);
   const [active, setActive] = useState(0);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
+  // Sem "pin" do GSAP: o conteúdo fica preso pelo position:sticky nativo do browser
+  // (não há tranco/puxada ao grudar). O scroll só decide qual prato está ativo.
+  const { scrollYProgress } = useScroll({ target: outerRef, offset: ["start start", "end end"] });
+
   useEffect(() => {
     if (reduce) return;
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      // Desktop: a seção TRAVA e o scroll percorre os pratos, com calma.
-      mm.add("(min-width: 880px)", () => {
-        const st = ScrollTrigger.create({
-          trigger: pinRef.current!,
-          start: "top top",
-          end: () => "+=" + Math.round(DISHES.length * window.innerHeight * 0.6),
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const i = Math.min(DISHES.length - 1, Math.floor(self.progress * DISHES.length));
-            setActive(i);
-          },
-        });
-        return () => st.kill();
-      });
-      // Mobile: foto fixa (sticky) + lista rola; troca por IntersectionObserver.
-      mm.add("(max-width: 879px)", () => {
-        const io = new IntersectionObserver(
-          (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i)); }),
-          { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-        );
-        itemRefs.current.forEach((el) => el && io.observe(el));
-        return () => io.disconnect();
-      });
-    }, pinRef);
-    return () => ctx.revert();
-  }, [reduce]);
+    const desktop = window.matchMedia("(min-width: 768px)");
+    // Desktop: o progresso do scroll na seção alta escolhe o prato.
+    const unsub = scrollYProgress.on("change", (p) => {
+      if (!desktop.matches) return;
+      const i = Math.min(DISHES.length - 1, Math.floor(p * DISHES.length));
+      if (i !== activeRef.current) {
+        activeRef.current = i;
+        setActive(i);
+      }
+    });
+    // Mobile: troca por IntersectionObserver na lista (foto sticky no topo).
+    let io: IntersectionObserver | null = null;
+    if (!desktop.matches) {
+      io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i)); }),
+        { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+      );
+      itemRefs.current.forEach((el) => el && io!.observe(el));
+    }
+    return () => {
+      unsub();
+      io?.disconnect();
+    };
+  }, [reduce, scrollYProgress]);
 
   const dish = DISHES[active];
 
   return (
-    <section ref={pinRef} style={{ backgroundColor: C.espresso, color: C.linho }} className="md:h-screen">
-      <div className="flex flex-col py-[clamp(72px,10vw,110px)] md:h-full md:justify-center md:py-0">
+    <section ref={outerRef} style={{ backgroundColor: C.espresso, color: C.linho }} className={`relative ${reduce ? "" : "md:h-[520vh]"}`}>
+      <div className={`flex flex-col py-[clamp(72px,10vw,110px)] md:justify-center md:py-0 ${reduce ? "" : "md:sticky md:top-0 md:h-screen"}`}>
         <Container>
           <div className="flex items-center gap-6">
             <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
@@ -184,6 +179,10 @@ export function Degustacao() {
                       loading={i === 0 ? "eager" : undefined}
                     />
                   ))}
+                </div>
+                {/* trilha de progresso contínua — move-se com o scroll durante o pin (desktop) */}
+                <div className="mt-5 hidden h-px w-full md:block" style={{ backgroundColor: "rgba(201,187,166,0.16)" }}>
+                  <motion.span className="block h-full origin-left will-change-transform" style={{ backgroundColor: C.bronze, scaleX: reduce ? 1 : scrollYProgress }} />
                 </div>
                 <motion.div
                   key={active}
@@ -226,44 +225,45 @@ export function Degustacao() {
 /* ------------------------------------------------------------- O ESPAÇO (galeria horizontal full-bleed) */
 export function OEspaco() {
   const reduce = useReducedMotion();
-  const pinRef = useRef<HTMLElement | null>(null);
+  const outerRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const distRef = useRef(0);
+  const isDesktopRef = useRef(false);
+  const [outerH, setOuterH] = useState<number | null>(null);
+
+  // Sem "pin" do GSAP: o trecho fica preso por position:sticky nativo (zero tranco)
+  // e a faixa desliza na horizontal conforme o progresso do scroll.
+  const { scrollYProgress } = useScroll({ target: outerRef, offset: ["start start", "end end"] });
+  const x = useTransform(scrollYProgress, (p) => (reduce || !isDesktopRef.current ? 0 : -p * distRef.current));
 
   useEffect(() => {
     if (reduce) return;
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      mm.add("(min-width: 880px)", () => {
-        const track = trackRef.current;
-        if (!track) return;
-        const dist = () => track.scrollWidth - window.innerWidth;
-        const tween = gsap.to(track, {
-          x: () => -dist(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: pinRef.current!,
-            start: "top top",
-            end: () => "+=" + dist(),
-            scrub: 0.6,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-        return () => { tween.scrollTrigger?.kill(); tween.kill(); };
-      });
-    }, pinRef);
-    return () => ctx.revert();
+    const measure = () => {
+      const desktop = window.matchMedia("(min-width: 768px)").matches;
+      isDesktopRef.current = desktop;
+      const track = trackRef.current;
+      const d = track ? Math.max(0, track.scrollWidth - window.innerWidth) : 0;
+      distRef.current = d;
+      setOuterH(desktop ? window.innerHeight + d : null);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, [reduce]);
 
-  const outerCls = reduce
+  const innerCls = reduce
     ? "flex items-center overflow-x-auto"
-    : "flex items-center overflow-x-auto md:h-screen md:overflow-hidden";
+    : "flex items-center overflow-x-auto md:sticky md:top-0 md:h-screen md:overflow-hidden";
 
   return (
-    <section ref={pinRef} className="relative overflow-hidden" style={{ backgroundColor: C.linho, color: C.espresso }}>
-      <div className={outerCls} style={{ scrollbarWidth: "none" }}>
-        <div ref={trackRef} className="flex h-full w-max items-center gap-[clamp(26px,3vw,46px)] px-[clamp(28px,8vw,120px)] py-20 md:py-0">
+    <section ref={outerRef} className="relative overflow-x-clip" style={{ backgroundColor: C.linho, color: C.espresso, height: outerH ? `${outerH}px` : undefined }}>
+      <div className={innerCls} style={{ scrollbarWidth: "none" }}>
+        <motion.div ref={trackRef} style={reduce ? undefined : { x }} className="flex h-full w-max items-center gap-[clamp(26px,3vw,46px)] px-[clamp(28px,8vw,120px)] py-20 md:py-0">
           <div className="shrink-0" style={{ width: "min(82vw,460px)" }}>
             <Eyebrow>O Espaço</Eyebrow>
             <h2 className="mt-5" style={{ fontFamily: F, fontWeight: 300, fontSize: "clamp(40px,4.4vw,66px)", lineHeight: 1.04, letterSpacing: "-0.01em" }}>
@@ -285,7 +285,7 @@ export function OEspaco() {
               </figcaption>
             </figure>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

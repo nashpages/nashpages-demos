@@ -165,10 +165,11 @@ export function Degustacao() {
             Os clássicos da casa, <em>prato a prato</em>.
           </h2>
 
-          <div className="mt-[clamp(28px,4vh,48px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[64px]">
-            <div className="md:w-[44%]">
+          <div className="mt-[clamp(28px,4vh,48px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[clamp(40px,5vw,72px)]">
+            <div className="shrink-0">
               <div className="sticky top-[10vh] md:static">
-                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ height: "clamp(360px,58vh,640px)", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+                {/* foto RETRATO (igual ao Figma 560×700): altura manda, largura = altura × 0.8 */}
+                <div className="relative overflow-hidden rounded-[3px]" style={{ height: "clamp(340px,64vh,620px)", aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
                   {DISHES.map((d, i) => (
                     <Image
                       key={d.img}
@@ -197,7 +198,7 @@ export function Degustacao() {
                   key={d.name}
                   ref={(el) => { itemRefs.current[i] = el; }}
                   data-i={i}
-                  className="relative border-t py-[clamp(8px,1.1vw,13px)] pl-[22px]"
+                  className="relative border-t py-[clamp(9px,1.5vh,16px)] pl-[22px]"
                   style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
                 >
                   <span className="absolute bottom-[12px] left-0 top-[12px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />

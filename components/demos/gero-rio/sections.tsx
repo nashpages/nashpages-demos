@@ -311,21 +311,26 @@ export function OEspaco() {
 
   return (
     <section ref={outerRef} className="relative overflow-x-clip" style={{ backgroundColor: C.linho, color: C.espresso, height: outerH ? `${outerH}px` : undefined }}>
-      {/* MOBILE: 5 fotos EMPILHADAS verticais full-width (Figma 75:2) */}
-      <div className="px-[28px] py-[80px] md:hidden">
-        <div className="flex flex-col gap-2">
+      {/* MOBILE: carrossel de ARRASTAR (scroll-snap nativo) — mantém a seção curta */}
+      <div className="py-[80px] md:hidden">
+        <div className="flex flex-col gap-2 px-[28px]">
           <Eyebrow>O Espaço</Eyebrow>
           <h2 style={{ fontFamily: F, fontWeight: 600, fontSize: 30, lineHeight: 1.06, color: C.espresso }}>Um passeio pela casa.</h2>
+          <div className="mt-1 flex items-center gap-2" style={{ fontFamily: M, fontSize: 12, letterSpacing: "1.8px", textTransform: "uppercase", color: C.camel }}>
+            Arraste para o lado <span style={{ color: C.bronze }}>→</span>
+          </div>
         </div>
-        <div className="mt-10 flex flex-col gap-[clamp(40px,9vw,56px)]">
-          {ESPACO.map((e, i) => (
-            <figure key={e.img}>
-              <div className="relative w-full overflow-hidden rounded-[3px]" style={{ aspectRatio: i === 0 ? "334 / 300" : "334 / 230", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.4)" }}>
-                <Image src={e.img} alt={e.name} fill quality={95} sizes="334px" className="object-cover" loading="eager" />
+        <div
+          className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[28px] pb-2 [-webkit-overflow-scrolling:touch] [scrollbar-width:none]"
+        >
+          {ESPACO.map((e) => (
+            <figure key={e.img} className="shrink-0 snap-start" style={{ width: "82vw", maxWidth: 360 }}>
+              <div className="relative w-full overflow-hidden rounded-[3px]" style={{ aspectRatio: "334 / 300", boxShadow: "0 24px 60px -34px rgba(0,0,0,0.4)" }}>
+                <Image src={e.img} alt={e.name} fill quality={95} sizes="82vw" className="object-cover" loading="eager" />
               </div>
               <figcaption className="mt-[14px]">
                 <Eyebrow size={12} tracking="2.2px">{e.label}</Eyebrow>
-                <div style={{ fontFamily: F, fontWeight: 600, fontSize: 23, marginTop: 6 }}>{e.name}</div>
+                <div style={{ fontFamily: F, fontWeight: 600, fontSize: 22, marginTop: 6 }}>{e.name}</div>
               </figcaption>
             </figure>
           ))}

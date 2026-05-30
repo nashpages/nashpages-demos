@@ -155,20 +155,20 @@ export function Degustacao() {
 
   return (
     <section ref={outerRef} style={{ backgroundColor: C.espresso, color: C.linho }} className={`relative ${reduce ? "" : "md:h-[520vh]"}`}>
-      <div className={`flex flex-col py-[clamp(64px,9vw,96px)] md:py-0 ${reduce ? "" : "md:sticky md:top-0 md:flex md:h-screen md:justify-center"}`}>
+      <div className={`flex flex-col py-[clamp(60px,9vw,92px)] md:py-0 ${reduce ? "" : "md:sticky md:top-0 md:h-screen md:justify-center md:overflow-hidden"}`}>
         <Container>
           <div className="flex items-center gap-6">
             <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
             <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
           </div>
-          <h2 className="mt-[16px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3vw,42px)", lineHeight: 1.06 }}>
+          <h2 className="mt-5" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3vw,42px)", lineHeight: 1.06 }}>
             Os clássicos da casa, <em>prato a prato</em>.
           </h2>
 
-          <div className="mt-[clamp(24px,3vw,40px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[64px]">
+          <div className="mt-[clamp(28px,4vh,48px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[64px]">
             <div className="md:w-[44%]">
               <div className="sticky top-[10vh] md:static">
-                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ height: "clamp(360px,58vh,640px)", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
                   {DISHES.map((d, i) => (
                     <Image
                       key={d.img}
@@ -197,7 +197,7 @@ export function Degustacao() {
                   key={d.name}
                   ref={(el) => { itemRefs.current[i] = el; }}
                   data-i={i}
-                  className="relative border-t py-[clamp(10px,1.3vw,15px)] pl-[22px]"
+                  className="relative border-t py-[clamp(8px,1.1vw,13px)] pl-[22px]"
                   style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
                 >
                   <span className="absolute bottom-[12px] left-0 top-[12px] w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
@@ -207,7 +207,7 @@ export function Degustacao() {
                   </div>
                   <h3 className="mt-[6px]" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(19px,1.7vw,23px)", lineHeight: 1.1, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
                   <div className="mt-[4px]" style={{ fontFamily: F, fontStyle: "italic", fontSize: 16, color: C.camel }}>{d.it}</div>
-                  <div className="overflow-hidden" style={{ maxHeight: i === active ? 80 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.5s ease" }}>
+                  <div className="overflow-hidden" style={{ maxHeight: i === active ? 76 : 0, opacity: i === active ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.5s ease" }}>
                     <p className="pt-[8px]" style={{ fontFamily: IN, fontSize: 15, lineHeight: 1.55, color: C.creme, maxWidth: 520 }}>{d.desc}</p>
                   </div>
                 </div>

@@ -23,8 +23,7 @@ const C = {
   para: "var(--c-para)",
 };
 
-/** Container central — texto/conteúdo alinhado ao "frame" de 1440 (estilo Apple/Figma).
- *  Em telas < 1440 ocupa a largura toda. Fotos full-bleed ficam FORA dele. */
+/** Container central — texto/conteúdo alinhado ao "frame" de 1440 (estilo Apple/Figma). */
 function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={`mx-auto w-full max-w-[1440px] px-[clamp(28px,6vw,80px)] ${className}`}>{children}</div>;
 }
@@ -42,7 +41,6 @@ export function Hero() {
   const reduce = useReducedMotion();
   return (
     <section className="relative h-[100svh] min-h-[680px] w-full overflow-hidden" style={{ backgroundColor: C.salao }}>
-      {/* foto full-bleed */}
       <motion.div
         className="absolute inset-0 will-change-transform"
         initial={reduce ? undefined : { scale: 1.08 }}
@@ -54,7 +52,6 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[34%]" style={{ background: "linear-gradient(to bottom, rgba(23,17,11,0.62), transparent)" }} />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[74%]" style={{ background: "linear-gradient(to top, rgba(23,17,11,0.92), rgba(23,17,11,0.12) 52%, transparent)" }} />
 
-      {/* overlay no container central de 1440 */}
       <div className="absolute inset-0 z-20 mx-auto flex h-full w-full max-w-[1440px] flex-col px-[clamp(24px,6vw,80px)] py-[clamp(26px,3.4vw,46px)]" style={{ color: C.linho }}>
         <FadeUp delay={1.95}>
           <nav className="flex items-center justify-between">
@@ -115,92 +112,113 @@ export function Gastronomia() {
   );
 }
 
-/* ----------------------------------------------------------- DEGUSTAÇÃO */
+/* ----------------------------------------------------------- DEGUSTAÇÃO (pin + scroll troca os pratos) */
 export function Degustacao() {
+  const reduce = useReducedMotion();
+  const pinRef = useRef<HTMLElement | null>(null);
   const [active, setActive] = useState(0);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i));
+    if (reduce) return;
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+      // Desktop: a seção TRAVA e o scroll percorre os pratos, com calma.
+      mm.add("(min-width: 880px)", () => {
+        const st = ScrollTrigger.create({
+          trigger: pinRef.current!,
+          start: "top top",
+          end: () => "+=" + Math.round(DISHES.length * window.innerHeight * 0.6),
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const i = Math.min(DISHES.length - 1, Math.floor(self.progress * DISHES.length));
+            setActive(i);
+          },
         });
-      },
-      { rootMargin: "-48% 0px -48% 0px", threshold: 0 }
-    );
-    itemRefs.current.forEach((el) => el && io.observe(el));
-    return () => io.disconnect();
-  }, []);
+        return () => st.kill();
+      });
+      // Mobile: foto fixa (sticky) + lista rola; troca por IntersectionObserver.
+      mm.add("(max-width: 879px)", () => {
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i)); }),
+          { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+        );
+        itemRefs.current.forEach((el) => el && io.observe(el));
+        return () => io.disconnect();
+      });
+    }, pinRef);
+    return () => ctx.revert();
+  }, [reduce]);
+
+  const dish = DISHES[active];
 
   return (
-    <section style={{ backgroundColor: C.espresso, color: C.linho }} className="py-[clamp(80px,10vw,120px)]">
-      <Container>
-        <FadeUp>
+    <section ref={pinRef} style={{ backgroundColor: C.espresso, color: C.linho }} className="md:h-screen">
+      <div className="flex flex-col py-[clamp(72px,10vw,110px)] md:h-full md:justify-center md:py-0">
+        <Container>
           <div className="flex items-center gap-6">
             <span className="whitespace-nowrap"><Eyebrow>A Carta — Degustação</Eyebrow></span>
             <span className="h-px flex-1" style={{ backgroundColor: "rgba(181,137,78,0.4)" }} />
           </div>
-        </FadeUp>
-        <RevealLines
-          className="mt-6"
-          style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3.2vw,44px)", lineHeight: 1.08, maxWidth: 900 }}
-          lines={[<>Os clássicos da casa, <em>prato a prato</em>.</>]}
-        />
+          <h2 className="mt-5" style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(26px,3vw,42px)", lineHeight: 1.08 }}>
+            Os clássicos da casa, <em>prato a prato</em>.
+          </h2>
 
-        <div className="mt-[clamp(40px,5vw,64px)] flex flex-col gap-12 md:flex-row md:gap-[72px]">
-          <div className="md:w-[46%]">
-            <div className="md:sticky md:top-[12vh]">
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[3px]" style={{ boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
-                {DISHES.map((d, i) => (
-                  <Image
-                    key={d.img}
-                    src={d.img}
-                    alt={d.name}
-                    fill
-                    quality={95}
-                    sizes="(max-width:880px) 90vw, 620px"
-                    className="object-cover transition-opacity duration-700 ease-out"
-                    style={{ opacity: i === active ? 1 : 0 }}
-                    priority={i === 0}
-                    loading={i === 0 ? "eager" : undefined}
-                  />
-                ))}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%]" style={{ background: "linear-gradient(to top, rgba(23,17,11,0.72), transparent)" }} />
-                <div className="absolute bottom-5 left-6 flex items-center gap-3" style={{ fontFamily: M, fontSize: 12 }}>
-                  <span style={{ color: C.bronze, letterSpacing: "0.2em", textTransform: "uppercase" }}>{DISHES[active].course}</span>
-                  <span style={{ width: 28, height: 1, backgroundColor: C.bronze }} />
-                  <span style={{ color: C.creme }}>{String(active + 1).padStart(2, "0")} / 0{DISHES.length}</span>
+          <div className="mt-[clamp(28px,3vw,44px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[64px]">
+            <div className="md:w-[48%]">
+              <div className="sticky top-[10vh] md:static">
+                <div className="relative w-full overflow-hidden rounded-[3px]" style={{ height: "clamp(320px,50vh,500px)", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+                  {DISHES.map((d, i) => (
+                    <Image
+                      key={d.img}
+                      src={d.img}
+                      alt={d.name}
+                      fill
+                      quality={95}
+                      sizes="(max-width:880px) 90vw, 600px"
+                      className="object-cover transition-opacity duration-[900ms] ease-out"
+                      style={{ opacity: i === active ? 1 : 0 }}
+                      priority={i === 0}
+                      loading={i === 0 ? "eager" : undefined}
+                    />
+                  ))}
                 </div>
+                <motion.div
+                  key={active}
+                  initial={reduce ? undefined : { opacity: 0, y: 8 }}
+                  animate={reduce ? undefined : { opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-5"
+                >
+                  <div style={{ fontFamily: M, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.bronze }}>{dish.course} · {String(active + 1).padStart(2, "0")} / 0{DISHES.length}</div>
+                  <div style={{ fontFamily: F, fontStyle: "italic", fontSize: 17, color: C.camel, marginTop: 8 }}>{dish.it}</div>
+                  <p style={{ fontFamily: IN, fontSize: 15, lineHeight: 1.6, color: C.creme, maxWidth: 460, marginTop: 6 }}>{dish.desc}</p>
+                </motion.div>
               </div>
             </div>
-          </div>
 
-          <div className="md:w-[54%]">
-            {DISHES.map((d, i) => (
-              <div
-                key={d.name}
-                ref={(el) => { itemRefs.current[i] = el; }}
-                data-i={i}
-                onMouseEnter={() => setActive(i)}
-                className="relative border-t py-[clamp(18px,2.2vw,26px)] pl-7"
-                style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.42, transition: "opacity 0.5s ease" }}
-              >
-                <span className="absolute left-0 top-5 bottom-5 w-[2px]" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
-                <div className="flex items-center gap-3" style={{ fontFamily: M }}>
-                  <span style={{ color: C.bronze, fontSize: 12 }}>{String(i + 1).padStart(2, "0")}</span>
-                  <span style={{ color: C.camel, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase" }}>{d.course}</span>
+            <div className="md:w-[52%]">
+              {DISHES.map((d, i) => (
+                <div
+                  key={d.name}
+                  ref={(el) => { itemRefs.current[i] = el; }}
+                  data-i={i}
+                  className="relative border-t py-[clamp(13px,1.5vw,18px)] pl-7"
+                  style={{ borderColor: "rgba(201,187,166,0.14)", opacity: i === active ? 1 : 0.4, transition: "opacity 0.5s ease" }}
+                >
+                  <span className="absolute left-0 top-1/2 h-[58%] w-[2px] -translate-y-1/2" style={{ backgroundColor: i === active ? C.bronze : "transparent", transition: "background-color 0.4s ease" }} />
+                  <div className="flex items-baseline gap-3">
+                    <span style={{ fontFamily: M, fontSize: 11, color: C.bronze }}>{String(i + 1).padStart(2, "0")}</span>
+                    <h3 style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(19px,2vw,25px)", lineHeight: 1.15, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
+                  </div>
                 </div>
-                <h3 style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(22px,2.2vw,28px)", lineHeight: 1.1, marginTop: 10, color: i === active ? C.linho : C.creme, transition: "color 0.4s ease" }}>{d.name}</h3>
-                <div style={{ fontFamily: F, fontStyle: "italic", fontSize: 16, color: C.camel, marginTop: 5 }}>{d.it}</div>
-                {i === active && (
-                  <p style={{ fontFamily: IN, fontSize: 15, lineHeight: 1.6, color: C.creme, maxWidth: 520, marginTop: 14 }}>{d.desc}</p>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </div>
     </section>
   );
 }
@@ -282,13 +300,11 @@ export function OBar() {
 
   return (
     <section ref={ref} className="relative overflow-hidden md:min-h-[clamp(620px,86vh,860px)]" style={{ backgroundColor: C.espresso, color: C.linho }}>
-      {/* foto full-bleed à esquerda (canto da tela) */}
       <div className="relative h-[56vh] w-full overflow-hidden md:absolute md:left-0 md:top-0 md:h-full md:w-[46vw]">
         <motion.div className="absolute inset-0 will-change-transform" style={{ y, scale: 1.12 }}>
           <Image src={BAR.img} alt="O bar do Gero Rio" fill quality={95} sizes="(max-width:880px) 100vw, 47vw" className="object-cover" loading="eager" />
         </motion.div>
       </div>
-      {/* texto no container central, lado direito */}
       <Container className="relative flex md:min-h-[clamp(620px,86vh,860px)] md:items-center">
         <div className="w-full md:ml-[50%] md:w-[46%]">
           <div className="max-w-[520px] py-[clamp(52px,8vw,96px)] md:py-0">

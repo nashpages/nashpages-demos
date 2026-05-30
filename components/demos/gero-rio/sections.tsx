@@ -168,8 +168,9 @@ export function Degustacao() {
           <div className="mt-[clamp(28px,4vh,48px)] flex flex-col gap-10 md:flex-row md:items-start md:gap-[clamp(40px,5vw,72px)]">
             <div className="shrink-0">
               <div className="sticky top-[10vh] md:static">
-                {/* foto RETRATO (igual ao Figma 560×700): altura manda, largura = altura × 0.8 */}
-                <div className="relative overflow-hidden rounded-[3px]" style={{ height: "clamp(340px,64vh,620px)", aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
+                {/* foto RETRATO como no Figma (560×700): a ALTURA manda (escala com a tela travada)
+                    e a largura é derivada da proporção 56/70 — fica retrato em QUALQUER tela. */}
+                <div className="relative overflow-hidden rounded-[3px]" style={{ height: "clamp(380px,66vh,660px)", aspectRatio: "56 / 70", boxShadow: "0 30px 70px -34px rgba(0,0,0,0.85)" }}>
                   {DISHES.map((d, i) => (
                     <Image
                       key={d.img}

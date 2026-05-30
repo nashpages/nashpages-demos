@@ -70,18 +70,34 @@ export function Hero() {
 
         <div className="mt-auto">
           <div className="flex max-w-[700px] flex-col gap-[22px]">
-            <FadeUp delay={2.0}><Eyebrow size={14} tracking="2px">{HERO.eyebrow}</Eyebrow></FadeUp>
-            <FadeUp delay={2.12}><h1 style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(56px,8vw,120px)", lineHeight: 0.98, letterSpacing: "-0.01em", margin: 0 }}>{HERO.name}</h1></FadeUp>
+            <FadeUp delay={2.0}>
+              <p className="text-[11px] tracking-[1.6px] md:text-[14px] md:tracking-[2px]" style={{ fontFamily: M, fontWeight: 500, textTransform: "uppercase", color: C.bronze }}>
+                <span className="md:hidden">Cucina Italiana · Ipanema</span>
+                <span className="hidden md:inline">{HERO.eyebrow}</span>
+              </p>
+            </FadeUp>
+            <FadeUp delay={2.12}><h1 style={{ fontFamily: F, fontWeight: 600, fontSize: "clamp(58px,9vw,120px)", lineHeight: 0.98, letterSpacing: "-0.01em", margin: 0 }}>{HERO.name}</h1></FadeUp>
             <FadeUp delay={2.3}><div style={{ width: 64, height: 2, backgroundColor: C.bronze }} /></FadeUp>
-            <FadeUp delay={2.4}><p style={{ fontFamily: IN, fontSize: "clamp(15px,1.3vw,18px)", lineHeight: 1.5, maxWidth: 700, opacity: 0.92 }}>{HERO.tagline}</p></FadeUp>
+            <FadeUp delay={2.4}>
+              <p style={{ fontFamily: IN, fontSize: "clamp(15px,1.3vw,18px)", lineHeight: 1.5, maxWidth: 700, opacity: 0.92 }}>
+                <span className="md:hidden">Clássicos italianos à beira-mar de Ipanema, no Hotel Fasano.</span>
+                <span className="hidden md:inline">{HERO.tagline}</span>
+              </p>
+            </FadeUp>
           </div>
           <FadeUp delay={2.55}>
             <div className="mt-[clamp(32px,5vh,60px)] h-px w-full" style={{ backgroundColor: "rgba(244,237,225,0.2)" }} />
           </FadeUp>
           <FadeUp delay={2.6}>
-            <div className="mt-[22px] flex items-center justify-between" style={{ fontFamily: M, fontSize: "clamp(10px,0.85vw,12px)", letterSpacing: "1.5px", textTransform: "uppercase" }}>
-              <span style={{ opacity: 0.8 }}>{HERO.address}</span>
-              <span style={{ color: C.bronze }}>Role para explorar ↓</span>
+            <div className="mt-[22px] flex items-center justify-between" style={{ fontFamily: M, fontSize: "clamp(10px,0.85vw,12px)", letterSpacing: "1.2px", textTransform: "uppercase" }}>
+              <span style={{ opacity: 0.8 }}>
+                <span className="md:hidden">Av. Vieira Souto, 80</span>
+                <span className="hidden md:inline">{HERO.address}</span>
+              </span>
+              <span style={{ color: C.bronze }}>
+                <span className="md:hidden">Role ↓</span>
+                <span className="hidden md:inline">Role para explorar ↓</span>
+              </span>
             </div>
           </FadeUp>
         </div>

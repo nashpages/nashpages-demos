@@ -37,6 +37,7 @@ export function RyoHero({ start }: { start: boolean }) {
   const [reduce, setReduce] = useState(false);
   const [finaleIn, setFinaleIn] = useState(false);
   const [full, setFull] = useState(false);
+  const [scrim, setScrim] = useState(false);
   const [content, setContent] = useState(false);
 
   useEffect(() => {
@@ -46,13 +47,15 @@ export function RyoHero({ start }: { start: boolean }) {
   useEffect(() => {
     if (!start) return;
     if (reduce) {
-      setFinaleIn(true); setFull(true); setContent(true);
+      setFinaleIn(true); setFull(true); setScrim(true); setContent(true);
       return;
     }
-    const tA = window.setTimeout(() => setFinaleIn(true), 2900);
-    const tB = window.setTimeout(() => setFull(true), 4000);
-    const tC = window.setTimeout(() => setContent(true), 5200);
-    return () => { clearTimeout(tA); clearTimeout(tB); clearTimeout(tC); };
+    // timing fiel ao protótipo aprovado (ryo-hero-deck.html)
+    const tA = window.setTimeout(() => setFinaleIn(true), 3900);
+    const tB = window.setTimeout(() => setFull(true), 5300);
+    const tS = window.setTimeout(() => setScrim(true), 6500);
+    const tC = window.setTimeout(() => setContent(true), 6800);
+    return () => { clearTimeout(tA); clearTimeout(tB); clearTimeout(tS); clearTimeout(tC); };
   }, [start, reduce]);
 
   const deckOn = start && !reduce;
@@ -85,7 +88,7 @@ export function RyoHero({ start }: { start: boolean }) {
             transform: deckOn
               ? `translate(${c.x}px, ${c.y}px) rotate(${c.r}deg) scale(1)`
               : `translate(${c.x}px, ${c.y + 34}px) rotate(${c.r}deg) scale(0.9)`,
-            transition: `opacity 1.0s ${E} ${0.12 + i * 0.22}s, transform 1.1s ${E} ${0.12 + i * 0.22}s`,
+            transition: `opacity 1.15s ${E} ${220 + i * 340}ms, transform 1.25s ${E} ${220 + i * 340}ms`,
             willChange: "transform, opacity",
           }}
         >
@@ -104,7 +107,7 @@ export function RyoHero({ start }: { start: boolean }) {
           position: "absolute", inset: 0, zIndex: 4, pointerEvents: "none",
           background:
             "linear-gradient(to bottom, rgba(20,16,10,.34) 0%, rgba(20,16,10,0) 26%, rgba(20,16,10,0) 52%, rgba(20,16,10,.62) 100%)",
-          opacity: full ? 1 : 0, transition: "opacity 1s ease",
+          opacity: scrim ? 1 : 0, transition: "opacity 1s ease",
         }}
       />
 

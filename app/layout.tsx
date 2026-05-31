@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader, Spectral, Cormorant_Garamond, Source_Serif_4, Cinzel, Bodoni_Moda } from "next/font/google";
+import { Archivo, Inter, JetBrains_Mono, Playfair_Display, Geist, Geist_Mono, Fraunces, IBM_Plex_Mono, Manrope, Lora, Instrument_Serif, Newsreader, Spectral, Cormorant_Garamond, Source_Serif_4, Cinzel, Bodoni_Moda, Jost } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -114,6 +114,12 @@ const bodoniModa = Bodoni_Moda({
   style: ["normal", "italic"],
 });
 
+const jost = Jost({
+  variable: "--font-jost",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+});
+
 export const metadata: Metadata = {
   title: "Nashpages — demos",
   description: "Demos de site para profissionais.",
@@ -131,7 +137,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${archivo.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable} ${spectral.variable} ${cormorantGaramond.variable} ${sourceSerif.variable} ${cinzel.variable} ${bodoniModa.variable}`}
+      className={`${archivo.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${geist.variable} ${geistMono.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${lora.variable} ${instrumentSerif.variable} ${newsreader.variable} ${spectral.variable} ${cormorantGaramond.variable} ${sourceSerif.variable} ${cinzel.variable} ${bodoniModa.variable} ${jost.variable}`}
     >
       <body className="min-h-screen antialiased">{children}</body>
     </html>

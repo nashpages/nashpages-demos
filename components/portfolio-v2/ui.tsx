@@ -15,7 +15,10 @@ export function ProjectLogo({
 }) {
   const subSize = Math.max(13, Math.round(logo.size * 0.18));
   return (
-    <div style={{ textAlign: align, color: "#000" }}>
+    <div
+      className="transition-opacity duration-300 hover:opacity-80"
+      style={{ textAlign: align, color: "#000" }}
+    >
       <div
         style={{
           fontFamily: FONT_VAR[logo.font],

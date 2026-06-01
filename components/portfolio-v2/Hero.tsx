@@ -38,7 +38,7 @@ export function Hero() {
             alt=""
             width={48}
             height={48}
-            className="mb-2 select-none"
+            className="mb-2 select-none md:mb-3 md:ml-[31px]"
             priority
           />
           <Eyebrow>

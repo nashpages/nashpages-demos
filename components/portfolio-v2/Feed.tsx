@@ -6,17 +6,15 @@ import { FEED, type Project } from "./data";
 
 function PhotoBlock({ p }: { p: Project }) {
   return (
-    <div className="w-full shrink-0 md:w-[clamp(300px,46vw,660px)]">
-      <Float depth={14}>
-        <ParallaxImage src={p.photo} alt={p.name} className="aspect-[33/20]" />
-      </Float>
+    <Float depth={14} className="w-full shrink-0 md:w-[clamp(300px,46vw,660px)]">
+      <ParallaxImage src={p.photo} alt={p.name} className="aspect-[33/20]" />
       <div className="mt-4">
         <Eyebrow>
           {p.index} · {p.category}
         </Eyebrow>
         <ProjectName>{p.name}</ProjectName>
       </div>
-    </div>
+    </Float>
   );
 }
 

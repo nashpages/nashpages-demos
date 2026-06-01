@@ -18,6 +18,10 @@ import {
 type MouseCtxValue = { mx: MotionValue<number>; my: MotionValue<number> };
 const MouseCtx = createContext<MouseCtxValue | null>(null);
 
+// Intensidade global do cursor-float — multiplica TODOS os `depth`.
+// 1 = base sóbria · ↑ = mais movimento. Knob único pra calibrar.
+const INTENSITY = 1.8;
+
 export function MouseParallaxProvider({ children }: { children: ReactNode }) {
   const reduce = useReducedMotion();
   const rawX = useMotionValue(0);
@@ -58,8 +62,8 @@ export function Float({
   const fallback = useMotionValue(0);
   const mx = ctx?.mx ?? fallback;
   const my = ctx?.my ?? fallback;
-  const x = useTransform(mx, (v) => -v * depth);
-  const y = useTransform(my, (v) => -v * depth);
+  const x = useTransform(mx, (v) => -v * depth * INTENSITY);
+  const y = useTransform(my, (v) => -v * depth * INTENSITY);
   return (
     <motion.div style={{ x, y }} className={className}>
       {children}

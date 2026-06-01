@@ -44,6 +44,7 @@ export function Abertura({ onDone }: { onDone: () => void }) {
   const nashRef = useRef<HTMLSpanElement>(null);
   const pagesRef = useRef<HTMLSpanElement>(null);
   const slashRef = useRef<HTMLDivElement>(null);
+  const slashBRef = useRef<HTMLDivElement>(null);
   const caretRef = useRef<HTMLDivElement>(null);
   const panelARef = useRef<HTMLDivElement>(null);
   const panelBRef = useRef<HTMLDivElement>(null);
@@ -74,6 +75,7 @@ export function Abertura({ onDone }: { onDone: () => void }) {
       const nashEl = nashRef.current!;
       const pagesEl = pagesRef.current!;
       const slash = slashRef.current!;
+      const slashB = slashBRef.current!;
       const caret = caretRef.current!;
       const panelA = panelARef.current!;
       const panelB = panelBRef.current!;
@@ -99,6 +101,8 @@ export function Abertura({ onDone }: { onDone: () => void }) {
       );
       slash.style.width = slashW + "px";
       slash.style.height = capH + "px";
+      slashB.style.width = slashW + "px";
+      slashB.style.height = capH + "px";
 
       const letters = Array.from(nashEl.children) as HTMLElement[];
       const pl = Array.from(pagesEl.children) as HTMLElement[];
@@ -120,6 +124,17 @@ export function Abertura({ onDone }: { onDone: () => void }) {
         yPercent: -50,
         rotation: deg,
         scaleY: 1,
+        transformOrigin: "50% 50%",
+      });
+      // 2ª linha (clone) que viaja pro outro lado ao abrir; pré-crescida e oculta até lá
+      gsap.set(slashB, {
+        opacity: 0,
+        x: 0,
+        y: 0,
+        xPercent: -50,
+        yPercent: -50,
+        rotation: deg,
+        scaleY: growScale,
         transformOrigin: "50% 50%",
       });
       gsap.set(caret, {
@@ -186,7 +201,10 @@ export function Abertura({ onDone }: { onDone: () => void }) {
       t.to(nashEl, { x: -ux * D, y: -uy * D, duration: CFG.openDur, ease: CFG.openEase }, openAt);
       t.to(panelB, { x: ux * D, y: uy * D, duration: CFG.openDur, ease: CFG.openEase }, openAt);
       t.to(pagesEl, { x: ux * D, y: uy * D, duration: CFG.openDur, ease: CFG.openEase }, openAt);
-      t.to(slash, { opacity: 0, duration: CFG.openDur * 0.42, ease: "power2.in" }, openAt);
+      // a costura se PARTE em duas: cada linha viaja colada à sua metade (não some no centro)
+      t.set(slashB, { opacity: 1 }, openAt);
+      t.to(slash, { x: -ux * D, y: -uy * D, duration: CFG.openDur, ease: CFG.openEase }, openAt);
+      t.to(slashB, { x: ux * D, y: uy * D, duration: CFG.openDur, ease: CFG.openEase }, openAt);
 
       tl = t;
     };
@@ -238,6 +256,7 @@ export function Abertura({ onDone }: { onDone: () => void }) {
         </span>
       </div>
       <div ref={slashRef} className={styles.slash} />
+      <div ref={slashBRef} className={styles.slash} />
       <div ref={caretRef} className={styles.caret} />
     </div>
   );

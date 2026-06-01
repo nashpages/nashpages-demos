@@ -20,7 +20,7 @@ const MouseCtx = createContext<MouseCtxValue | null>(null);
 
 // Intensidade global do cursor-float — multiplica TODOS os `depth`.
 // 1 = base sóbria · ↑ = mais movimento. Knob único pra calibrar.
-const INTENSITY = 1.8;
+const INTENSITY = 2.8;
 
 export function MouseParallaxProvider({ children }: { children: ReactNode }) {
   const reduce = useReducedMotion();

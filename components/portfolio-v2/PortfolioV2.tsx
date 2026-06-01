@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { MouseParallaxProvider, Float } from "./MouseParallax";
 import { Hero } from "./Hero";
 import { Feed } from "./Feed";
+import { Abertura } from "./Abertura";
 import { CONTACT_HREF } from "./data";
 
 function Nav() {
@@ -36,6 +38,10 @@ function Nav() {
 }
 
 export function PortfolioV2() {
+  // `ready` vira true quando a abertura termina (ou é pulada por reduced-motion).
+  // O Lenis (SmoothScroll) só monta depois — durante a intro o scroll fica travado.
+  const [ready, setReady] = useState(false);
+
   return (
     <>
       {/* Shippori Mincho (kanji 良) — subset latin do next/font não traz o glifo */}
@@ -46,7 +52,7 @@ export function PortfolioV2() {
         rel="stylesheet"
       />
 
-      <SmoothScroll />
+      {ready && <SmoothScroll />}
       <MouseParallaxProvider>
         {/* overflow-x-clip (não hidden) p/ o cursor-float não gerar scrollbar horizontal */}
         <main className="min-h-screen overflow-x-clip bg-white text-[#0E0B0B]">
@@ -56,6 +62,9 @@ export function PortfolioV2() {
           <div className="h-[18vh]" />
         </main>
       </MouseParallaxProvider>
+
+      {/* abertura por cima do site; ao abrir os painéis, revela a hero real */}
+      {!ready && <Abertura onDone={() => setReady(true)} />}
     </>
   );
 }

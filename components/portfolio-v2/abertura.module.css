@@ -1,0 +1,82 @@
+/* Abertura nash/pages — estilos do protótipo aprovado, escopados.
+   Fiel a C:\Catalogos Concorrentes\nashpages_v2_abertura_prototipo.html.
+   A intro é um OVERLAY transparente (z-100) por cima do site real;
+   os 2 painéis brancos é que cobrem a tela e se abrem na diagonal. */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: transparent; /* transparente: ao abrir os painéis, revela o site por baixo */
+  pointer-events: none;
+  z-index: 100;
+  --halfgap-nash: 11px;
+  --halfgap-pages: 9px;
+}
+
+/* painéis brancos que cobrem a hero e se abrem na costura diagonal.
+   transform inicial (estado de cobertura) vem inline no JSX a partir do CFG. */
+.panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300vmax;
+  height: 300vmax;
+  background: #ffffff;
+  z-index: 10;
+  will-change: transform;
+}
+
+/* wordmark */
+.word {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  color: #0e0b0b;
+  pointer-events: none;
+  font-family: var(--font-geist), system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(40px, 9vw, 132px);
+  letter-spacing: -0.03em;
+}
+.grp {
+  position: absolute;
+  top: 50%;
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+.nash {
+  right: calc(50% + var(--halfgap-nash));
+  justify-content: flex-end;
+}
+.pages {
+  left: calc(50% + var(--halfgap-pages));
+}
+.ch {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* slash = costura. Vira o /, cresce e abre a tela. */
+.slash {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 21;
+  background: #0e0b0b;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* caret de digitação */
+.caret {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  z-index: 22;
+  background: #0e0b0b;
+  opacity: 0;
+}

@@ -37,19 +37,14 @@ export function Feed() {
             href={`/${p.slug}`}
             target="_blank"
             rel="noreferrer"
-            className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-10 px-5 md:flex-row md:items-center md:gap-[clamp(24px,5vw,80px)] md:px-14"
+            className={`mx-auto flex w-full max-w-[1440px] flex-col items-start gap-7 px-5 md:items-center md:gap-[clamp(24px,5vw,80px)] md:px-14 ${
+              p.logoSide === "left" ? "md:flex-row" : "md:flex-row-reverse"
+            }`}
           >
-            {p.logoSide === "left" ? (
-              <>
-                <LogoBlock p={p} />
-                <PhotoBlock p={p} />
-              </>
-            ) : (
-              <>
-                <PhotoBlock p={p} />
-                <LogoBlock p={p} />
-              </>
-            )}
+            {/* mobile: sempre logo → foto → legenda (uniforme, à esquerda).
+                desktop: lados alternam via flex-row-reverse, mantendo o layout aprovado. */}
+            <LogoBlock p={p} />
+            <PhotoBlock p={p} />
           </a>
         </section>
       ))}

@@ -13,17 +13,24 @@ export function ProjectLogo({
   logo: ProjectLogo;
   align?: "left" | "right";
 }) {
-  const subSize = Math.max(13, Math.round(logo.size * 0.18));
+  // tamanho responsivo: ~60% no mobile (390px) → 100% (logo.size) no desktop (≥~740px)
+  const base = Math.round(logo.size * 0.6);
+  const vw = (logo.size / 7.4).toFixed(2);
   return (
     <div
-      className="transition-opacity duration-300 hover:opacity-80"
-      style={{ textAlign: align, color: "#000" }}
+      className={`transition-opacity duration-300 hover:opacity-80 ${
+        align === "right" ? "text-left md:text-right" : "text-left"
+      }`}
+      style={{
+        color: "#000",
+        fontFamily: FONT_VAR[logo.font],
+        fontSize: `clamp(${base}px, ${vw}vw, ${logo.size}px)`,
+      }}
     >
       <div
         style={{
-          fontFamily: FONT_VAR[logo.font],
           fontWeight: logo.weight ?? 500,
-          fontSize: logo.size,
+          fontSize: "1em",
           letterSpacing: logo.letterSpacing,
           lineHeight: 1,
         }}
@@ -33,11 +40,10 @@ export function ProjectLogo({
       {logo.sub && (
         <div
           style={{
-            fontFamily: FONT_VAR[logo.font],
             fontWeight: 500,
-            fontSize: subSize,
+            fontSize: "max(11px, 0.18em)",
             letterSpacing: "0.16em",
-            marginTop: Math.round(logo.size * 0.14),
+            marginTop: "0.14em",
           }}
         >
           {logo.sub}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Float } from "./MouseParallax";
+import { CrownBob } from "./CrownBob";
 import { ParallaxImage, Eyebrow, ProjectName } from "./ui";
 import { RYO, FONT_VAR } from "./data";
 
@@ -33,14 +34,16 @@ export function Hero() {
       >
         <Float depth={16} className="order-2 md:order-1">
           {/* coroa — marca o Ryo como projeto em destaque (acima do "01") */}
-          <Image
-            src="/portfolio-v2/crown.png"
-            alt=""
-            width={48}
-            height={48}
-            className="mb-2 select-none md:mb-3 ml-[-15px]"
-            priority
-          />
+          <CrownBob className="mb-2 ml-[-15px] w-fit md:mb-3">
+            <Image
+              src="/portfolio-v2/crown.png"
+              alt=""
+              width={48}
+              height={48}
+              className="select-none"
+              priority
+            />
+          </CrownBob>
           <Eyebrow>
             {RYO.index} · {RYO.category}
           </Eyebrow>

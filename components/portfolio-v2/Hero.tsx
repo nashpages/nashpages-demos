@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Float } from "./MouseParallax";
 import { ParallaxImage, Eyebrow, ProjectName } from "./ui";
 import { RYO, FONT_VAR } from "./data";
@@ -31,6 +32,15 @@ export function Hero() {
         className="mx-auto mt-[clamp(48px,8vh,90px)] flex w-full max-w-[1440px] flex-col items-center gap-12 px-5 pb-[clamp(20px,4vh,48px)] md:mt-0 md:flex-1 md:flex-row md:items-center md:justify-between md:gap-8 md:px-14"
       >
         <Float depth={16} className="order-2 md:order-1">
+          {/* coroa — marca o Ryo como projeto em destaque (acima do "01") */}
+          <Image
+            src="/portfolio-v2/crown.png"
+            alt=""
+            width={40}
+            height={40}
+            className="mb-2 select-none"
+            priority
+          />
           <Eyebrow>
             {RYO.index} · {RYO.category}
           </Eyebrow>

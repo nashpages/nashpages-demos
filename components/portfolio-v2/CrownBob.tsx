@@ -3,7 +3,8 @@
 // Flutuação automática (sobe/desce devagar, suave e harmônica) da coroa.
 // SOMA com o cursor-float do <Float> pai (que move contrário ao mouse):
 // são motion.divs aninhados, então os transforms se combinam (parallax do mouse
-// no pai + bob vertical aqui). Por enquanto só no DESKTOP (gated por matchMedia).
+// no pai + bob vertical aqui). Roda no desktop E no mobile (aprovado); no mobile
+// só o sobe-desce (não há mouse pro cursor-float). Respeita reduced-motion.
 import { useEffect, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -16,11 +17,7 @@ export function CrownBob({ className, children }: { className?: string; children
 
   useEffect(() => {
     if (reduce) return;
-    const mq = window.matchMedia("(min-width: 768px)"); // desktop primeiro
-    const update = () => setOn(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    setOn(true); // desktop + mobile
   }, [reduce]);
 
   return (

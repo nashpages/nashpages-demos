@@ -36,8 +36,8 @@ export function Hero() {
           <Image
             src="/portfolio-v2/crown.png"
             alt=""
-            width={40}
-            height={40}
+            width={48}
+            height={48}
             className="mb-2 select-none"
             priority
           />
